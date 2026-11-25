@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.6</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.6.1</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -151,6 +151,20 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
  @media(max-height:580px){.lab46-mobile #v42Editor{height:max(430px,calc(var(--lab46-vh) - var(--lab46-header)))}.lab46-mobile #v42Editor .v42-canvas-note{display:none}.lab46-mobile #v42Editor .v42-editor-head{min-height:40px}}
 }
 
+
+/* V4.6.1: constrain the mobile flex cross-axis. Keep only the palette horizontally scrollable. */
+@media(max-width:760px){
+ body.lab46-mobile{width:100%;max-width:100%;overflow-x:hidden}
+ .lab46-mobile .shell,.lab46-mobile #v42Editor,.lab46-mobile #v42Editor .v42-workspace,.lab46-mobile #v42Editor .v42-canvas,.lab46-mobile #v42CanvasMount,.lab46-mobile #v42MobileTools,.lab46-mobile #v42ToolGroup,.lab46-mobile #v42PaletteMount,.lab46-mobile #v42Editor .draw-stage,.lab46-mobile #v42Editor #drawPalette{width:100%;max-width:100%;min-width:0}
+ .lab46-mobile #v42Editor .v42-workspace{align-items:stretch}
+ .lab46-mobile #v42Editor .v42-canvas{align-self:stretch}
+ .lab46-mobile #v42Editor .draw-stage{position:relative;display:block}
+ .lab46-mobile #v42Editor .draw-stage svg{position:absolute;inset:0;width:100%;height:100%;min-width:0;max-width:100%}
+ .lab46-mobile #v42Editor .v42-editor-head,.lab46-mobile #v42Editor .lab46-modebar{min-width:0;max-width:100%}
+ .lab46-mobile #v42Editor .draw-tools button,.lab46-mobile #v42Editor .v42-mode button{min-width:0}
+ .lab46-mobile #v42Editor #drawPalette{contain:inline-size}
+}
+
 </style>
 </head>
 <body>
@@ -225,7 +239,7 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
   </section>
  </div>
 </main>
-<footer class="footer">MILU BANBAN · CAT LAB V4.6｜尚未串接購物車或訂單系統</footer>
+<footer class="footer">MILU BANBAN · CAT LAB V4.6.1｜尚未串接購物車或訂單系統</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (()=>{
@@ -578,7 +592,7 @@ updateTemplateList();
 // V4 design workflow — snapshots are portable and do not overwrite the admin defaults.
 const savedKey='mb-cat-v4-saved';
 let savedDesigns=[];try{const a=JSON.parse(localStorage.getItem(savedKey));if(Array.isArray(a))savedDesigns=a.filter(validDesign).slice(0,30);}catch(_){}
-function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.6',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
+function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.6.1',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
 function hashCode(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36).toUpperCase().padStart(7,'0');}
 function getDesignCode(){const p=designPayload();const clean=st=>({mode:st.mode,cols:st.cols.slice(0,st.mode),zones:Object.fromEntries(zoneKeys.map(k=>[k,Math.min(st.zones[k],st.mode-1)])),join:st.join,finish:st.finish,muzzle:st.muzzle,stripe:st.stripe,drawing:st.drawing||[]});return 'MB-CAT-'+hashCode(JSON.stringify({same:p.same,left:clean(p.left),right:clean(p.right),geometry:p.geometry,palette:p.palette.map(c=>({...c,code:[...usedColors(p.left),...usedColors(p.right)].some(x=>x.id===c.id)?c.code:''}))}));}
 function validDesign(d){return d&&d.format==='MILUBANBAN-CAT-DESIGN-V4'&&d.version===4&&typeof d.same==='boolean'&&validSave(d.left)&&validSave(d.right)&&d.geometry&&validPalette(d.palette)&&[d.left,d.right].every(st=>[...st.cols,...(st.drawing||[]).map(o=>o.color)].every(id=>d.palette.some(p=>p.id===id)));}
