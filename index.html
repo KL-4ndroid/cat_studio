@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.5</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.6</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -62,6 +62,89 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
 @keyframes lab45-reveal{from{opacity:.35;transform:translateY(7px) scale(.98)}to{opacity:1;transform:none}}
 @media(max-width:760px){.lab45 .site-header{padding:12px 15px 10px}.lab45 .lab45-wordmark{font-size:29px}.lab45 .lab45-tag{font-size:10px;padding:6px 8px}.lab45 #v42Editor .v42-editor-head{gap:6px;margin-bottom:8px}.lab45 #v42Editor .v42-editor-head h2{font-size:17px;white-space:nowrap}.lab45 #v42Editor .v42-editor-head button{font-size:11px;padding:8px 9px}.lab45 #v42Editor .v42-canvas,.lab45 #v42Editor .v42-controls{border-radius:18px}.lab45 #v42Editor .v42-mode button{min-height:34px;padding:5px}.lab45 #v42Editor #drawTool button{flex-direction:row;min-height:38px;padding:6px 3px;font-size:11px}.lab45 #v42Editor .lab45-icon{width:16px;height:16px}.lab45 #v42Editor .draw-tools button{min-height:34px}.lab45 #v42Editor .draw-size{padding:4px 6px}.lab45 #v42Editor .v42-canvas-note{font-size:11px;margin:3px 0}.lab45 #v42Editor #v42ToolGroup h3{font-size:12px}.lab45 #v42Editor .draw-palette{padding:3px;overflow:auto}.lab45 #v42Editor .v42-quick button{min-height:40px}.lab45 #v42Editor .draw-stage:before{font-size:8px;top:6px;left:6px}.lab45 #v42Editor .draw-stage:after{width:22px;height:22px;top:6px;right:6px}.lab45 #v42Editor .draw-stage{border-radius:13px}.lab45 #v42Editor .v42-canvas{top:0}}
 @media(prefers-reduced-motion:reduce){.lab45 #v42Editor *,.lab45 #v42Finish *,.lab45 #v42Gallery *{animation:none!important;transition:none!important}}
+
+
+/* V4.6 mobile-first canvas: desktop and Studio Manager unchanged. */
+.lab46-only{display:none!important}
+@media(max-width:760px){
+ body.lab46-mobile{--lab46-vh:100vh;--lab46-header:48px;--lab46-safe:env(safe-area-inset-bottom,0px)}
+ @supports(height:100dvh){body.lab46-mobile{--lab46-vh:100dvh}}
+ body.lab46-mobile.lab46-focus{--lab46-header:0px}
+ .lab46-mobile .lab46-only{display:revert!important}
+ .lab46-mobile .site-header{height:var(--lab46-header);min-height:0;padding:5px 12px;gap:6px}
+ .lab46-mobile .site-header .brand{display:flex;align-items:center;gap:5px;font-size:9px;letter-spacing:.02em;white-space:nowrap}
+ .lab46-mobile .site-header .lab45-wordmark{font-size:20px;letter-spacing:-.045em;margin:0}
+ .lab46-mobile .site-header .lab45-spark{width:19px;height:19px;font-size:12px;margin-left:3px;border-radius:6px}
+ .lab46-mobile .site-header .brand small,.lab46-mobile .site-header .lab45-tag{display:none}
+ .lab46-mobile.lab46-focus .site-header,.lab46-mobile .footer{display:none}
+ .lab46-mobile .shell{padding:0 8px;max-width:none}
+ .lab46-mobile #v42Editor{height:max(440px,calc(var(--lab46-vh) - var(--lab46-header)));display:flex;flex-direction:column;gap:4px;padding-bottom:max(6px,var(--lab46-safe));min-width:0}
+ .lab46-mobile #v42Editor .v42-editor-head{flex:none;margin:0;min-height:44px;gap:5px}
+ .lab46-mobile #v42Editor .v42-editor-head h2{font-size:15px;white-space:nowrap}
+ .lab46-mobile #v42Editor .v42-editor-head button{min-height:44px;padding:7px 10px;font-size:12px}
+ .lab46-mobile #v42Editor .v42-workspace{display:flex;flex-direction:column;flex:1;min-height:0;gap:0;position:relative}
+ .lab46-mobile #v42Editor .v42-canvas{flex:1;min-height:0;min-width:0;position:relative;top:auto;z-index:auto;display:flex;flex-direction:column;gap:3px;padding:5px 7px 7px;margin:0;border-radius:16px;background:#fffdfa}
+ .lab46-mobile #v42Editor .lab46-modebar{display:flex!important;align-items:center;gap:4px;flex:none}
+ .lab46-mobile #v42Editor .v42-mode{flex:1;min-width:0;padding:3px;gap:2px}
+ .lab46-mobile #v42Editor .v42-mode button{font-size:12px;min-height:38px;padding:4px}
+ .lab46-mobile #v42Editor .lab46-iconbtn{flex:none;min-width:44px;min-height:44px;display:inline-flex!important;align-items:center;justify-content:center;gap:4px;background:#f0f3ec;border:1px solid #dfe6dd;color:#3d594a;border-radius:11px;padding:5px;font-weight:650;font-size:11px}
+ .lab46-mobile #v42Editor .lab46-iconbtn[aria-pressed=true]{background:#c1e5d7;border-color:#83ad99;color:#263d30}
+ .lab46-mobile #v42Editor .lab46-iconbtn svg{width:18px;height:18px;pointer-events:none}
+ .lab46-mobile #v42CanvasMount{flex:1;min-height:0;display:flex;flex-direction:column}
+ .lab46-mobile #v42Editor .draw-stage{margin:0;flex:1;min-height:105px;display:flex;overflow:hidden;align-items:center;justify-content:center;border-radius:13px}
+ .lab46-mobile #v42Editor .draw-stage svg{display:block;width:100%;height:100%;max-height:none;min-height:0;flex:1;touch-action:none}
+ /* Only decorative hardware/shadow outside the face, not clipped paint or gold nose. */
+ .lab46-mobile #drawSvg > g > path,.lab46-mobile #drawSvg > g > ellipse{display:none}
+ .lab46-mobile #v42Editor .draw-stage:before{content:"";display:none}
+ .lab46-mobile #v42Editor .draw-stage:after{width:19px;height:19px;top:6px;right:7px;font-size:11px}
+ .lab46-mobile #v42Editor .v42-canvas-note{font-size:10px;line-height:1.2;margin:0;flex:none;min-height:12px}
+ .lab46-mobile #v42HistoryMount{flex:none}
+ .lab46-mobile #v42HistoryMount .draw-tools{display:flex;flex-wrap:nowrap;gap:5px;margin:0;justify-content:stretch}
+ .lab46-mobile #v42HistoryMount .draw-tools button{flex:1;min-height:44px;padding:4px 6px;font-size:11px}
+ .lab46-mobile #v42MobileTools{flex:none;min-width:0}
+ .lab46-mobile #v42ToolGroup{position:relative;min-width:0}
+ .lab46-mobile #v42ToolGroup h3,.lab46-mobile #v42ToolGroup .v42-sym{display:none}
+ .lab46-mobile #v42Editor #drawTool{display:flex;flex-wrap:nowrap;margin:2px 0 3px;gap:4px}
+ .lab46-mobile #v42Editor #drawTool button{min-width:0;flex:1;min-height:44px;padding:5px 3px;font-size:11px;gap:3px;white-space:nowrap}
+ .lab46-mobile #v42Editor #drawTool .lab46-iconbtn{flex:1}
+ .lab46-mobile #v42Editor #v42SizeMount{display:none;position:absolute;left:2px;right:2px;bottom:100%;z-index:8;background:#fffdfa;border:1px solid #c8d9cc;border-radius:13px;box-shadow:0 5px 22px #324d3930;padding:8px}
+ .lab46-mobile #v42Editor #v42SizeMount.lab46-size-open{display:block}
+ .lab46-mobile #v42Editor #v42SizeMount .draw-size{margin:0;min-height:44px}
+ .lab46-mobile #v42PaletteMount{display:flex;flex-direction:column;gap:1px;min-width:0}
+ .lab46-mobile #v42Editor #drawPalette{display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;max-height:none;width:100%;gap:6px;margin:0;padding:5px 4px 5px;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x}
+ .lab46-mobile #v42Editor #drawPalette::-webkit-scrollbar{display:none}
+ .lab46-mobile #v42Editor #drawPalette button{flex:0 0 44px;width:44px;min-width:44px;height:44px;max-width:none;outline-offset:1px;touch-action:manipulation}
+ .lab46-mobile #v42Editor #drawColorName{font-size:11px;margin:0;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .lab46-mobile #v42Editor .lab46-palettebar{display:flex!important;justify-content:space-between;align-items:center;gap:4px}
+ .lab46-mobile #v42Editor .lab46-palettebar button{min-height:44px;font-size:11px;padding:6px 10px;white-space:nowrap;border-radius:10px}
+ .lab46-mobile #v42Editor .lab46-palettebar #lab46More{background:#f9df8d;color:#59451c;border:0}
+ .lab46-mobile #v42Editor .lab46-palettebar #lab46Colors{background:#c1e5d7;color:#303d36;border:0}
+ .lab46-mobile #v42Editor .lab46-backdrop{display:none!important;position:fixed;inset:0;z-index:30;background:#25382b50;border:0;border-radius:0}
+ .lab46-mobile #v42Editor.lab46-sheet-open .lab46-backdrop{display:block!important}
+ .lab46-mobile #v42Editor .v42-controls{display:none;position:fixed;z-index:31;left:0;right:0;bottom:0;max-height:min(76dvh,620px);overflow-y:auto;overscroll-behavior:contain;padding:9px 14px max(16px,env(safe-area-inset-bottom,0px));margin:0;border-radius:22px 22px 0 0;box-shadow:0 -9px 40px #2c443b25;background:#fffdfa}
+ .lab46-mobile #v42Editor.lab46-sheet-open .v42-controls{display:block}
+ .lab46-mobile #v42Editor .lab46-sheetbar{display:flex!important;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:-9px;background:#fffdfa;padding:8px 0;z-index:1}
+ .lab46-mobile #v42Editor .lab46-sheetbar strong{font-size:16px;color:#303d36}
+ .lab46-mobile #v42Editor .lab46-sheetbar button{min-height:44px;min-width:44px}
+ .lab46-mobile #v42Editor .lab46-tabs{display:flex!important;gap:5px;margin:4px 0 12px}
+ .lab46-mobile #v42Editor .lab46-tabs button{flex:1;min-height:44px;padding:6px;font-size:12px;border:1px solid #dfe5dc;border-radius:10px;background:#f5f6ef;color:#425b4c}
+ .lab46-mobile #v42Editor .lab46-tabs button[aria-selected=true]{background:#303d36;color:#fff;border-color:#303d36}
+ .lab46-mobile #v42Editor .lab46-fullpalette{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:12px 9px;padding:8px 2px}
+ .lab46-mobile #v42Editor .lab46-fullpalette button{width:44px;height:44px;border:1px solid #303d3630;border-radius:50%;justify-self:center;position:relative}
+ .lab46-mobile #v42Editor .lab46-fullpalette button[aria-pressed=true]{outline:2px solid #303d36;outline-offset:3px}
+ .lab46-mobile #v42Editor .lab46-palettehint{font-size:12px;color:#52685c;margin:4px 0}
+ .lab46-mobile #v42Editor .lab46-previewmount .v42-pair-thumb{height:auto;max-height:230px;width:100%;border-radius:12px}
+ .lab46-mobile #v42Editor .lab46-previewmount{display:block!important}
+ .lab46-mobile #v42Editor .v42-controls[data-lab46-tab=colors] > :is(.v42-quick,details,.v42-mobile-dock,.lab46-previewmount){display:none!important}
+ .lab46-mobile #v42Editor .v42-controls[data-lab46-tab=more] > :is(.lab46-fullpalette,.lab46-palettehint,.lab46-previewmount){display:none!important}
+ .lab46-mobile #v42Editor .v42-controls[data-lab46-tab=preview] > :is(.v42-quick,details,.v42-mobile-dock,.lab46-fullpalette,.lab46-palettehint){display:none!important}
+ .lab46-mobile #v42Editor #v42DesktopTools{display:none}
+ .lab46-mobile #v42Editor .v42-controls .v42-quick button,.lab46-mobile #v42Editor .v42-controls .v42-actionbar button{min-height:44px}
+ .lab46-mobile #v42Editor.lab46-sheet-open .v42-canvas{pointer-events:none}
+ .lab46-mobile .toast{z-index:40}
+ .lab46-mobile.lab46-focus #v42Editor .v42-editor-head h2{font-size:14px}
+ @media(max-height:580px){.lab46-mobile #v42Editor{height:max(430px,calc(var(--lab46-vh) - var(--lab46-header)))}.lab46-mobile #v42Editor .v42-canvas-note{display:none}.lab46-mobile #v42Editor .v42-editor-head{min-height:40px}}
+}
 
 </style>
 </head>
@@ -137,7 +220,7 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
   </section>
  </div>
 </main>
-<footer class="footer">MILU BANBAN · 貓咪配色室 V4.3.1｜配色與版型編輯原型，尚未串接購物車或訂單系統</footer>
+<footer class="footer">MILU BANBAN · CAT LAB V4.6｜尚未串接購物車或訂單系統</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (()=>{
@@ -490,7 +573,7 @@ updateTemplateList();
 // V4 design workflow — snapshots are portable and do not overwrite the admin defaults.
 const savedKey='mb-cat-v4-saved';
 let savedDesigns=[];try{const a=JSON.parse(localStorage.getItem(savedKey));if(Array.isArray(a))savedDesigns=a.filter(validDesign).slice(0,30);}catch(_){}
-function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.5',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
+function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.6',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
 function hashCode(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36).toUpperCase().padStart(7,'0');}
 function getDesignCode(){const p=designPayload();const clean=st=>({mode:st.mode,cols:st.cols.slice(0,st.mode),zones:Object.fromEntries(zoneKeys.map(k=>[k,Math.min(st.zones[k],st.mode-1)])),join:st.join,finish:st.finish,muzzle:st.muzzle,stripe:st.stripe,drawing:st.drawing||[]});return 'MB-CAT-'+hashCode(JSON.stringify({same:p.same,left:clean(p.left),right:clean(p.right),geometry:p.geometry,palette:p.palette.map(c=>({...c,code:[...usedColors(p.left),...usedColors(p.right)].some(x=>x.id===c.id)?c.code:''}))}));}
 function validDesign(d){return d&&d.format==='MILUBANBAN-CAT-DESIGN-V4'&&d.version===4&&typeof d.same==='boolean'&&validSave(d.left)&&validSave(d.right)&&d.geometry&&validPalette(d.palette)&&[d.left,d.right].every(st=>[...st.cols,...(st.drawing||[]).map(o=>o.color)].every(id=>d.palette.some(p=>p.id===id)));}
@@ -792,6 +875,79 @@ function lab45(){
  theme();
 }
 lab45();
+function mobileCanvas46(){
+ const editor=$('v42Editor'), canvas=editor.querySelector('.v42-canvas'), controls=editor.querySelector('.v42-controls');
+ const media=matchMedia('(max-width:760px)'), svg=$('drawSvg'), originalView=svg.getAttribute('viewBox');
+ let mobile=false,focused=false,sheet=null,sizeOpen=false,previousFocus=null,scrollLeft=0,paletteSignature='';
+ const mark=(node)=>{const a=document.createComment('lab46 original position');node.before(a);return a};
+ const mode=$('v42Mode'),modeAnchor=mark(mode),pairPreview=$('v42PairPreview'),previewAnchor=mark(pairPreview);
+ const icon=(path)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
+ const iconPaths={expand:'<path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/>',shrink:'<path d="M3 8h5V3m13 5h-5V3M8 21v-5H3m13 5v-5h5"/>',eye:'<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/>',sym:'<path d="M12 3v18M9 6 3 12l6 6Zm6 0 6 6-6 6Z"/>',size:'<circle cx="8" cy="16" r="3"/><circle cx="17" cy="7" r="5"/>'};
+ function el(tag,id,cls,html){const x=document.createElement(tag);if(id)x.id=id;if(cls)x.className=cls;if(html)x.innerHTML=html;return x}
+ function button(id,label,html){const b=el('button',id,'lab46-only lab46-iconbtn',html||label);b.type='button';b.setAttribute('aria-label',label);b.title=label;return b}
+ const modebar=el('div','lab46Modebar','lab46-only lab46-modebar');modeAnchor.after(modebar);
+ const focusBtn=button('lab46Focus','專注創作',icon(iconPaths.expand));focusBtn.setAttribute('aria-pressed','false');
+ const previewBtn=button('lab46Preview','雙耳成品預覽',icon(iconPaths.eye));previewBtn.setAttribute('aria-haspopup','dialog');
+ modebar.append(previewBtn,focusBtn);
+ const history=$('drawUndo').parentElement,symBtn=button('lab46Sym','對稱畫筆',icon(iconPaths.sym)+'<span>對稱</span>');symBtn.setAttribute('aria-pressed','false');history.append(symBtn);
+ const sizeBtn=button('lab46Size','筆刷粗細',icon(iconPaths.size)+'<span>粗細</span>');sizeBtn.setAttribute('aria-expanded','false');$('drawTool').append(sizeBtn);
+ const palettebar=el('div','lab46Palettebar','lab46-only lab46-palettebar');
+ palettebar.innerHTML='<button class="quiet-btn" id="lab46Colors" type="button" aria-haspopup="dialog">全部色票 ↑</button><button class="quiet-btn" id="lab46More" type="button" aria-haspopup="dialog">更多工具 ↑</button>';
+ $('v42PaletteMount').append(palettebar);
+ const backdrop=el('button','lab46Backdrop','lab46-only lab46-backdrop');backdrop.type='button';backdrop.setAttribute('aria-label','收合底部面板');backdrop.tabIndex=-1;controls.before(backdrop);
+ const sheetbar=el('div','lab46Sheetbar','lab46-only lab46-sheetbar','<strong id="lab46SheetTitle">創作工具</strong><button type="button" class="quiet-btn" id="lab46Close" aria-label="收合面板">收合 ↓</button>');
+ const tabs=el('div','lab46Tabs','lab46-only lab46-tabs','<button type="button" data-lab46-tab="colors">全部色票</button><button type="button" data-lab46-tab="more">更多工具</button><button type="button" data-lab46-tab="preview">雙耳預覽</button>');tabs.setAttribute('role','tablist');for(const b of tabs.children)b.setAttribute('role','tab');
+ const fullpalette=el('div','lab46Fullpalette','lab46-only lab46-fullpalette');
+ const palettehint=el('p','lab46Palettehint','lab46-only lab46-palettehint','挑選顏色後會自動返回畫布。');
+ const previewmount=el('div','lab46Previewmount','lab46-only lab46-previewmount','<p class="sm44-muted">完整耳環外觀，包括金屬配件。</p>');
+ controls.prepend(sheetbar,tabs,palettehint,fullpalette,previewmount);
+ const closeSize=()=>{sizeOpen=false;$('v42SizeMount').classList.remove('lab46-size-open');sizeBtn.setAttribute('aria-expanded','false')};
+ function applyView(){svg.setAttribute('viewBox',mobile?(focused?'33 70 131 133':'28 65 142 144'):originalView)}
+ function refreshPalette(){
+  const buttons=[...$('drawPalette').querySelectorAll('[data-draw-color]')];
+  const sig=JSON.stringify(buttons.map(b=>[b.dataset.drawColor,b.style.background,b.getAttribute('aria-label'),b.getAttribute('aria-pressed')]));
+  if(sig!==paletteSignature){paletteSignature=sig;fullpalette.replaceChildren(...buttons.map(b=>{const c=b.cloneNode(true);c.removeAttribute('data-draw-color');c.dataset.lab46Color=b.dataset.drawColor;return c}))}
+  symBtn.setAttribute('aria-pressed',String($('v42Sym').checked));
+ }
+ function closeSheet(restore=true){
+  if(!sheet)return;sheet=null;editor.classList.remove('lab46-sheet-open');controls.removeAttribute('data-lab46-tab');controls.removeAttribute('role');controls.removeAttribute('aria-modal');controls.removeAttribute('aria-labelledby');canvas.inert=false;editor.querySelector('.v42-editor-head').inert=false;
+  if(restore&&previousFocus?.isConnected)previousFocus.focus({preventScroll:true});previousFocus=null;
+ }
+ function openSheet(tab){
+  if(!mobile||drawPointer!==null)return;closeSize();if(!sheet)previousFocus=document.activeElement;
+  sheet=tab;editor.classList.add('lab46-sheet-open');controls.dataset.lab46Tab=tab;controls.setAttribute('role','dialog');controls.setAttribute('aria-modal','true');controls.setAttribute('aria-labelledby','lab46SheetTitle');
+  for(const b of tabs.children)b.setAttribute('aria-selected',String(b.dataset.lab46Tab===tab));
+  $('lab46SheetTitle').textContent=({colors:'挑個喜歡的顏色',more:'更多創作工具',preview:'我的雙耳環'})[tab];
+  refreshPalette();controls.scrollTop=0;canvas.inert=true;editor.querySelector('.v42-editor-head').inert=true;$('lab46Close').focus({preventScroll:true});
+ }
+ function setFocus(yes){if(!mobile||drawPointer!==null)return;closeSize();closeSheet(false);focused=yes;document.body.classList.toggle('lab46-focus',yes);focusBtn.innerHTML=icon(yes?iconPaths.shrink:iconPaths.expand);focusBtn.setAttribute('aria-label',yes?'離開專注創作':'專注創作');focusBtn.title=focusBtn.getAttribute('aria-label');focusBtn.setAttribute('aria-pressed',String(yes));applyView();window.scrollTo(0,0)}
+ function setMobile(){
+  const next=media.matches&&!adminMode&&screen42==='editor';
+  if(next===mobile)return;
+  if(drawPointer!==null){const id=drawPointer;finishDraw({pointerId:id},true);try{if(svg.hasPointerCapture(id))svg.releasePointerCapture(id)}catch(_){}}
+  mobile=next;
+  document.body.classList.toggle('lab46-mobile',mobile);
+  if(mobile){modebar.prepend(mode);previewmount.prepend(pairPreview);applyView();refreshPalette()}
+  else{closeSize();closeSheet(false);focused=false;document.body.classList.remove('lab46-focus');focusBtn.innerHTML=icon(iconPaths.expand);focusBtn.setAttribute('aria-label','專注創作');focusBtn.setAttribute('aria-pressed','false');modeAnchor.after(mode);previewAnchor.after(pairPreview);applyView()}
+ }
+ const oldDraw=renderDraw;renderDraw=function(){const row=$('drawPalette');if(mobile)scrollLeft=row.scrollLeft;oldDraw();if(mobile){row.scrollLeft=scrollLeft;refreshPalette()}};
+ const oldShow=show42;show42=function(which){if(which!=='editor'){closeSize();closeSheet(false)}oldShow(which);setMobile()};
+ const oldEnter=enterAdmin;enterAdmin=function(yes){oldEnter(yes);setMobile()};
+ // Guard layout and tool changes from a second touch while a stroke is active.
+ editor.addEventListener('click',e=>{if(mobile&&drawPointer!==null&&!svg.contains(e.target)){e.preventDefault();e.stopImmediatePropagation()}},true);
+ focusBtn.addEventListener('click',()=>setFocus(!focused));previewBtn.addEventListener('click',()=>openSheet('preview'));
+ symBtn.addEventListener('click',()=>{if(drawPointer!==null)return;const checkbox=$('v42Sym');checkbox.checked=!checkbox.checked;checkbox.dispatchEvent(new Event('change',{bubbles:true}));refreshPalette()});
+ sizeBtn.addEventListener('click',()=>{if(drawPointer!==null)return;sizeOpen=!sizeOpen;$('v42SizeMount').classList.toggle('lab46-size-open',sizeOpen);sizeBtn.setAttribute('aria-expanded',String(sizeOpen))});
+ $('drawSize').addEventListener('change',closeSize);$('lab46Colors').addEventListener('click',()=>openSheet('colors'));$('lab46More').addEventListener('click',()=>openSheet('more'));
+ $('lab46Close').addEventListener('click',()=>closeSheet());backdrop.addEventListener('click',()=>closeSheet());
+ tabs.addEventListener('click',e=>{const b=e.target.closest('[data-lab46-tab]');if(b)openSheet(b.dataset.lab46Tab)});
+ fullpalette.addEventListener('click',e=>{const b=e.target.closest('[data-lab46-color]');if(!b)return;const real=[...$('drawPalette').querySelectorAll('[data-draw-color]')].find(x=>x.dataset.drawColor===b.dataset.lab46Color);closeSheet();if(real){real.click();const selected=[...$('drawPalette').querySelectorAll('[data-draw-color]')].find(x=>x.dataset.drawColor===b.dataset.lab46Color);if(selected){const row=$('drawPalette');row.scrollLeft=Math.max(0,selected.offsetLeft-row.offsetLeft-row.clientWidth/2+selected.clientWidth/2)}}});
+ document.addEventListener('keydown',e=>{if(!mobile)return;if(e.key==='Escape'){if(sheet){e.preventDefault();closeSheet()}else if(sizeOpen){e.preventDefault();closeSize();sizeBtn.focus()}else if(focused){e.preventDefault();setFocus(false)}}if(sheet&&e.key==='Tab'){const all=[...controls.querySelectorAll('button,input,select,textarea,summary,[tabindex]')].filter(x=>!x.disabled&&x.tabIndex>=0&&x.getClientRects().length>0);if(!all.length)return;const first=all[0],last=all[all.length-1];if(e.shiftKey&&(document.activeElement===first||!controls.contains(document.activeElement))){e.preventDefault();last.focus()}else if(!e.shiftKey&&(document.activeElement===last||!controls.contains(document.activeElement))){e.preventDefault();first.focus()}}});
+ svg.addEventListener('pointerdown',()=>{if(mobile)closeSize()},true);
+ media.addEventListener('change',setMobile);
+ setMobile();
+}
+mobileCanvas46();
 })();
 </script>
 </body>
