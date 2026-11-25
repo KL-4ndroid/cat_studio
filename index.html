@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>專屬貓咪耳環設計室 V4.3.1｜麋鹿斑斑</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.5</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -40,10 +40,33 @@
 
 @media(max-width:760px){.v42-mobile-dock{position:static;padding:0}.v42-canvas{padding:8px;position:sticky;top:0;z-index:3}.v42-workspace .draw-stage svg{height:clamp(155px,25vh,235px);min-height:0}.v42-pair-thumb{height:49px}.v42-canvas .draw-tools button{flex:1;min-height:34px;padding:6px;font-size:11px}.v42-canvas .draw-palette{grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:5px;margin:5px 0}.v42-canvas .draw-palette button{height:34px}.v42-canvas .draw-size{margin:6px 0}.v42-canvas .v42-sym{margin:5px 0;font-size:11px}.v42-canvas h3{font-size:12px;margin:5px 0 2px}.v42-canvas .draw-color-name{font-size:11px;line-height:1.3}.v42-canvas .draw-tools{margin:4px 0}.v42-canvas .v42-stamps button{min-height:32px;padding:5px}.v42-canvas .v42-stamps{margin-top:4px}.v42-controls{padding-bottom:12px}.v42-controls .v42-actionbar{margin-bottom:0}.v42-canvas .v42-canvas-note{font-size:10px}.v42-workspace .draw-palette{max-height:88px;overflow:auto}.v42-workspace .draw-palette button[aria-pressed=true]{outline-offset:0}.v42-workspace .draw-stage{margin:4px 0}.v42-editor-head{margin-bottom:6px}}
 @media(max-height:650px) and (max-width:760px){.v42-canvas{position:relative}.v42-workspace .draw-stage svg{height:175px}}
+
+#adminWorkspace [hidden],#adminToggle[hidden]{display:none!important}.sm44-nav,.sm44-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.sm44-nav button,.sm44-toolbar button,.sm44-stats button,.sm44-order{font:inherit;border:1px solid #dce4da;border-radius:10px;background:#fffdfa;color:#52685c;padding:10px 14px;text-align:left;cursor:pointer}.sm44-nav button[aria-pressed=true],.sm44-toolbar button[aria-pressed=true],.sm44-order[aria-pressed=true]{background:#e4eee5;border-color:#789488}.sm44-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.sm44-stats strong{display:block;font-size:28px;margin-top:8px}.sm44-card{background:#fffdfa;border:1px solid #e6e7e0;border-radius:16px;padding:18px;margin:12px 0;min-width:0}.sm44-card h3{font-size:15px;margin:12px 0}.sm44-card p,.sm44-muted{font-size:12px;color:#718278;line-height:1.7}.sm44-orders{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,2.3fr);gap:12px}.sm44-order{display:block;width:100%;margin-top:8px;overflow-wrap:anywhere}.sm44-order small,.sm44-color small{display:block;font-size:11px;color:#77867b;margin-top:4px}.sm44-card label{display:block;margin:12px 0;font-size:13px}.sm44-card input:not([type=checkbox]),.sm44-card select,.sm44-card textarea,.sm44-search,.sm44-meta-row input,.sm44-meta-row select{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:9px;border:1px solid #dce3da;border-radius:8px;background:white;color:#45574e;margin-top:5px}.sm44-card input[type=range]{padding:0}.sm44-sheethead{display:flex;justify-content:space-between;gap:12px;align-items:start;overflow-wrap:anywhere}.sm44-sheethead h2{margin:5px 0;font-size:23px}.sm44-art,.sm44-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.sm44-art:has(figure:only-child){grid-template-columns:1fr}.sm44-art figure{margin:0;background:#f1eee5;border-radius:12px;text-align:center;padding:10px}.sm44-art svg{width:100%;height:190px;display:block}.sm44-art figcaption{font-size:12px;color:#657b6d}.sm44-color{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #eee}.sm44-color b{margin-left:auto;overflow-wrap:anywhere}.sm44-swatch{width:22px;height:22px;border-radius:5px;border:1px solid #0002;flex:none;display:inline-block}.sm44-warning{color:#936a45;font-size:12px;line-height:1.7}.sm44-meta{margin-top:25px;border-top:1px solid #e5e8de;padding-top:15px}.sm44-meta-row{display:grid;grid-template-columns:24px minmax(80px,1fr) minmax(90px,1fr) minmax(100px,2fr);gap:8px;align-items:center;font-size:12px;margin:8px 0}.sm44-search{margin-bottom:12px}
+@media(max-width:700px){.sm44-stats{grid-template-columns:repeat(2,1fr)}.sm44-orders{grid-template-columns:1fr}.sm44-meta-row{grid-template-columns:24px 1fr}.sm44-meta-row input,.sm44-meta-row select{grid-column:2}.sm44-art svg{height:150px}.sm44-card{padding:12px}.sm44-color{flex-wrap:wrap}}
+@media print{body.sm44-print *{visibility:hidden!important}body.sm44-print #sm44Sheet,body.sm44-print #sm44Sheet *{visibility:visible!important}body.sm44-print #sm44Sheet{position:absolute;left:0;top:0;width:100%;border:0;box-shadow:none;background:white;overflow:visible}body.sm44-print #sm44Sheet .sm44-no-print{display:none!important}body.sm44-print .sm44-art svg{height:160px}body.sm44-print #sm44Sheet textarea{height:90px}body.sm44-print #sm44Sheet .sm44-color{break-inside:avoid}body.sm44-print{background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+
+/* V4.5 CAT LAB — customer-only visual layer; no drawing-engine changes. */
+.lab45 #drawSvg > rect:first-of-type{fill:transparent}.lab45 .header-right{display:flex;align-items:center;gap:8px}
+body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pink:#f3c5ca;--lab-blue:#bfd9f2;--lab-ink:#303d36;--lab-line:#e1e5d9;background:var(--lab-cream);color:var(--lab-ink)}
+.lab45 .site-header{padding-top:22px;padding-bottom:16px}.lab45 .brand{letter-spacing:.11em;font-size:11px;line-height:1.2}.lab45 .brand small{letter-spacing:.06em;color:#607368;font-size:11px;font-weight:550}.lab45 .lab45-wordmark{display:block;font-weight:850;letter-spacing:-.055em;font-size:clamp(27px,4vw,43px);line-height:1.06;margin:4px 0;color:var(--lab-ink)}.lab45 .lab45-spark{display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;background:var(--lab-yellow);border-radius:11px;width:30px;height:30px;margin-left:8px;transform:rotate(7deg);font-size:19px;letter-spacing:0}.lab45 .lab45-tag{background:var(--lab-pink);border-radius:999px;padding:8px 12px;font-size:11px;font-weight:700;letter-spacing:.035em;color:#594047}
+.lab45 #v42Editor,.lab45 #v42Gallery,.lab45 #v42Finish{--teal:#303d36;--teal-light:#c1e5d7;--ink:#303d36;--muted:#53685c;--line:#e1e5d9;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+.lab45 #v42Editor .v42-editor-head{margin-bottom:14px}.lab45 #v42Editor .v42-editor-head h2{font-weight:780;font-size:clamp(19px,2.8vw,27px);letter-spacing:-.045em}.lab45 #v42Editor .v42-workspace{gap:16px}.lab45 #v42Editor .v42-canvas,.lab45 #v42Editor .v42-controls{border-color:#e6e7dc;border-radius:24px;background:#fffdfa;box-shadow:0 9px 28px #384d3810}
+.lab45 #v42Editor .draw-stage{background-color:#e8f3e9;background-image:radial-gradient(#a0bfae77 .9px,transparent .9px);background-size:15px 15px;border-radius:19px;position:relative}.lab45 #v42Editor .draw-stage:before{content:"FREE DRAW";position:absolute;top:10px;left:10px;padding:5px 9px;border-radius:999px;background:#ffffffcf;font-size:9px;letter-spacing:.09em;font-weight:700;color:#50695b;pointer-events:none}.lab45 #v42Editor .draw-stage:after{content:"✦";position:absolute;top:11px;right:12px;width:26px;height:26px;display:grid;place-items:center;background:var(--lab-yellow);border-radius:8px;color:#735b2e;transform:rotate(8deg);pointer-events:none}
+.lab45 #v42Editor .v42-mode{background:#eef0e8;padding:4px;border-radius:15px;gap:3px}.lab45 #v42Editor .v42-mode button{background:transparent;border:0;border-radius:11px;font-weight:700;color:#4e6558;min-height:40px}.lab45 #v42Editor .v42-mode button.active{background:var(--lab-ink);color:white;box-shadow:0 2px 5px #303d3620}
+.lab45 #v42Editor .v42-canvas-note{font-size:12px;color:#455e50;font-weight:550;margin:7px 0}.lab45 #v42Editor .draw-tools button{border-radius:12px;background:#f2f3ee;color:#36483c;border-color:#e3e7dd;font-weight:650;min-height:43px;transition:background-color .16s,transform .16s,box-shadow .16s}.lab45 #v42Editor .draw-tools button.active{background:var(--lab-mint);border-color:#87b6a2;color:#263c30;box-shadow:0 3px 0 #8bbba72b}.lab45 #v42Editor .draw-tools button:active:not(:disabled),.lab45 #v42Editor .quiet-btn:active,.lab45 #v42Editor .action:active{transform:scale(.97)}
+.lab45 #v42Editor #drawTool button{display:flex;gap:5px;align-items:center;justify-content:center;flex-direction:column;min-height:58px}.lab45 #v42Editor .lab45-icon{width:20px;height:20px;display:inline-block;flex:none;vertical-align:middle;pointer-events:none}.lab45 #v42Editor .draw-size{background:#f7f8f1;border-radius:12px;padding:8px 10px}.lab45 #v42Editor input[type=range],.lab45 #v42Editor input[type=checkbox]{accent-color:#3c6654}.lab45 #v42Editor .draw-palette button{transition:transform .16s,outline-color .16s;outline-offset:2px;position:relative;touch-action:manipulation}.lab45 #v42Editor .draw-palette button[aria-pressed=true]{outline:2px solid var(--lab-ink);transform:scale(1.05)}.lab45 #v42Editor .draw-palette button:active{transform:scale(.91)}
+.lab45 #v42Editor .v42-quick button{min-height:43px;border-radius:13px;border:0;font-weight:700}.lab45 #v42Editor #v42Random{background:var(--lab-yellow);color:#59451c}.lab45 #v42Editor #v42Base{background:var(--lab-blue);color:#304b63}.lab45 #v42Editor #v42Blank{background:#f0eee8;color:#495b50}.lab45 #v42Editor .v42-sym{color:#455f51;font-weight:600}.lab45 #v42Editor .v42-sym input{width:20px;height:20px}.lab45 #v42Editor .v42-controls h3,.lab45 #v42Editor #v42ToolGroup h3{font-size:15px;font-weight:760;color:var(--lab-ink)}
+.lab45 #v42Editor .action.primary,.lab45 #v42Finish .action.primary{background:var(--lab-ink);color:white;border:1px solid var(--lab-ink);border-radius:14px;box-shadow:0 3px 0 #18231d22;font-weight:750}.lab45 #v42Editor .quiet-btn,.lab45 #v42Finish .quiet-btn,.lab45 #v42Gallery .quiet-btn{border-radius:12px;font-weight:650;color:#425b4c}.lab45 #v42Editor #v42Back,.lab45 #v42Editor #v42SaveQuick,.lab45 #v42Finish #v42SaveFinal{background:var(--lab-pink);border-color:transparent;color:#64424a}.lab45 #v42Editor .v42-status{color:#526c5d}.lab45 #v42Editor summary{color:#405a4c}.lab45 #v42Editor button:focus-visible,.lab45 #v42Finish button:focus-visible,.lab45 #v42Gallery button:focus-visible{outline:3px solid #426c59;outline-offset:3px}
+.lab45 #v42Finish,.lab45 #v42Gallery{background:#fffdfa;border-color:#e9e5da;border-radius:25px;box-shadow:0 12px 40px #384d3810}.lab45 #v42Finish h2,.lab45 #v42Gallery h2{font-family:inherit;font-weight:820;letter-spacing:-.045em;font-size:clamp(26px,5vw,40px)}.lab45 #v42Finish .v42-kicker{display:inline-block;padding:7px 13px;border-radius:999px;background:var(--lab-yellow);color:#675321;font-weight:750}.lab45 #v42Finish .v42-final-art{padding:10px;background:var(--lab-mint);border-radius:20px}.lab45 #v42Finish .v42-final-art svg{border-radius:13px}.lab45 #v42Finish #v42Share{background:var(--lab-yellow);border:0;color:#5b461e;border-radius:13px;font-weight:750}.lab45 #v42Finish #v42Name{border-radius:14px;border-color:#cadbd0;background:#f8faf6}.lab45 #v42Gallery .v42-gallery-card{background:white;padding:10px 10px 16px;border-radius:13px;box-shadow:0 4px 9px #384d3810}.lab45 #v42Gallery .v42-gallery-card svg{border-radius:8px;background:#f3efe6}.lab45 #v42Gallery .v42-gallery-card b{padding:4px 3px}.lab45 #v42Finish .lab45-caption{font-size:12px;color:#556c5c}.lab45 #v42Finish.lab45-reveal .v42-final-art{animation:lab45-reveal .36s cubic-bezier(.2,.8,.2,1) both}
+@keyframes lab45-reveal{from{opacity:.35;transform:translateY(7px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:760px){.lab45 .site-header{padding:12px 15px 10px}.lab45 .lab45-wordmark{font-size:29px}.lab45 .lab45-tag{font-size:10px;padding:6px 8px}.lab45 #v42Editor .v42-editor-head{gap:6px;margin-bottom:8px}.lab45 #v42Editor .v42-editor-head h2{font-size:17px;white-space:nowrap}.lab45 #v42Editor .v42-editor-head button{font-size:11px;padding:8px 9px}.lab45 #v42Editor .v42-canvas,.lab45 #v42Editor .v42-controls{border-radius:18px}.lab45 #v42Editor .v42-mode button{min-height:34px;padding:5px}.lab45 #v42Editor #drawTool button{flex-direction:row;min-height:38px;padding:6px 3px;font-size:11px}.lab45 #v42Editor .lab45-icon{width:16px;height:16px}.lab45 #v42Editor .draw-tools button{min-height:34px}.lab45 #v42Editor .draw-size{padding:4px 6px}.lab45 #v42Editor .v42-canvas-note{font-size:11px;margin:3px 0}.lab45 #v42Editor #v42ToolGroup h3{font-size:12px}.lab45 #v42Editor .draw-palette{padding:3px;overflow:auto}.lab45 #v42Editor .v42-quick button{min-height:40px}.lab45 #v42Editor .draw-stage:before{font-size:8px;top:6px;left:6px}.lab45 #v42Editor .draw-stage:after{width:22px;height:22px;top:6px;right:6px}.lab45 #v42Editor .draw-stage{border-radius:13px}.lab45 #v42Editor .v42-canvas{top:0}}
+@media(prefers-reduced-motion:reduce){.lab45 #v42Editor *,.lab45 #v42Finish *,.lab45 #v42Gallery *{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
-<header class="site-header"><div class="brand">MILU BANBAN<small>麋鹿斑斑 · CAT COLOR STUDIO</small></div><div class="header-right"><div class="header-note">小小一隻，配成你喜歡的樣子。</div><button id="adminToggle" type="button" class="top-admin" aria-pressed="false"><span>⚙</span> 管理員編輯</button></div></header>
+<header class="site-header"><div class="brand">MILU BANBAN<small>麋鹿斑斑 · CAT COLOR STUDIO</small></div><div class="header-right"><div class="header-note">小小一隻，配成你喜歡的樣子。</div><button id="adminToggle" hidden type="button" class="top-admin" aria-pressed="false"><span>⚙</span> 管理員編輯</button></div></header>
 <div class="mobile-mini" id="mobileMini" aria-label="隨時更新的迷你預覽">
  <svg id="miniSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 320" role="img" aria-label="目前的配色"></svg>
  <div class="mobile-mini-text"><b>你的貓咪耳環</b><span id="miniTitle">即時預覽</span></div>
@@ -467,7 +490,7 @@ updateTemplateList();
 // V4 design workflow — snapshots are portable and do not overwrite the admin defaults.
 const savedKey='mb-cat-v4-saved';
 let savedDesigns=[];try{const a=JSON.parse(localStorage.getItem(savedKey));if(Array.isArray(a))savedDesigns=a.filter(validDesign).slice(0,30);}catch(_){}
-function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.3.1',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
+function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.5',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
 function hashCode(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36).toUpperCase().padStart(7,'0');}
 function getDesignCode(){const p=designPayload();const clean=st=>({mode:st.mode,cols:st.cols.slice(0,st.mode),zones:Object.fromEntries(zoneKeys.map(k=>[k,Math.min(st.zones[k],st.mode-1)])),join:st.join,finish:st.finish,muzzle:st.muzzle,stripe:st.stripe,drawing:st.drawing||[]});return 'MB-CAT-'+hashCode(JSON.stringify({same:p.same,left:clean(p.left),right:clean(p.right),geometry:p.geometry,palette:p.palette.map(c=>({...c,code:[...usedColors(p.left),...usedColors(p.right)].some(x=>x.id===c.id)?c.code:''}))}));}
 function validDesign(d){return d&&d.format==='MILUBANBAN-CAT-DESIGN-V4'&&d.version===4&&typeof d.same==='boolean'&&validSave(d.left)&&validSave(d.right)&&d.geometry&&validPalette(d.palette)&&[d.left,d.right].every(st=>[...st.cols,...(st.drawing||[]).map(o=>o.color)].every(id=>d.palette.some(p=>p.id===id)));}
@@ -572,6 +595,203 @@ const meaningful43=st=>st.mode!==1||!!st.drawing?.length||st.cols[0]!==mapAvaila
 if(priorPairStored&&(!pair.same||meaningful43(pair.left)||meaningful43(pair.right))){try{const old=fullDesign();if(!savedDesigns.some(d=>d.code===old.code)){previousDraft43=old;localStorage.setItem(priorDraftKey,JSON.stringify(old));}}catch(_){}}
 btn42('v43RestoreDraft',()=>{if(previousDraft43){restoreDesign(previousDraft43);show42('editor');}});
 renderSaved();setDirty(JSON.stringify(draftGeom)!==JSON.stringify(publishedGeom));new42();show42('editor');checkMobilePreview();
+function studioManager44(){
+ const key='mb-cat-v44-orders', rulesKey='mb-cat-v44-rules', metaKey='mb-cat-v44-pigment-meta';
+ const statuses=['待確認','等待製作','製作中','已完成'];
+ const read=(k,fallback)=>{try{return JSON.parse(localStorage.getItem(k))??fallback}catch(_){return fallback}};
+ const defaults={widthMm:0,minMm:0,maxColors:0,gradient:true};
+ let rules={...defaults,...read(rulesKey,{})}, meta=read(metaKey,{}), orders=read(key,[]);
+ if(!Array.isArray(orders))orders=[];
+ if(!meta||typeof meta!=='object'||Array.isArray(meta))meta={};
+ orders=orders.filter(o=>o&&typeof o.id==='string'&&validDesign(o.design)&&statuses.includes(o.status));
+ let selected='',tab='home',view='normal',side='both',target='',step=-1;
+ const safe=s=>esc(String(s??''));
+ const uid=()=>globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+ const store=(k,value)=>{try{localStorage.setItem(k,JSON.stringify(value));return true}catch(_){toast('本機儲存失敗：容量不足或瀏覽器限制，請先備份');return false}};
+ function replaceOrders(next){if(!store(key,next))return false;orders=next;return true}
+ const current=()=>orders.find(o=>o.id===selected);
+ const json=(obj,name)=>downloadBlob(new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),name);
+ const workspace=$('adminWorkspace'), heading=workspace.querySelector('.admin-heading');
+ heading.querySelector('h2').textContent='貓咪 DIY 工作室';
+ heading.querySelector('.eyebrow').textContent='STUDIO MANAGER / V4.4';
+ heading.querySelector('p').textContent='接收客製設計、確認顏料與手工製作，讓每副作品有清楚的製作依據。';
+ heading.querySelector('.tag').textContent='本機管理版';
+ const legacy=document.createElement('section');legacy.id='sm44Geometry';
+ const grid=workspace.querySelector('.admin-grid'), geomCard=grid.nextElementSibling, paletteCard=$('paletteEditor').closest('.template-card');
+ workspace.append(legacy);legacy.append(grid,geomCard);
+ paletteCard.id='sm44Palette';
+ const nav=document.createElement('nav');nav.className='sm44-nav';
+ nav.innerHTML=[['home','工作室首頁'],['orders','客製作品'],['palette','實體顏料'],['rules','製作規範'],['geometry','進階版型'],['backup','備份設定']].map(([id,label])=>`<button type="button" data-sm44-tab="${id}">${label}</button>`).join('');
+ heading.after(nav);
+ const panel=document.createElement('div');panel.id='sm44Panel';nav.after(panel);
+ function go(t){tab=t;for(const b of nav.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.sm44Tab===t));legacy.hidden=t!=='geometry';paletteCard.hidden=t!=='palette';panel.hidden=t==='geometry'||t==='palette';if(t==='palette'){renderPaletteEditor();renderMeta()}else if(t==='geometry'){renderGeometryControls();renderPreview()}else render();}
+ nav.addEventListener('click',e=>{const b=e.target.closest('[data-sm44-tab]');if(b)go(b.dataset.sm44Tab)});
+ const metaPanel=document.createElement('div');metaPanel.className='sm44-meta';paletteCard.append(metaPanel);
+ function renderMeta(){
+  metaPanel.innerHTML='<h3>顏料工藝備註</h3><p class="sm44-muted">此區僅供工作室參考，與畫面色碼分開儲存。</p>'+palette.map(p=>{const m=meta[p.id]||{};return `<div class="sm44-meta-row"><span class="sm44-swatch" style="background:${p.hex}"></span><b>${safe(p.name)} ${safe(p.code||'（待編號）')}</b><select data-meta-type="${safe(p.id)}" aria-label="透明度">${['未設定','不透明','半透明','透明'].map(v=>`<option ${m.type===v?'selected':''}>${v}</option>`).join('')}</select><input data-meta-note="${safe(p.id)}" aria-label="製作備註" placeholder="珠光、金屬色、上色備註" value="${safe(m.note)}" maxlength="200"></div>`}).join('')+'<button class="action primary" id="sm44SaveMeta">儲存工藝備註</button>';
+ }
+ metaPanel.addEventListener('click',e=>{if(e.target.id!=='sm44SaveMeta')return;const next={...meta};for(const x of metaPanel.querySelectorAll('[data-meta-type]')){const id=x.dataset.metaType;const note=[...metaPanel.querySelectorAll('[data-meta-note]')].find(n=>n.dataset.metaNote===id)?.value||'';next[id]={type:x.value,note};}if(store(metaKey,next)){meta=next;toast('工藝備註已儲存')}});
+ const search=document.createElement('input');search.type='search';search.placeholder='搜尋名稱或顏料編號';search.className='sm44-search';paletteCard.querySelector('.template-title').after(search);
+ function filterPalette(){const q=search.value.trim().toLowerCase();for(const row of $('paletteEditor').querySelectorAll('.v41-palette-row:not(.palette-labels)'))row.hidden=!!q&&![...row.querySelectorAll('input')].some(el=>el.value.toLowerCase().includes(q));}
+ search.addEventListener('input',filterPalette);
+ new MutationObserver(filterPalette).observe($('paletteEditor'),{childList:true});
+ $('savePalette').addEventListener('click',renderMeta);$('resetPalette').addEventListener('click',renderMeta);
+ // Render from the immutable imported snapshot; never restore it into the customer editor.
+ function inSnapshot(d,fn){const old=[adminMode,designPalette,designGeom];try{adminMode=false;designPalette=normalizedPalette(d.palette);designGeom=normalizedGeom(d.geometry);return fn()}finally{[adminMode,designPalette,designGeom]=old}}
+ function colorsFor(d,st){return inSnapshot(d,()=>usedColors(st))}
+ function resolved(p){const exact=palette.find(x=>x.id===p.id&&x.hex.toUpperCase()===p.hex.toUpperCase());const byCode=p.code?palette.find(x=>x.code===p.code&&x.hex.toUpperCase()===p.hex.toUpperCase()):null;const m=byCode||exact;return {code:p.code||m?.code||'',match:!!m,enabled:m?.enabled!==false,conflict:!!(p.code&&m?.code&&p.code!==m.code)}}
+ function art(d,ear,mode,color,limit=-1){
+  return inSnapshot(d,()=>{
+   const st=clone(ear==='right'&&!d.same?d.right:d.left);
+   if(limit>=0)st.drawing=(st.drawing||[]).slice(0,limit);
+   const root=document.createElementNS('http://www.w3.org/2000/svg','svg');
+   root.setAttribute('xmlns','http://www.w3.org/2000/svg');root.setAttribute('viewBox',mode==='normal'?'0 55 195 177':'22 10 100 99');
+   const defs=$('earringSvg').querySelector('defs').cloneNode(true);defs.querySelector('#softMark feGaussianBlur')?.setAttribute('stdDeviation',String(gNow().softness));
+   root.append(defs);
+   const temp=document.createElementNS(root.namespaceURI,'g');temp.innerHTML=withState(st,()=>paintCat('smCat',0));const cat=temp.firstElementChild;
+   root.append(cat);
+   if(mode!=='normal'){
+    cat.removeAttribute('transform');
+    const face=cat.querySelector('g[filter="url(#shadow)"]');face.removeAttribute('filter');
+    [...cat.children].filter(x=>x!==face&&x.localName!=='defs').forEach(x=>x.remove());
+    const clipped=face.querySelector('g[clip-path]');
+    // Only original enamel highlights: do not touch erased paths or white pigments.
+    [...clipped.children].filter(x=>x.localName==='path'&&['M35 48 Q43 31 54 33','M88 32 Q98 35 105 48','M35 87 Q60 106 91 91','M28 60 Q24 83 42 94'].includes(x.getAttribute('d'))).forEach(x=>x.remove());
+    const nose=face.querySelector('circle');nose?.setAttribute('fill','#c6b793');face.querySelector(':scope > ellipse')?.remove();
+    if(mode==='color'){
+      const selectedHex=String(color||'').toUpperCase();
+      // Recolor actual paint layers, leaving mask black/white intact. Preserve opacity for gradient references.
+      const colorset=new Set(d.palette.map(p=>p.hex.toUpperCase()));
+      for(const node of [face.firstElementChild,...clipped.querySelectorAll('*'),...cat.querySelectorAll('radialGradient stop')]){
+       if(node.closest('mask'))continue;
+       for(const a of ['fill','stroke','stop-color']){const value=node.getAttribute(a);if(value&&colorset.has(value.toUpperCase()))node.setAttribute(a,value.toUpperCase()===selectedHex?selectedHex:'#eeeeea');}
+      }
+    }
+    if(mode==='grid'){
+      const lines=document.createElementNS(root.namespaceURI,'g');lines.setAttribute('clip-path','url(#smCatclip)');lines.setAttribute('stroke','#596c63');lines.setAttribute('stroke-width','.35');lines.setAttribute('stroke-dasharray','1 1');lines.setAttribute('opacity','.65');
+      for(let i=20;i<=120;i+=10){const p=document.createElementNS(root.namespaceURI,'path');p.setAttribute('d',`M${i} 10V110 M20 ${i}H120`);lines.append(p)}face.append(lines);
+    }
+   }
+   return svgCopy42(root,'sm44-'+ear+'-'+mode+'-'+uid());
+  });
+ }
+ function report(d){
+  const warnings=[];const left=colorsFor(d,d.left),right=colorsFor(d,d.same?d.left:d.right);
+  const all=[...left,...right];
+  if(all.some(p=>!resolved(p).code))warnings.push('有顏料尚未設定工作室編號');
+  if(all.some(p=>!resolved(p).match||!resolved(p).enabled||resolved(p).conflict))warnings.push('有色票未與現行工作室色票核對、已停用或編號不一致，請人工確認');
+  if(rules.maxColors>0&&[left,right].some(a=>a.length>rules.maxColors))warnings.push('使用顏料數超出建議值（含可能被覆蓋的底層色）');
+  const sts=[d.left,d.same?d.left:d.right];
+  if(sts.some(s=>s.finish==='soft'||s.muzzle))warnings.push(rules.gradient?'使用漸層／暈染，請確認工藝':'使用漸層／暈染，目前規範不建議');
+  if(sts.some(s=>s.stripe))warnings.push('含預設虎斑，請確認線條及透明度');
+  if(rules.widthMm>0&&rules.minMm>0){const thin=sts.reduce((n,s)=>n+(s.drawing||[]).filter(o=>o.tool==='brush'&&o.width*rules.widthMm/90<rules.minMm).length,0);if(thin)warnings.push(`${thin} 個畫筆操作可能過細（估算；未測量最終可見色塊）`)}
+  if(sts.some(s=>(s.drawing||[]).some(o=>o.tool==='shape')))warnings.push('有自由色塊，細碎區域需目視檢查');
+  return warnings;
+ }
+ function swatches(d,st){
+  return colorsFor(d,st).map(p=>{const m=resolved(p);return `<div class="sm44-color"><i class="sm44-swatch" style="background:${p.hex}"></i><span>${safe(p.name)}<small>${safe(p.hex)}</small></span><b>${safe(m.code||'待編號')}</b>${!m.match||!m.enabled||m.conflict?'<small class="sm44-warning">待核對</small>':''}</div>`}).join('');
+ }
+ function importOne(raw){
+  if(!validDesign(raw))throw Error('不支援的設計格式，請使用 V4 系列訂製 JSON');
+  const d={format:raw.format,version:4,revision:String(raw.revision||'4').slice(0,20),same:raw.same,left:clone(raw.left),right:clone(raw.same?raw.left:raw.right),geometry:normalizedGeom(raw.geometry),palette:normalizedPalette(raw.palette),title:String(raw.title||'未命名貓咪').slice(0,40),code:String(raw.code||'').slice(0,64)};
+  const signature=JSON.stringify([d.same,d.left,d.right,d.geometry,d.palette]);const duplicate=orders.find(o=>JSON.stringify([o.design.same,o.design.left,o.design.right,o.design.geometry,o.design.palette])===signature&&o.design.code===d.code);
+  if(duplicate){selected=duplicate.id;toast('這份設計已匯入，已開啟原製作單');go('orders');return}
+  const o={id:uid(),design:d,status:'待確認',ref:'',note:'',created:new Date().toISOString()};
+  if(replaceOrders([o,...orders])){selected=o.id;view='normal';side='both';step=-1;go('orders');toast('已建立客製製作單')}
+ }
+ async function fileImport(f){if(!f)return;try{if(f.size>64000000)throw Error('檔案過大');importOne(JSON.parse(await f.text()))}catch(e){toast('匯入失敗：'+e.message)}}
+ function render(){
+  if(tab==='home'){
+   panel.innerHTML=`<div class="sm44-stats">${statuses.map(s=>`<button data-status="${s}"><span>${s}</span><strong>${orders.filter(o=>o.status===s).length}</strong></button>`).join('')}</div><div class="sm44-card"><h3>今天要處理什麼？</h3><button class="action primary" data-sm-go="orders">接收顧客設計</button> <button class="quiet-btn" data-sm-go="palette">管理實體顏料</button><p class="sm44-muted">本機試用：製作單只儲存在這個瀏覽器，請定期備份。未連接購物車、付款、登入或雲端同步。</p></div>`;
+  }else if(tab==='orders'){
+   const o=current(), d=o?.design;
+   panel.innerHTML=`<div class="sm44-card sm44-no-print" id="sm44Drop"><h3>接收顧客的設計</h3><p>拖曳或選擇顧客下載的訂製 JSON。原始設計及色票會獨立保存。</p><input type="file" id="sm44Import" accept=".json,application/json"></div><div class="sm44-orders"><div class="sm44-card sm44-no-print"><h3>客製作品（${orders.length}）</h3><input type="search" id="sm44Find" placeholder="搜尋名稱、設計編號、訂單編號"><select id="sm44StatusFilter"><option value="">所有進度</option>${statuses.map(s=>`<option>${s}</option>`).join('')}</select><div id="sm44OrderList">${orders.map(x=>`<button class="sm44-order" data-sm-id="${safe(x.id)}" aria-pressed="${x.id===selected}"><b>${safe(x.design.title)}</b><small>${safe(x.design.code||'無設計編號')} · ${safe(x.ref||'未填訂單編號')}</small><small>${safe(x.status)}</small></button>`).join('')||'<p>尚無客製作品</p>'}</div></div><div class="sm44-card" id="sm44Sheet">${d?sheet(o):'<h3>選擇一份客製作品</h3><p>匯入設計後，即可查看顏料及製作視圖。</p>'}</div></div>`;
+  }else if(tab==='rules'){
+   panel.innerHTML=`<div class="sm44-card"><h3>手工製作規範</h3><p>先以後台柔性提醒為主，不改變顧客畫布。0 表示尚未設定，不任意限制創作。</p><label>耳環貓臉實際最大寬度（mm）<input id="sm44Width" type="number" min="0" max="100" step=".1" value="${Number(rules.widthMm)||0}"></label><label>建議最小線條寬度（mm）<input id="sm44Min" type="number" min="0" max="10" step=".1" value="${Number(rules.minMm)||0}"></label><label>單隻建議顏色數<input id="sm44Max" type="number" min="0" max="100" step="1" value="${Number(rules.maxColors)||0}"></label><label><input id="sm44Gradient" type="checkbox" ${rules.gradient?'checked':''}> 工藝可接受漸層（仍須人工確認）</label><p class="sm44-muted">線寬以貓臉約 90 SVG 單位換算；不代表精密實體量測。</p><button class="action primary" id="sm44SaveRules">儲存規範</button></div>`;
+  }else if(tab==='backup'){
+   panel.innerHTML='<div class="sm44-card"><h3>本機資料備份</h3><p>製作單、顏料、版型與規範儲存在此瀏覽器。請妥善保存備份；可能包含客製資料，不要公開分享。</p><button class="action primary" id="sm44Backup">下載完整工作室備份</button><p>單一作品也可在製作單內下載設計快照。完整備份還原目前尚未開放。</p><p class="sm44-muted">正式上線需受保護後台、伺服器顏料映射及資料庫；此頁不具真正權限隔離。</p></div>';
+  }
+ }
+ function sheet(o){
+  const d=o.design, st=side==='right'&&!d.same?d.right:d.left, union=[...new Map([...colorsFor(d,d.left),...colorsFor(d,d.same?d.left:d.right)].map(p=>[p.id,p])).values()];
+  if(!union.some(p=>p.id===target))target=union[0]?.id||'';
+  const p=union.find(p=>p.id===target), warning=report(d), max=(st.drawing||[]).length;
+  const showSides=side==='both'?['left','right']:[side];
+  return `<div class="sm44-sheethead"><div><small>麋鹿斑斑｜客製製作單</small><h2>${safe(d.title)}</h2><p>${safe(d.code||'無設計編號')} · ${d.same?'兩隻相同':'左右不同'}</p></div><b>${safe(o.status)}</b></div><div class="sm44-no-print sm44-toolbar">${[['normal','成品'],['flat','平面'],['color','分色'],['grid','格線']].map(([id,n])=>`<button data-sm-view="${id}" aria-pressed="${view===id}">${n}</button>`).join('')}</div><div class="sm44-no-print sm44-toolbar">${[['both','雙耳'],['left','左耳'],['right','右耳']].map(([id,n])=>`<button data-sm-side="${id}" aria-pressed="${side===id}">${n}</button>`).join('')}</div>${view==='color'?`<label>顯示指定顏料 <select id="sm44Target">${union.map(c=>`<option value="${safe(c.id)}" ${c.id===target?'selected':''}>${safe(c.name)} / ${safe(resolved(c).code||'待編號')}</option>`).join('')}</select></label><p class="sm44-muted">分色依畫面色碼辨識，保留覆蓋及擦除；相同色碼會一起顯示，暈染僅供參考。</p>`:''}${side!=='both'?`<label class="sm44-no-print">手繪順序參考：<span>${step<0?max:Math.min(step,max)} / ${max}</span><input type="range" id="sm44Step" min="0" max="${max}" value="${step<0?max:Math.min(step,max)}"></label>`:''}<div class="sm44-art">${showSides.map(s=>`<figure>${art(d,s,view,p?.hex,side==='both'?-1:step)}<figcaption>${s==='left'?'左耳環':'右耳環'}</figcaption></figure>`).join('')}</div><div class="sm44-two"><div><h3>左耳顏料</h3>${swatches(d,d.left)}</div><div><h3>右耳顏料</h3>${swatches(d,d.same?d.left:d.right)}</div></div><p class="sm44-muted">顏料清單含可能被覆蓋的底層色。順序回放是顧客繪製順序，不是實體上色工序。</p><h3>製作前確認</h3>${warning.length?`<ul class="sm44-warning">${warning.map(w=>`<li>${safe(w)}</li>`).join('')}</ul>`:'<p>未發現已設定規範的提醒；仍須人工確認。</p>'}<label>訂單參考編號<input id="sm44Ref" maxlength="80" value="${safe(o.ref)}"></label><label>製作備註<textarea id="sm44Note" maxlength="3000" rows="4">${safe(o.note)}</textarea></label><label class="sm44-no-print">製作進度<select id="sm44Status">${statuses.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></label><div class="sm44-no-print sm44-toolbar"><button id="sm44Save" class="action primary">儲存製作單</button><button id="sm44Print" class="quiet-btn">列印製作單</button><button id="sm44Download" class="quiet-btn">下載設計快照</button><button id="sm44Delete" class="quiet-btn danger">刪除製作單</button></div>`;
+ }
+ function redrawSheet(){const o=current();if(!o)return;const el=$('sm44Sheet');const values=['sm44Ref','sm44Note','sm44Status'].map(id=>$(id)?.value);el.innerHTML=sheet(o);['sm44Ref','sm44Note','sm44Status'].forEach((id,i)=>{if(values[i]!=null)$(id).value=values[i]})}
+ function saveSheet(){const o=current();if(!o)return false;const next={...o,ref:$('sm44Ref').value.trim(),note:$('sm44Note').value,status:$('sm44Status').value};if(!replaceOrders(orders.map(x=>x.id===o.id?next:x)))return false;return true}
+ panel.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.smGo){go(b.dataset.smGo);return}
+  if(b.dataset.status){go('orders');$('sm44StatusFilter').value=b.dataset.status;filterOrders();return}
+  if(b.dataset.smId){selected=b.dataset.smId;step=-1;view='normal';side='both';go('orders');return}
+  if(b.dataset.smView){view=b.dataset.smView;redrawSheet();return}
+  if(b.dataset.smSide){side=b.dataset.smSide;step=-1;redrawSheet();return}
+  if(b.id==='sm44Save'){if(saveSheet()){render();toast('製作單已儲存')}return}
+  if(b.id==='sm44Print'){if(!saveSheet())return;const old=[view,side,step];view='normal';side='both';step=-1;redrawSheet();document.body.classList.add('sm44-print');try{window.print()}finally{document.body.classList.remove('sm44-print');[view,side,step]=old;redrawSheet()}return}
+  if(b.id==='sm44Download'){const o=current();if(o)json(o.design,'cat-design.json');return}
+  if(b.id==='sm44Delete'&&confirm('刪除這張本機製作單？')){if(replaceOrders(orders.filter(x=>x.id!==selected))){selected='';render()}return}
+  if(b.id==='sm44SaveRules'){const a=Number($('sm44Width').value),m=Number($('sm44Min').value),c=Number($('sm44Max').value);if(!(a>=0&&a<=100&&m>=0&&m<=10&&Number.isInteger(c)&&c>=0&&c<=100)){toast('請確認規範數值');return}const next={widthMm:a,minMm:m,maxColors:c,gradient:$('sm44Gradient').checked};if(store(rulesKey,next)){rules=next;toast('規範已儲存')}return}
+  if(b.id==='sm44Backup')json({format:'MILUBANBAN-STUDIO-BACKUP-V44',exportedAt:new Date().toISOString(),orders,palette,meta,rules,geometry:{published:publishedGeom,draft:draftGeom,templates}},'milubanban-studio-backup.json');
+ });
+ function filterOrders(){const q=$('sm44Find')?.value.toLowerCase()||'',s=$('sm44StatusFilter')?.value||'';for(const b of panel.querySelectorAll('[data-sm-id]')){const o=orders.find(x=>x.id===b.dataset.smId);b.hidden=!!((s&&o.status!==s)||(q&&!b.textContent.toLowerCase().includes(q)))}}
+ panel.addEventListener('input',e=>{if(e.target.id==='sm44Find')filterOrders()});
+ panel.addEventListener('change',e=>{const t=e.target;if(t.id==='sm44Import')fileImport(t.files[0]);if(t.id==='sm44StatusFilter')filterOrders();if(t.id==='sm44Target'){target=t.value;redrawSheet()}if(t.id==='sm44Step'){step=Number(t.value);redrawSheet()}});
+ panel.addEventListener('dragover',e=>{if(e.target.closest('#sm44Drop'))e.preventDefault()});
+ panel.addEventListener('drop',e=>{if(e.target.closest('#sm44Drop')){e.preventDefault();fileImport(e.dataTransfer.files[0])}});
+ const oldEnter=enterAdmin;
+ enterAdmin=function(yes){oldEnter(yes);if(yes)go('home')};
+ // Keep public customer page clean; query entry is convenience, not authentication.
+ const local=location.protocol==='file:', explicit=new URLSearchParams(location.search).get('studio')==='1';
+ $('adminToggle').hidden=!(local||explicit);
+ go('home');
+ if(explicit)enterAdmin(true);
+}
+studioManager44();
+function lab45(){
+ const body=document.body,brand=document.querySelector('.site-header .brand');
+ const originalBrand=brand.innerHTML;
+ const newBrand='MILU BANBAN<span class="lab45-wordmark">CAT LAB<span class="lab45-spark" aria-hidden="true">✦</span></span><small>麋鹿斑斑 · 貓咪 DIY 實驗室</small>';
+ const tag=document.createElement('span');tag.className='lab45-tag';tag.textContent='MAKE IT YOURS';document.querySelector('.header-right').prepend(tag);
+ function theme(){body.classList.toggle('lab45',!adminMode);brand.innerHTML=adminMode?originalBrand:newBrand;tag.hidden=adminMode;}
+ const oldEnter=enterAdmin;enterAdmin=function(yes){oldEnter(yes);theme()};
+ const oldShow=show42;show42=function(which){oldShow(which);const finish=$('v42Finish');finish.classList.remove('lab45-reveal');if(which==='finish')requestAnimationFrame(()=>{if(screen42==='finish')finish.classList.add('lab45-reveal')})};
+ $('v42Editor').querySelector('.v42-editor-head h2').textContent='我的貓咪';
+ $('v42Back').textContent='♡ 收藏冊';$('v42DoneTop').textContent='完成作品';
+ $('v42Mode').querySelector('[data-focus=same]').textContent='一起畫';
+ $('v42Base').textContent='換個底色';$('v42Random').textContent='✦ 給我靈感';$('v42Blank').textContent='重新開始';
+ $('v42ToolGroup').querySelector('h3').textContent='挑個喜歡的顏色';
+ const icons={brush:'<path d="m14 6 4 4M5 19c3 0 4-1 4-3s-2-3-4-2c-1 1-1 3-3 4 1 1 2 1 3 1Z"/><path d="M9 14 17 4a2 2 0 0 1 3 3l-9 9"/>',shape:'<path d="M5 7 13 3l7 6-2 8-9 3-6-7 2-6Z" stroke-dasharray="3 2"/><path d="M9 13h6m-3-3v6"/>',erase:'<path d="m4 13 9-9a2 2 0 0 1 3 0l4 4a2 2 0 0 1 0 3l-8 8H9l-5-5a1 1 0 0 1 0-1Z"/><path d="m8 9 8 8M12 19h9"/>'};
+ for(const b of $('drawTool').querySelectorAll('[data-tool]')){const k=b.dataset.tool,label=k==='shape'?'色塊':b.textContent;b.innerHTML='<svg class="lab45-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[k]+'</svg><span>'+esc(label)+'</span>';b.setAttribute('aria-label',label)}
+ const share=$('v42Share'),newShare=share.cloneNode(true);share.replaceWith(newShare);newShare.textContent='分享／下載作品卡';
+ const caption=document.createElement('p');caption.className='lab45-caption';caption.textContent='專屬作品卡｜適合分享到限時動態';newShare.parentElement.after(caption);
+ function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill()}
+ function textFit(ctx,value,maxWidth,maxSize,minSize,weight='700'){let size=maxSize;do{ctx.font=weight+' '+size+'px system-ui, "Noto Sans TC", sans-serif';if(ctx.measureText(value).width<=maxWidth||size<=minSize)break;size-=2;}while(size>=minSize);let output=value;if(ctx.measureText(output).width>maxWidth){let chars=Array.from(output);while(chars.length&&ctx.measureText(chars.join('')+'…').width>maxWidth)chars.pop();output=chars.join('')+'…';}return output}
+ async function makeCard(){
+  const svg=$('earringSvg').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('width','1040');svg.setAttribute('height','640');
+  const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));
+  try{
+   const img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url});
+   const c=document.createElement('canvas');c.width=1080;c.height=1920;const ctx=c.getContext('2d');if(!ctx)throw Error('無法建立作品卡');
+   ctx.fillStyle='#F9DF8D';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#303D36';ctx.textAlign='left';ctx.font='700 32px system-ui,sans-serif';ctx.fillText('MILU BANBAN  /  CAT LAB',80,150);
+   ctx.font='850 103px system-ui,sans-serif';ctx.fillText('LOOK WHAT',75,315);ctx.fillText('I MADE!',75,425);
+   ctx.font='500 37px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('我自己設計的貓咪耳環。',80,520);
+   ctx.fillStyle='#C1E5D7';round(ctx,56,623,968,980,54);
+   ctx.fillStyle='#FFFDF5';round(ctx,80,647,920,932,42);
+   ctx.save();ctx.beginPath();ctx.rect(104,746,872,537);ctx.clip();ctx.drawImage(img,104,746,872,537);ctx.restore();
+   ctx.fillStyle='#303D36';ctx.textAlign='center';const title=$('v42Name').value.trim()||'我的貓咪';const line=textFit(ctx,title,830,63,26);ctx.fillText(line,540,1400);
+   ctx.font='600 24px system-ui,sans-serif';ctx.fillStyle='#607368';ctx.fillText('DESIGNED BY ME',540,1462);
+   ctx.textAlign='left';ctx.fillStyle='#303D36';ctx.font='700 42px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('你也來畫一隻吧！',80,1735);
+   ctx.font='500 30px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('麋鹿斑斑 · 貓咪 DIY 實驗室',80,1795);
+   ctx.fillStyle='#F3C5CA';round(ctx,884,1680,112,112,28);ctx.strokeStyle='#79565E';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(940,1755);ctx.bezierCurveTo(902,1727,919,1704,940,1725);ctx.bezierCurveTo(961,1704,978,1727,940,1755);ctx.stroke();
+   return await new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('作品卡輸出失敗')),'image/png'));
+  }finally{URL.revokeObjectURL(url)}
+ }
+ newShare.addEventListener('click',async()=>{if(newShare.disabled)return;newShare.disabled=true;newShare.textContent='製作作品卡…';try{const blob=await makeCard();const name=getDesignCode()+'_CAT-LAB_作品卡.png';const file=new File([blob],name,{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:$('v42Name').value.trim()||'我的貓咪耳環'});return}catch(e){if(e.name==='AbortError')return;}}downloadBlob(blob,name)}catch(e){toast('無法製作分享卡，請重新嘗試');}finally{newShare.disabled=false;newShare.textContent='分享／下載作品卡'}});
+ theme();
+}
+lab45();
 })();
 </script>
 </body>
