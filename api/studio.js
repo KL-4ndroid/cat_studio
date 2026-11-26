@@ -54,7 +54,7 @@ function cleanDesign(d,version){
  if(canonical(submitted)!==canonical(p)||canonical(d.geometry)!==canonical(version.geometry))fail(409,'作品使用不同色票或版型，請下載設計檔另行確認');
  const left=cleanState(d.left,ids),right=d.same?left:cleanState(d.right,ids);
  // Ignore client-provided codes, productionColors, specification, receipt and status.
- return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'5.0',same:d.same,left,right,geometry:version.geometry,palette:version.palette.filter(x=>x.enabled!==false),title:str(d.title,40)?d.title:'未命名貓咪',code:str(d.code,64)?d.code:''};
+ return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'5.0.1',same:d.same,left,right,geometry:version.geometry,palette:version.palette.filter(x=>x.enabled!==false),title:str(d.title,40)?d.title:'未命名貓咪',code:str(d.code,64)?d.code:''};
 }
 async function activeVersion(c){
  const rows=await call(c,'/rest/v1/studio_config?singleton=eq.true&select=active_version');
