@@ -8,7 +8,7 @@ const palette=[{id:'cream',name:'白',hex:'#F6EFE0',code:'TEST01',enabled:true},
 const zones=Object.fromEntries(['leftEar','rightEar','leftForehead','rightForehead','centerForehead','leftCheek','rightCheek','muzzle'].map(k=>[k,0]));
 const blank={mode:1,cols:['cream','cream','cream'],zones,join:'meet',finish:'solid',muzzle:0,stripe:0,drawing:[]};
 const design={format:'MILUBANBAN-CAT-DESIGN-V4',version:4,same:true,left:blank,right:blank,palette,geometry};
-const fine={...blank,drawing:[{tool:'brush',color:'blue',width:1,points:[[40,45],[50,55]]},{tool:'shape',color:'dark',width:1,points:[[40,40],[41,40],[41,42]]},{tool:'erase',color:'cream',width:4,points:[[40,45],[50,55]]}]};
+const fine={...blank,drawing:[{tool:'brush',color:'blue',width:2,points:[[40,45],[50,55]]},{tool:'shape',color:'dark',width:2,points:[[40,40],[41,40],[41,42]]},{tool:'erase',color:'cream',width:4,points:[[40,45],[50,55]]}]};
 test('plain pair has no obvious preliminary warning',()=>{const r=check.analyze(design);assert.equal(r.review,false);assert.equal(r.ears[0].colors.length,1)});
 test('asymmetric thin strokes and small shapes flagged; eraser not counted as paint',()=>{const r=check.analyze({...design,same:false,right:fine});assert.equal(r.ears[0].flags.length,0);assert.equal(r.ears[1].thin,1);assert.equal(r.ears[1].small,1);assert.equal(r.ears[1].erased,1);assert.equal(r.ears[1].strokes,2);assert.equal(r.review,true)});
 test('automatic tabby pigment included and soft gradient reviewed',()=>{const left={...blank,mode:2,cols:['cream','blue','cream'],finish:'soft',stripe:1,muzzle:1};const r=check.analyze({...design,left});assert.ok(r.ears[0].gradient);assert.ok(r.ears[0].colors.some(p=>p.id==='dark'));assert.ok(r.ears[0].flags.includes('虎斑細節需確認'))});
