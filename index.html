@@ -1201,13 +1201,15 @@ function catUX462(){
 const catUX=catUX462();
 mobileCanvas46();
 function cloudCustomer50(){
- const panel=$('v42OrderPanel'), editor=$('v42Editor');let version=null,pending=null,busy=false;
+ const panel=$('v42OrderPanel'), editor=$('v42Editor');let version=null,pending=null,busy=false,submittedSig=null,receipt50='';
  const status=document.createElement('p');status.id='cloud50Status';status.setAttribute('role','status');status.textContent='正在讀取工作室發布色票…';
  const bar=document.createElement('div');bar.className='cloud50-bar';bar.setAttribute('role','status');bar.textContent='正在讀取工作室色票…';editor.before(bar);
  const submit=document.createElement('button');submit.id='cloud50Submit';submit.type='button';submit.className='action primary';submit.textContent='送出客製設計';submit.disabled=true;
  const actions=document.createElement('div');actions.className='v42-actionbar';actions.append(submit);panel.prepend(status,actions);
  const msg=panel.querySelectorAll('p');if(msg[1])msg[1].textContent='也可以下載作品圖及設計檔，與工作室聯絡。';if(msg[2])msg[2].textContent='送出設計不代表完成訂購或付款，仍須由工作室確認。';
  function publicDesign(){const d=fullDesign();return {format:d.format,version:d.version,revision:'5.0',same:d.same,left:d.left,right:d.right,geometry:d.geometry,palette:d.palette.map(p=>({id:p.id,name:p.name,hex:p.hex,enabled:p.enabled!==false})),title:d.title,code:d.code}}
+ function syncSubmit50(){if(!version||busy)return;const sig=JSON.stringify({version,design:publicDesign()});const done=sig===submittedSig;submit.disabled=done;submit.textContent=done?'已送出':'送出客製設計';status.textContent=done?'已收到作品！收件編號：'+receipt50+'。請保留編號，等待工作室確認。':'送出作品後會收到專屬收件編號。'}
+ $('v42Order').addEventListener('click',syncSubmit50);$('v42Name').addEventListener('input',()=>{if(!panel.hidden)syncSubmit50()});
  function disable(msg){version=null;editor.inert=false;submit.disabled=true;bar.textContent=msg;status.textContent='目前可下載作品及設計檔；尚不能線上送出。'}
  async function boot(){
   editor.inert=true;
@@ -1218,10 +1220,10 @@ function cloudCustomer50(){
  submit.addEventListener('click',async()=>{
   if(!version||busy)return;if(!await catUX.ask('送出這副貓咪？','作品將交給麋鹿斑斑確認製作可行性，尚未成立付款訂單。','送出設計',false,'繼續修改'))return;
   const design=publicDesign(),sig=JSON.stringify({version,design});
-  if(!pending||pending.sig!==sig)pending={sig,requestId:crypto.randomUUID()};
+  if(!pending||pending.sig!==sig){if(!globalThis.crypto?.randomUUID){status.textContent='此裝置不支援安全送出，請下載設計檔。';return}pending={sig,requestId:crypto.randomUUID()}}
   busy=true;submit.disabled=true;submit.textContent='正在送出…';try{
    const res=await fetch('/api/studio?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({version,requestId:pending.requestId,design}),signal:AbortSignal.timeout(16000)});const data=await res.json();if(!res.ok)throw Error(data.error||'送出未完成');
-   status.textContent='已收到作品！收件編號：'+data.receipt+'。請保留編號，等待工作室確認。';submit.textContent='已送出';toast('作品已送出');
+   submittedSig=sig;receipt50=data.receipt;status.textContent='已收到作品！收件編號：'+data.receipt+'。請保留編號，等待工作室確認。';submit.textContent='已送出';toast('作品已送出');
   }catch(err){status.textContent=err.message+'。可重試，或下載作品檔聯絡工作室。';submit.textContent='重試送出';submit.disabled=false}finally{busy=false}
  });
  boot();
