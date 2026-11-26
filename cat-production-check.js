@@ -11,6 +11,16 @@ function analyze(design) {
       if(key==='centerForehead'&&st.join!=='bridge'||key==='muzzle'&&!st.muzzle||key.endsWith('Cheek')&&st.finish==='soft')continue;
       ids.add(st.cols[Math.max(0,Math.min(Number(value)||0,st.mode-1))]);
     }
+    if(st.stripe){
+      const id=st.cols[Math.min(st.zones?.[st.join==='bridge'?'centerForehead':'leftForehead']??0,st.mode-1)];
+      const main=palette.get(id),rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+      if(main&&/^#[0-9a-f]{6}$/i.test(main.hex)){
+        const target=rgb(main.hex).map((v,i)=>Math.round(v*.35+rgb('#2b211c')[i]*.65));
+        const candidates=[...palette.values()].filter(p=>p.enabled!==false&&/^#[0-9a-f]{6}$/i.test(p.hex));
+        const dist=p=>rgb(p.hex).reduce((t,v,i)=>t+(v-target[i])**2,0);
+        const nearest=candidates.sort((a,b)=>dist(a)-dist(b))[0];if(nearest)ids.add(nearest.id);
+      }
+    }
     let strokes=0,thin=0,small=0,erased=0;
     for(const op of st.drawing||[]){
       if(op.tool==='erase'){erased++;continue;}
