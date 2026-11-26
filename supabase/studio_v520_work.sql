@@ -83,24 +83,24 @@ begin
  if p_day is null then p_day:=(t at time zone 'Asia/Taipei')::date; end if;
  day_start:=p_day::timestamp at time zone 'Asia/Taipei'; day_end:=(p_day+1)::timestamp at time zone 'Asia/Taipei';
  select jsonb_build_object('id',s.id,'orderId',s.order_id,'receipt',o.receipt,'phase',s.phase,'state',s.state,'revision',s.revision,
- 'seconds',coalesce((select sum(extract(epoch from (coalesce(i.ended_at,t)-i.started_at))) from public.studio_work_intervals i where i.session_id=s.id),0))
+ 'seconds',coalesce((select sum(greatest(0,extract(epoch from (least(coalesce(i.ended_at,t),t)-i.started_at)))) from public.studio_work_intervals i where i.session_id=s.id),0))
  into active_work from public.studio_work_sessions s join public.studio_orders o on o.id=s.order_id where s.worker_id=p_actor and s.state<>'finished';
  select coalesce(jsonb_agg(to_jsonb(x) order by x.phase),'[]'::jsonb),coalesce(sum(x.seconds),0),coalesce(sum(x.running),0)::integer into phases,total_seconds,active_count
- from (select s.phase,coalesce(sum(extract(epoch from (coalesce(i.ended_at,t)-i.started_at))),0) as seconds,count(*) filter(where i.ended_at is null) as running
+ from (select s.phase,coalesce(sum(greatest(0,extract(epoch from (least(coalesce(i.ended_at,t),t)-i.started_at)))),0) as seconds,count(*) filter(where i.ended_at is null) as running
  from public.studio_work_sessions s join public.studio_work_intervals i on i.session_id=s.id where s.order_id=p_order group by s.phase) x;
- select jsonb_build_object('seconds',coalesce(sum(extract(epoch from (least(coalesce(i.ended_at,t),day_end)-greatest(i.started_at,day_start)))),0),'orders',count(distinct s.order_id),'sessions',count(distinct s.id))
+ select jsonb_build_object('seconds',coalesce(sum(extract(epoch from (least(coalesce(i.ended_at,t),t,day_end)-greatest(i.started_at,day_start)))),0),'orders',count(distinct s.order_id),'sessions',count(distinct s.id))
  into own_daily from public.studio_work_sessions s join public.studio_work_intervals i on i.session_id=s.id
- where s.worker_id=p_actor and i.started_at<day_end and coalesce(i.ended_at,t)>day_start and coalesce(i.ended_at,t)>i.started_at and i.started_at<t;
+ where s.worker_id=p_actor and i.started_at<day_end and least(coalesce(i.ended_at,t),t)>day_start and least(coalesce(i.ended_at,t),t)>i.started_at and i.started_at<t;
  if member_role='owner' then
-  select jsonb_build_object('seconds',coalesce(sum(extract(epoch from (least(coalesce(i.ended_at,t),day_end)-greatest(i.started_at,day_start)))),0),'orders',count(distinct s.order_id),'workers',count(distinct s.worker_id))
+  select jsonb_build_object('seconds',coalesce(sum(extract(epoch from (least(coalesce(i.ended_at,t),t,day_end)-greatest(i.started_at,day_start)))),0),'orders',count(distinct s.order_id),'workers',count(distinct s.worker_id))
   into daily from public.studio_work_sessions s join public.studio_work_intervals i on i.session_id=s.id
-  where i.started_at<day_end and coalesce(i.ended_at,t)>day_start and coalesce(i.ended_at,t)>i.started_at and i.started_at<t;
+  where i.started_at<day_end and least(coalesce(i.ended_at,t),t)>day_start and least(coalesce(i.ended_at,t),t)>i.started_at and i.started_at<t;
   select coalesce(jsonb_agg(to_jsonb(w) order by w.seconds desc,w.worker_key),'[]'::jsonb) into workers
   from (select right(s.worker_id::text,8) as worker_key,(s.worker_id=p_actor) as is_me,
-   sum(extract(epoch from (least(coalesce(i.ended_at,t),day_end)-greatest(i.started_at,day_start)))) as seconds,
+   sum(extract(epoch from (least(coalesce(i.ended_at,t),t,day_end)-greatest(i.started_at,day_start)))) as seconds,
    count(distinct s.order_id) as orders,count(distinct s.id) as sessions
    from public.studio_work_sessions s join public.studio_work_intervals i on i.session_id=s.id
-   where i.started_at<day_end and coalesce(i.ended_at,t)>day_start and coalesce(i.ended_at,t)>i.started_at and i.started_at<t
+   where i.started_at<day_end and least(coalesce(i.ended_at,t),t)>day_start and least(coalesce(i.ended_at,t),t)>i.started_at and i.started_at<t
    group by s.worker_id) w;
  end if;
  return jsonb_build_object('configured',true,'serverNow',t,'day',p_day,'active',active_work,'phases',phases,'totalSeconds',total_seconds,'runningCount',active_count,'ownDaily',own_daily,'teamDaily',daily,'workers',workers);
