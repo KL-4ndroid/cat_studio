@@ -1,0 +1,15 @@
+// Dependency-free regression tests: node --test tests/cloud-render.test.cjs
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const renderer=require('../studio-render.js');
+const apiSource=fs.readFileSync(path.join(__dirname,'../api/studio.js'),'utf8');
+const helpers=new Function('require','module',apiSource+'\nreturn {validatePalette,geometry,cleanDesign,pub};')(require,{exports:{}});
+const ranges=JSON.parse(apiSource.match(/const GEOMETRY_RANGES=(.*);/)[1]),g={};
+for(const [k,[a,b]] of Object.entries(ranges)){const p=k.split('.'),v=(a+b)/2;if(p.length===1)g[p[0]]=v;else (g[p[0]]??={})[p[1]]=v}
+const palette=[{id:'cream',name:'測試白',hex:'#F6EFE0',code:'TEST01',enabled:true},{id:'blue',name:'測試藍',hex:'#889AA8',code:'TEST02',enabled:true}];
+const zones=Object.fromEntries(['leftEar','rightEar','leftForehead','rightForehead','centerForehead','leftCheek','rightCheek','muzzle'].map(k=>[k,1]));
+const left={mode:2,cols:['cream','blue','cream'],zones,join:'bridge',finish:'soft',muzzle:1,stripe:1,drawing:[{tool:'brush',color:'blue',width:4,points:[[40,45],[50,55],[60,60]]},{tool:'erase',color:'cream',width:4,points:[[50,50],[60,60]]}]};
+const design={format:'MILUBANBAN-CAT-DESIGN-V4',version:4,geometry:g,palette,left,right:{...left,finish:'solid',drawing:[]},same:false};
+test('original paint and erase mask, replay, separate ears',()=>{const r=renderer.create(design);assert.match(r.raw('left'),/mask="url\(#caterase1\)"/);assert.doesNotMatch(r.raw('left',1),/mask="url\(#caterase1\)"/);assert.notEqual(r.raw('left'),r.raw('right'));assert.match(r.raw('left'),/filter="url\(#softMark\)"/);assert.doesNotMatch(r.raw('right'),/filter="url\(#softMark\)"/);assert.match(r.raw('left'),/#889AA8/)});
+test('reject unsafe color, geometry and stroke',()=>{assert.throws(()=>renderer.create({...design,palette:[{...palette[0],hex:'" onload="x'}]}));assert.throws(()=>renderer.create({...design,geometry:{...g,softness:999}}));assert.throws(()=>renderer.create({...design,left:{...left,drawing:[{tool:'brush',color:'blue',width:4,points:[[1,'<script>']]}]}}))});
+test('public palette excludes private codes, authoritative mapping',()=>{const p=helpers.validatePalette([...palette,{id:'off',name:'停用',hex:'#FFFFFF',code:'OFF',enabled:false}]);const pub=helpers.pub(p);assert.equal(pub.length,2);assert.ok(pub.every(x=>!('code'in x)));const d=helpers.cleanDesign({...design,palette:pub.map(x=>({...x,code:'FORGED'})),productionColors:{left:['fake']}},{palette:p,geometry:g});assert.equal(d.palette[0].code,'TEST01');assert.ok(!('productionColors'in d))});
+test('reject missing/duplicate code and changed geometry',()=>{assert.throws(()=>helpers.validatePalette([{...palette[0],code:''}]));assert.throws(()=>helpers.validatePalette([palette[0],{...palette[1],code:palette[0].code}]));assert.throws(()=>helpers.geometry({...g,softness:999}));assert.throws(()=>helpers.cleanDesign({...design,geometry:{...g,softness:999}},{palette,geometry:g}))});
