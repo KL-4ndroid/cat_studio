@@ -47,5 +47,31 @@ function analyze(design) {
   const review=ears.some(e=>e.flags.length);
   return {version:'V1',level:detail?'細節需覆核':review?'需確認':'未發現明顯提醒',review,ears,limits,notice:'依設計筆畫與候選色初步分析，可能包含被覆蓋或擦除的筆畫，非實際製作保證。最終由工作室確認。'};
 }
-const api={analyze};root.CatProductionCheck=api;if(typeof module!=='undefined')module.exports=api;
+function measureVisible(rgba,mask,width,height,palette,mmPerPixel){
+  const n=width*height;if(!Number.isInteger(width)||!Number.isInteger(height)||width<1||height<1||n>300000||rgba.length!==n*4||mask.length!==n||!(mmPerPixel>0))throw Error('無效的圖案取樣');
+  const unique=new Map();for(const p of palette){if(/^#[0-9a-f]{6}$/i.test(p.hex||'')){const hex=p.hex.toUpperCase();if(!unique.has(hex))unique.set(hex,{hex,names:[],rgb:[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16))});unique.get(hex).names.push(p.name||p.id||hex);}}
+  const colors=[...unique.values()];if(!colors.length||colors.length>100)throw Error('無有效色票');
+  const labels=new Int16Array(n);labels.fill(-2);const counts=new Uint32Array(colors.length),cache=new Map();let total=0,unknown=0;
+  for(let i=0;i<n;i++){if(mask[i]<250)continue;total++;const j=i*4,key=(rgba[j]<<16)|(rgba[j+1]<<8)|rgba[j+2];let label=cache.get(key);if(label===undefined){let best=Infinity,chosen=-1,tie=false;for(let k=0;k<colors.length;k++){const c=colors[k].rgb,d=(rgba[j]-c[0])**2+(rgba[j+1]-c[1])**2+(rgba[j+2]-c[2])**2;if(d<best){best=d;chosen=k;tie=false}else if(d===best)tie=true}label=best<=144&&!tie?chosen:-1;if(cache.size<8192)cache.set(key,label)}labels[i]=label;if(label<0)unknown++;else counts[label]++;}
+  if(!total)throw Error('找不到貓咪頭範圍');
+  const seen=new Uint8Array(n),queue=new Int32Array(n);let tiny=0,regions=0,boundary=0;const tinyArea=Math.PI*(.55/2)**2,minPixels=4;
+  for(let i=0;i<n;i++){const label=labels[i];if(label<0)continue;const x=i%width;if(x+1<width&&labels[i+1]>=0&&labels[i+1]!==label)boundary++;if(i+width<n&&labels[i+width]>=0&&labels[i+width]!==label)boundary++;
+    if(seen[i])continue;let head=0,tail=1;queue[0]=i;seen[i]=1;
+    while(head<tail){const j=queue[head++],xj=j%width;for(const k of [xj>0?j-1:-1,xj+1<width?j+1:-1,j-width,j+width]){if(k<0||k>=n||seen[k]||labels[k]!==label)continue;seen[k]=1;queue[tail++]=k}}
+    if(tail>=minPixels){regions++;if(tail*mmPerPixel**2<tinyArea)tiny++}
+  }
+  return {coverage:(total-unknown)/total,colors:colors.map((p,i)=>({hex:p.hex,names:p.names,fraction:counts[i]/total,pixels:counts[i]})).filter(p=>p.pixels>=minPixels).sort((a,b)=>b.pixels-a.pixels),regions,tinyRegions:tiny,boundaryMm:boundary*mmPerPixel,unknownFraction:unknown/total};
+}
+async function analyzeArtwork(svg,palette){
+  // Sample the final composited artwork (including masks), not the brush history.
+  const doc=new DOMParser().parseFromString(svg,'image/svg+xml'),head=doc.querySelector('clipPath#textureHead path')?.getAttribute('d');
+  if(!head||doc.querySelector('parsererror'))throw Error('無法讀取設計輪廓');
+  const w=420,h=390,canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d',{willReadFrequently:true});if(!ctx)throw Error('無法取樣');
+  const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+  try{const img=new Image();await new Promise((ok,no)=>{img.onload=ok;img.onerror=no;img.src=url});ctx.drawImage(img,0,0,w,h);const rgba=ctx.getImageData(0,0,w,h).data;
+    ctx.clearRect(0,0,w,h);ctx.setTransform(3,0,0,3,0,0);ctx.fillStyle='#fff';ctx.fill(new Path2D(head));const raw=ctx.getImageData(0,0,w,h).data,mask=new Uint8Array(w*h);for(let i=0;i<mask.length;i++)mask[i]=raw[i*4+3];
+    return measureVisible(rgba,mask,w,h,palette,10.339/(115.96-27.04)/3);
+  }finally{URL.revokeObjectURL(url)}
+}
+const api={analyze,measureVisible,analyzeArtwork};root.CatProductionCheck=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
