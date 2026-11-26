@@ -23,6 +23,7 @@ async function call(c,path,{method='GET',token=c.service,apikey=c.service,body}=
   if(m.includes('request_conflict'))fail(409,'送出識別碼已使用，請重新整理後再送');
   if(m.includes('palette_changed'))fail(409,'色票已有新版，請重新開始或下載作品與工作室聯絡');
   if(m.includes('rate_limited'))fail(429,'送出次數過多，請稍後再試');
+  if(path.includes('/auth/v1/token')&&r.status===400)fail(401,'電子郵件或密碼不正確');
   if(r.status===401||r.status===403||m.includes('forbidden'))fail(403,'沒有此操作權限，請重新登入');
   fail(502,'資料庫操作未完成');
  }
@@ -34,9 +35,11 @@ function validatePalette(p){
  const ids=new Set(),codes=new Set();
  return p.map(x=>{if(!object(x)||!ID.test(x.id||'')||ids.has(x.id)||!str(x.name,30)||!x.name.trim()||!/^#[0-9a-f]{6}$/i.test(x.hex||'')||!str(x.code??'',40)||typeof (x.enabled??true)!=='boolean')fail(400,'顏料格式不符');const code=(x.code||'').trim();if(x.enabled!==false&&!code)fail(400,'每種啟用顏料都必須填入實體編號');if(code&&codes.has(code))fail(400,'顏料編號重複');ids.add(x.id);if(code)codes.add(code);return {id:x.id,name:x.name.trim(),hex:x.hex.toUpperCase(),code,enabled:x.enabled!==false}});
 }
+const GEOMETRY_RANGES={"top.x":[51,89],"top.y":[19,36],"mid.x":[52,89],"mid.y":[36,56],"bottom.x":[52,90],"bottom.y":[52,77],"seamWave":[0,13],"gapWidth":[0,23],"bridgeWidth":[3,24],"leftInner.x":[38,65],"leftInner.y":[49,83],"leftOuter.x":[18,39],"leftOuter.y":[50,86],"rightInner.x":[80,108],"rightInner.y":[49,83],"rightOuter.x":[106,124],"rightOuter.y":[50,86],"leftEarDepth":[30,67],"rightEarDepth":[30,67],"leftCheek.x":[25,54],"leftCheek.y":[73,105],"leftCheek.rx":[0,26],"leftCheek.ry":[0,26],"rightCheek.x":[87,116],"rightCheek.y":[73,105],"rightCheek.rx":[0,26],"rightCheek.ry":[0,26],"muzzle.x":[52,88],"muzzle.y":[64,95],"muzzle.rx":[8,47],"muzzle.ry":[8,38],"softness":[1,9],"stripeY":[26,42],"stripeLength":[4,18],"stripeSpread":[5,16],"stripeWidth":[1,5]};
 function geometry(v){
- let count=0;function visit(x,depth){if(++count>300||depth>6)fail(400,'版型資料過大');if(typeof x==='number'&&Number.isFinite(x)&&Math.abs(x)<=10000)return x;if(!object(x))fail(400,'版型須為數值物件');const out=Object.create(null);for(const [k,y] of Object.entries(x)){if(!/^[A-Za-z][A-Za-z0-9_]{0,40}$/.test(k)||['constructor','prototype','__proto__'].includes(k))fail(400,'版型欄位不符');out[k]=visit(y,depth+1)}return out}
- if(!object(v)||Object.keys(v).length===0)fail(400,'缺少版型');return visit(v,0);
+ if(!object(v))fail(400,'缺少版型');const out={};
+ for(const [path,[min,max]] of Object.entries(GEOMETRY_RANGES)){const parts=path.split('.');let x=v;for(const k of parts)x=x?.[k];if(!Number.isFinite(x)||x<min||x>max)fail(400,'版型參數不符');if(parts.length===1)out[parts[0]]=x;else (out[parts[0]]??={})[parts[1]]=x;}
+ if(canonical(v)!==canonical(out))fail(400,'版型欄位不符');return out;
 }
 function cleanState(st,ids){
  if(!object(st)||![1,2,3].includes(st.mode)||!Array.isArray(st.cols)||st.cols.length!==3||!st.cols.every(x=>ids.has(x))||!object(st.zones)||!ZONES.every(k=>[0,1,2].includes(st.zones[k]))||!['meet','bridge','gap'].includes(st.join)||!['solid','soft'].includes(st.finish)||![0,1,2].includes(st.muzzle)||![0,1,2].includes(st.stripe))fail(400,'耳環配色資料不符');
