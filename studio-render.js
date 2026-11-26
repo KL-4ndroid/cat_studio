@@ -35,7 +35,7 @@ const headPath='M38.08 15.71 Q38.67 15.62 39.33 15.67 Q40.00 15.71 41.58 16.71 Q
 function hexMix(a,b,t){const parse=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=parse(a),B=parse(b);return '#'+A.map((x,i)=>Math.round(x*(1-t)+B[i]*t).toString(16).padStart(2,'0')).join('');}
 function stripeColor(){const main=state.join==='bridge'?colorFor('centerForehead'):colorFor('leftForehead');return nearestColor(hexMix(main,'#2b211c',.65));}
 function drawingMarkup(id,ops){let art='',defs='';for(let i=0;i<(ops||[]).length;i++){const o=ops[i];const pts=o.points;const d=pts.map((p,j)=>`${j?'L':'M'}${p[0]} ${p[1]}`).join(' ')+(o.tool==='shape'&&pts.length>=3?' Z':pts.length===1?' l.01 0':'');const color=colorData(o.color).hex;const stroke=`<path d="${d}" fill="${o.tool==='shape'&&pts.length>=3?color:'none'}" stroke="${color}" stroke-width="${o.tool==='shape'?0.5:o.width}" stroke-linecap="round" stroke-linejoin="round"/>`;if(o.tool==='erase'){const mid=id+'erase'+i;defs+=`<mask id="${mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="140" height="130"><rect width="140" height="130" fill="white"/><path d="${d}" fill="none" stroke="black" stroke-width="${o.width}" stroke-linecap="round" stroke-linejoin="round"/></mask>`;art=`<g mask="url(#${mid})">${art}</g>`;}else art+=stroke;}return `<defs>${defs}</defs>${art}`;}
-function paintCat(id,x){
+function paintCat(id,x,{texture=false}={}){
  let forehead='';
  const g=gNow();
  const [left,right]=foreheadShapes(g,state.join);
@@ -61,6 +61,29 @@ function paintCat(id,x){
  if(state.stripe){
   const stroke=stripeColor().hex;
   stripes=`<g stroke="${stroke}" stroke-width="${state.stripe===1?g.stripeWidth*.75:g.stripeWidth}" fill="none" stroke-linecap="round" opacity="${state.stripe===1?.46:.73}">${tabbyShapes(g).map(d=>`<path d="${d}"/>`).join('')}</g>`;
+ }
+ const markings=`${forehead}
+    ${state.finish==='solid'?`${cheekShape(g,"left")}${cheekShape(g,"right")}`:''}
+    ${noseGradient}
+    ${stripes}
+    ${drawingMarkup(id,state.drawing)}`;
+ const noseDefinition=`<radialGradient id="${id}noseGrad" cx="50%" cy="46%" r="75%">
+    <stop offset="0%" stop-color="${colorFor('muzzle')}" stop-opacity=".86"/>
+    <stop offset="40%" stop-color="${colorFor('muzzle')}" stop-opacity=".58"/>
+    <stop offset="72%" stop-color="${colorFor('muzzle')}" stop-opacity=".14"/>
+    <stop offset="100%" stop-color="${colorFor('muzzle')}" stop-opacity="0"/>
+   </radialGradient>`;
+ if(texture){
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="840" height="780" viewBox="0 0 140 130">
+   <defs>
+    <clipPath id="textureHead"><path d="${headPath}"/></clipPath>
+    ${noseDefinition}
+    <filter id="softMark" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="${g.softness}"/></filter>
+    <filter id="noseSoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.5"/></filter>
+   </defs>
+   <rect width="140" height="130" fill="${colAt(0)}"/>
+   <g clip-path="url(#textureHead)">${markings}</g>
+  </svg>`;
  }
  return `<g transform="translate(${x} 55) scale(1.38)">
   <ellipse cx="72" cy="120" rx="48" ry="5" fill="#6d695f" opacity=".075"/>
@@ -116,7 +139,8 @@ function render(ear,mode='normal',color='',limit=-1,prefix='studio50'){
  }
  svg.innerHTML=svg.innerHTML.replace(/id="([^"]+)"/g,(_,k)=>'id="'+prefix+'-'+k+'"').replace(/url\(#([^)]+)\)/g,(_,k)=>'url(#'+prefix+'-'+k+')');return svg;
 }
-return {raw,render};
+function texture(ear){if(!['left','right'].includes(ear))throw Error('耳環方向不符');state=ear==='right'&&!design.same?design.right:design.left;return {svg:paintCat('face',0,{texture:true}),color:colAt(0)};}
+return {raw,render,texture};
 }
 root.StudioRender50={create};if(typeof module!=='undefined')module.exports={create};
 })(typeof globalThis!=='undefined'?globalThis:this);
