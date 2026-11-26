@@ -4,7 +4,7 @@ const vertexShader = `#version 300 es
 precision highp float;layout(location=0)in vec3 pos;layout(location=1)in vec3 norm;layout(location=2)in vec2 uv;uniform vec2 angle,aspect;uniform float zoom;out vec3 N,P,orig;out vec2 U;vec3 rot(vec3 a){float c=cos(angle.x),s=sin(angle.x);a=vec3(c*a.x+s*a.z,a.y,-s*a.x+c*a.z);c=cos(angle.y);s=sin(angle.y);return vec3(a.x,c*a.y-s*a.z,s*a.y+c*a.z);}void main(){P=rot(pos);N=rot(norm);U=uv;orig=pos;gl_Position=vec4(P.xy*aspect*zoom/8.0,-P.z/22.0,1.0);}`;
 const fragmentShader = `#version 300 es
 precision highp float;in vec3 N,P,orig;in vec2 U;uniform vec3 base;uniform bool hardware;uniform sampler2D artwork;out vec4 outColor;
-vec3 srgb(vec3 c){return pow(max(c,vec3(0.)),vec3(2.2));}float ellipse(vec2 p,vec2 c,vec2 r){return length((p-c)/r);}
+vec3 srgb(vec3 c){return pow(max(c,vec3(0.)),vec3(2.2));}
 float softbox(vec3 r,vec3 dir,float power){return pow(max(dot(r,normalize(dir)),0.),power);}
 const int noseEdgeCount=40;
 const vec3 nosePlanes[noseEdgeCount]=vec3[](
@@ -54,15 +54,57 @@ float noseCoverage(vec3 p){
  for(int i=0;i<noseEdgeCount;i++)margin=min(margin,dot(nosePlanes[i],vec3(p.xy,1.)));
  return smoothstep(-.008,.008,margin);
 }
+// Area-light reflections in reflection space make the clear coat read as a
+// polished surface. The soft edge is the light's penumbra, not an albedo map.
+float studioPanel(vec3 ray,vec3 direction,vec2 halfSize,float feather){
+ vec3 axis=normalize(direction);
+ vec3 right=normalize(cross(vec3(0.,1.,0.),axis));
+ vec3 up=cross(axis,right);
+ float depth=dot(ray,axis);
+ if(depth<=0.)return 0.;
+ vec2 uv=vec2(dot(ray,right),dot(ray,up))/depth;
+ vec2 edge=abs(uv)-halfSize+vec2(.05);
+ float distance=length(max(edge,0.))+min(max(edge.x,edge.y),0.)-.05;
+ return 1.-smoothstep(-feather,feather,distance);
+}
+
+vec3 glazedEnamel(vec3 albedo,vec3 normal,vec3 ray){
+ float key=max(dot(normal,normalize(vec3(-.5,.8,1.))),0.);
+ float fill=max(dot(normal,normalize(vec3(.9,-.1,.4))),0.);
+ float diffuse=.56+.30*key+.14*fill;
+ // Clear dielectric coat over the pigmented layer. Keep the colored body opaque.
+ float grazing=pow(1.-clamp(normal.z,0.,1.),5.);
+ float reflection=.04+.96*grazing;
+ float mainPanel=studioPanel(ray,vec3(-.71,.62,1.),vec2(.165,.40),.065);
+ float fillPanel=studioPanel(ray,vec3(.90,.22,.76),vec2(.095,.34),.052);
+ float bounce=softbox(ray,vec3(-.3,.95,1.),4.);
+ float coatLight=.43*mainPanel+.19*fillPanel+.075*bounce;
+ return albedo*diffuse*(1.-.22*reflection)
+   +vec3(coatLight*(1.+.40*grazing)+.065*grazing);
+}
+
+vec3 goldReflection(vec3 ray){
+ float highlights=softbox(ray,vec3(-.65,.55,1.),18.)
+   +.6*softbox(ray,vec3(.8,.4,.7),12.6);
+ float environment=.18+.62*softbox(ray,vec3(-.6,.8,1.),4.)
+   +.35*softbox(ray,vec3(.9,-.35,.5),6.)+.20*max(ray.y,0.);
+ return srgb(vec3(.82,.63,.30))*environment*1.55+vec3(highlights*.45);
+}
+
 void main(){
  vec3 n=normalize(N),v=vec3(0.,0.,1.);
  if(!gl_FrontFacing)n=-n;
  vec3 r=reflect(-v,n);
  float m=hardware?1.:noseCoverage(orig);
- float rr=mix(.26,.20,m);
- vec3 paint=hardware?base:mix(base,texture(artwork,U).rgb,smoothstep(.62,1.18,orig.z));
- vec3 col=mix(paint,vec3(.82,.63,.30),m);
- vec3 albedo=srgb(col);float diff=.52+.35*max(dot(n,normalize(vec3(-.5,.8,1.))),0.)+.13*max(dot(n,normalize(vec3(.9,-.1,.4))),0.);float power=m>.5?18.:mix(105.,15.,rr);float h=softbox(r,vec3(-.65,.55,1.),power)+.6*softbox(r,vec3(.8,.4,.7),power*.7);float rim=pow(1.-max(dot(n,v),0.),3.);vec3 env=vec3(.18)+.62*softbox(r,vec3(-.6,.8,1.),4.)+.35*softbox(r,vec3(.9,-.35,.5),6.)+.20*max(r.y,0.);vec3 rgb=mix(albedo*diff+vec3(h*.34+rim*.09),albedo*env*1.55+vec3(h*.45),m);outColor=vec4(pow(clamp(rgb,0.,1.),vec3(1./2.2)),1.);}`;
+ if(hardware||m>=1.){
+  outColor=vec4(pow(clamp(goldReflection(r),0.,1.),vec3(1./2.2)),1.);
+  return;
+ }
+ vec3 paint=mix(base,texture(artwork,U).rgb,smoothstep(.62,1.18,orig.z));
+ vec3 rgb=glazedEnamel(srgb(paint),n,r);
+ if(m>0.)rgb=mix(rgb,goldReflection(r),m);
+ outColor=vec4(pow(clamp(rgb,0.,1.),vec3(1./2.2)),1.);
+}`;
 
 let modelRequest;
 function loadModel() {
