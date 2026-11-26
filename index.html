@@ -1199,24 +1199,29 @@ function lab45(){
  const oldShow=show42;show42=function(which){oldShow(which);const finish=$('v42Finish');finish.classList.remove('lab45-reveal');if(which==='finish'){refreshProductionCheck();requestAnimationFrame(()=>{if(screen42==='finish')finish.classList.add('lab45-reveal')})}};
  const checkBox=document.createElement('details');checkBox.style.cssText='margin:18px 0;padding:12px 15px;background:#f3f5ef;border-radius:14px;text-align:left;color:#303d36';const checkTitle=document.createElement('summary'),checkBody=document.createElement('div');checkBox.append(checkTitle,checkBody);$('v42Order').parentElement.before(checkBox);
  let productionReviewRevision=0;
- function refreshProductionCheck(){
-  const revision=++productionReviewRevision;
+ async function refreshProductionCheck(){
+  const revision=++productionReviewRevision,active=()=>revision===productionReviewRevision&&screen42==='finish';
+  checkTitle.textContent='手工製作提醒｜讀取規則';checkBody.replaceChildren();
+  const status=document.createElement('p');status.setAttribute('role','status');status.textContent='正在讀取工作室規則…';checkBody.append(status);
   try{
-   const design=fullDesign(),r=CatProductionCheck.analyze(design);
-   checkTitle.textContent='手工製作提醒｜初步檢查';checkBody.replaceChildren();
+   const design=fullDesign(),artworks=['left','right'].map(ear=>withState(ear==='right'&&!design.same?design.right:design.left,()=>paintCat('face',0,{texture:true})));
+   let config;try{config=await CatProductionCheck.fetchRules()}catch(_){config={revision:0,configured:false,rules:CatProductionCheck.DEFAULT_RULES,offline:true}}
+   if(!active())return;
+   const rules=config.rules,r=CatProductionCheck.analyze(design,rules);
+   status.textContent=config.configured?'工作室規則 v'+config.revision:config.offline?'暫時離線，使用預設提醒門檻':'使用初始提醒門檻（尚未發布）';
+   checkTitle.textContent='手工製作提醒｜初步檢查';
    const result=document.createElement('div');result.setAttribute('role','status');result.textContent='正在分析最後呈現的圖案…';checkBody.append(result);
    const history=document.createElement('details'),historyTitle=document.createElement('summary');historyTitle.textContent='原始筆畫提醒（可能已覆蓋）';history.append(historyTitle);
    for(const e of r.ears){const p=document.createElement('p');p.textContent=(e.ear==='left'?'左耳：':'右耳：')+(e.flags.join('、')||'未發現明顯提醒');history.append(p)}
    checkBody.append(history);const notice=document.createElement('p');notice.className='small-hint';notice.textContent='此為平面圖案取樣，並非製作保證。你可以保留原本創作並送出，由工作室確認。';checkBody.append(notice);checkBox.open=r.review;
-   const artworks=['left','right'].map(ear=>withState(ear==='right'&&!design.same?design.right:design.left,()=>paintCat('face',0,{texture:true})));
-   const jobs=artworks.map((svg,i)=>CatProductionCheck.analyzeArtwork(svg,r.ears[i].colors));
-   Promise.all(jobs).then(values=>{
-    if(revision!==productionReviewRevision||screen42!=='finish')return;
+   try{
+    const values=await Promise.all(artworks.map((svg,i)=>CatProductionCheck.analyzeArtwork(svg,r.ears[i].colors,rules)));
+    if(!active())return;
     result.replaceChildren();let tiny=false,uncertain=false;
-    values.forEach((v,i)=>{const p=document.createElement('p'),mixed=v.coverage<.90;uncertain||=mixed;tiny||=v.tinyRegions>0;p.textContent=(i?'右耳：':'左耳：')+'約 '+v.colors.length+' 個可辨識顏色'+(v.tinyRegions?'，有 '+v.tinyRegions+' 處細小色區':'')+(mixed?'；部分混色或柔邊需人工確認':'');result.append(p)});
+    values.forEach((v,i)=>{const p=document.createElement('p'),mixed=v.coverage*100<rules.minCoverage;uncertain||=mixed;tiny||=v.tinyRegions>0;p.textContent=(i?'右耳：':'左耳：')+'約 '+v.colors.length+' 個可辨識顏色'+(v.tinyRegions?'，有 '+v.tinyRegions+' 處細小色區':'')+(mixed?'；部分混色或柔邊需人工確認':'');result.append(p)});
     checkTitle.textContent='手工製作提醒｜'+(tiny?'細節需覆核':uncertain||r.review?'由工作室確認':'未發現明顯提醒');checkBox.open=tiny||uncertain||r.review;
-   }).catch(()=>{if(revision===productionReviewRevision&&screen42==='finish'){result.textContent='最後圖案暫時無法分析，仍可查看原始筆畫提醒。';checkTitle.textContent='手工製作提醒｜由工作室確認'}});
-  }catch(_){checkTitle.textContent='手工製作提醒｜由工作室確認';checkBody.textContent='作品仍可正常送出。'}
+   }catch(_){if(active()){result.textContent='最後圖案暫時無法分析，仍可查看原始筆畫提醒。';checkTitle.textContent='手工製作提醒｜由工作室確認'}}
+  }catch(_){if(active()){checkTitle.textContent='手工製作提醒｜由工作室確認';checkBody.textContent='作品仍可正常送出。'}}
  }
  $('v42Editor').querySelector('.v42-editor-head h2').textContent='我的貓咪';
  $('v42Back').textContent='♡ 收藏冊';$('v42DoneTop').textContent='完成作品';
