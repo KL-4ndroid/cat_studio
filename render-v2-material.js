@@ -33,6 +33,7 @@
       if (child !== art && child.localName !== 'defs') child.remove();
     }
     outline.remove();
+    const noseTransform = previousNose.getAttribute('transform');
     previousNose.remove();
     noseReflection?.remove();
 
@@ -68,7 +69,7 @@
     `);
     cat.insertBefore(material, art);
 
-    art.append(fragment(cat, `
+    const finish = fragment(cat, `
       <g clip-path="${clip}" pointer-events="none">
         <path d="${head}" fill="${ink('light')}"/>
         <path d="${head}" fill="${ink('shade')}"/>
@@ -83,7 +84,9 @@
               fill="${ink('metal')}" stroke="#835b32" stroke-width=".42"/>
         <path d="M66.6 65.9 Q68.9 64.4 71.1 65" fill="none" stroke="#fff5cd" stroke-width=".85" stroke-linecap="round" opacity=".92"/>
       </g>
-    `));
+    `);
+    if (noseTransform) finish.lastElementChild.setAttribute('transform', noseTransform);
+    art.append(finish);
   }
 
   function render(renderer, ear, strength, prefix) {
