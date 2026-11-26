@@ -77,12 +77,12 @@ vec3 glazedEnamel(vec3 albedo,vec3 normal,vec3 ray){
  // Clear dielectric coat over the pigmented layer. Keep the colored body opaque.
  float grazing=pow(1.-clamp(normal.z,0.,1.),5.);
  float reflection=.04+.96*grazing;
- float mainPanel=studioPanel(ray,vec3(-.71,.62,1.),vec2(.165,.40),.065);
+ float mainPanel=studioPanel(ray,vec3(-.71,.62,1.),vec2(.165,.40),.085);
  float fillPanel=studioPanel(ray,vec3(.90,.22,.76),vec2(.095,.34),.052);
  float bounce=softbox(ray,vec3(-.3,.95,1.),4.);
- float coatLight=.43*mainPanel+.19*fillPanel+.030*bounce;
+ float coatLight=.35*mainPanel+.15*fillPanel+.035*bounce;
  return albedo*diffuse*(1.-.22*reflection)
-   +vec3(coatLight*(1.+.40*grazing)+.065*grazing);
+   +vec3(coatLight*(1.+.35*grazing)+.065*grazing);
 }
 
 // Bright 16K champagne plating. Reflect a neutral studio environment,
