@@ -71,14 +71,16 @@ float studioPanel(vec3 ray,vec3 direction,vec2 halfSize,float feather){
 vec3 glazedEnamel(vec3 albedo,vec3 normal,vec3 ray){
  float key=max(dot(normal,normalize(vec3(-.5,.8,1.))),0.);
  float fill=max(dot(normal,normalize(vec3(.9,-.1,.4))),0.);
- float diffuse=.56+.30*key+.14*fill;
+ // Calibrate enamel to the editor swatch under neutral light. The larger
+ // ambient term keeps the painted face close to the selected color.
+ float diffuse=.78+.18*key+.12*fill;
  // Clear dielectric coat over the pigmented layer. Keep the colored body opaque.
  float grazing=pow(1.-clamp(normal.z,0.,1.),5.);
  float reflection=.04+.96*grazing;
  float mainPanel=studioPanel(ray,vec3(-.71,.62,1.),vec2(.165,.40),.065);
  float fillPanel=studioPanel(ray,vec3(.90,.22,.76),vec2(.095,.34),.052);
  float bounce=softbox(ray,vec3(-.3,.95,1.),4.);
- float coatLight=.43*mainPanel+.19*fillPanel+.075*bounce;
+ float coatLight=.43*mainPanel+.19*fillPanel+.030*bounce;
  return albedo*diffuse*(1.-.22*reflection)
    +vec3(coatLight*(1.+.40*grazing)+.065*grazing);
 }
