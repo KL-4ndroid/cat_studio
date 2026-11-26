@@ -75,7 +75,7 @@ end $$;
 
 create function public.studio_work_snapshot(p_actor uuid,p_order uuid,p_day date)
 returns jsonb language plpgsql security invoker set search_path='' as $$
-declare member_role text; t timestamptz:=pg_catalog.statement_timestamp(); day_start timestamptz; day_end timestamptz; active_work jsonb; phases jsonb; daily jsonb; own_daily jsonb; total_seconds numeric; active_count integer;
+declare member_role text; t timestamptz:=pg_catalog.statement_timestamp(); day_start timestamptz; day_end timestamptz; active_work jsonb; phases jsonb; daily jsonb; own_daily jsonb; workers jsonb; total_seconds numeric; active_count integer;
 begin
  select role into member_role from public.studio_members where user_id=p_actor and active and role in ('owner','staff');
  if member_role is null then raise exception 'forbidden'; end if;
@@ -95,8 +95,15 @@ begin
   select jsonb_build_object('seconds',coalesce(sum(extract(epoch from (least(coalesce(i.ended_at,t),day_end)-greatest(i.started_at,day_start)))),0),'orders',count(distinct s.order_id),'workers',count(distinct s.worker_id))
   into daily from public.studio_work_sessions s join public.studio_work_intervals i on i.session_id=s.id
   where i.started_at<day_end and coalesce(i.ended_at,t)>day_start and coalesce(i.ended_at,t)>i.started_at and i.started_at<t;
+  select coalesce(jsonb_agg(to_jsonb(w) order by w.seconds desc,w.worker_key),'[]'::jsonb) into workers
+  from (select right(s.worker_id::text,8) as worker_key,(s.worker_id=p_actor) as is_me,
+   sum(extract(epoch from (least(coalesce(i.ended_at,t),day_end)-greatest(i.started_at,day_start)))) as seconds,
+   count(distinct s.order_id) as orders,count(distinct s.id) as sessions
+   from public.studio_work_sessions s join public.studio_work_intervals i on i.session_id=s.id
+   where i.started_at<day_end and coalesce(i.ended_at,t)>day_start and coalesce(i.ended_at,t)>i.started_at and i.started_at<t
+   group by s.worker_id) w;
  end if;
- return jsonb_build_object('configured',true,'serverNow',t,'day',p_day,'active',active_work,'phases',phases,'totalSeconds',total_seconds,'runningCount',active_count,'ownDaily',own_daily,'teamDaily',daily);
+ return jsonb_build_object('configured',true,'serverNow',t,'day',p_day,'active',active_work,'phases',phases,'totalSeconds',total_seconds,'runningCount',active_count,'ownDaily',own_daily,'teamDaily',daily,'workers',workers);
 end $$;
 revoke all on function public.studio_work_command(uuid,uuid,uuid,integer,text,text),public.studio_work_snapshot(uuid,uuid,date) from public,anon,authenticated,service_role;
 grant execute on function public.studio_work_command(uuid,uuid,uuid,integer,text,text),public.studio_work_snapshot(uuid,uuid,date) to service_role;
