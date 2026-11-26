@@ -1,0 +1,8 @@
+const test=require('node:test'),assert=require('node:assert/strict'),c=require('../cat-creative.js');
+const pal=[{id:'w',name:'白',hex:'#FFFFFF'},{id:'b',name:'黑',hex:'#000000'},{id:'r',name:'橘',hex:'#DD8844'},{id:'off',name:'停用',hex:'#FF0000',enabled:false}];
+const p={id:'cat_test',name:' 測試花色 ',layout:'calico',colors:['#ffffff','#000000','#dd8844'],enabled:true};
+test('photo sampling ignores transparent pixels and bounds',()=>{const a=new Uint8Array([255,0,0,0,221,136,68,255,221,136,68,255,221,136,68,255]);assert.equal(c.sampleAt(a,2,2,1,1),'#DD8844');assert.equal(c.sampleAt(a,2,2,2,1),null);assert.deepEqual(c.dominant(a,2,2),[{hex:'#DD8844',fraction:1}])});
+test('nearest uses enabled palette only and strips private fields',()=>{assert.equal(c.nearest('#FFFFFF',pal).id,'w');assert.equal(c.nearest('#FF0000',pal).id,'r');assert.equal('code' in c.nearest('#FFFFFF',[{...pal[0],code:'PRIVATE'}]),false)});
+test('curated schema rejects unknown keys, duplicate IDs and invalid layout/slots',()=>{assert.equal(c.validatePresets([p])[0].name,'測試花色');for(const v of [[p,p],[{...p,extra:'secret'}],[{...p,layout:'unknown'}],[{...p,colors:['#fff']}],[{...p,enabled:'true'}]])assert.throws(()=>c.validatePresets(v))});
+test('curated palette mapping reports changed colors and preserves slot order',()=>{const a=c.resolvePreset(p,pal);assert.equal(a.changed,false);assert.deepEqual(a.matches.map(m=>m.id),['w','b','r']);const b=c.resolvePreset(p,pal.filter(x=>x.id!=='r'));assert.equal(b.changed,true);assert.equal(b.matches.length,3)});
+test('dominant colors distinguish contrasting opaque areas',()=>{const a=new Uint8Array([0,0,0,255,0,0,0,255,255,255,255,255,255,0,0,0]);assert.deepEqual(c.dominant(a,2,2).map(v=>v.hex),['#000000','#FFFFFF'])});
