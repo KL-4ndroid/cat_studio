@@ -5,6 +5,7 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const ID=/^[A-Za-z0-9_-]{1,48}$/;
 const ZONES=['leftEar','rightEar','leftForehead','rightForehead','centerForehead','leftCheek','rightCheek','muzzle'];
 const STATUSES=['待確認','等待製作','製作中','品質檢查','已完成'];
+const WORK_PHASES=['準備','調色','上色','封層','組裝','品檢','包裝','重做'];
 const fail=(status,message)=>{throw Object.assign(new Error(message),{status})};
 const str=(v,max)=>typeof v==='string'&&v.length<=max;
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
@@ -15,12 +16,17 @@ function config(){
  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url.replace(/\/$/,'')))fail(503,'資料庫網址設定不符');
  return {url:url.replace(/\/$/,''),anon,service,salt};
 }
-async function call(c,path,{method='GET',token=c.service,apikey=c.service,body,missingRules=false}={}){
+async function call(c,path,{method='GET',token=c.service,apikey=c.service,body,missingRules=false,missingWork=false}={}){
  const r=await fetch(c.url+path,{method,headers:{apikey,Authorization:'Bearer '+token,'Content-Type':'application/json',Accept:'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(12000)});
  let data;try{data=await r.json()}catch(_){data=null}
  if(!r.ok){
   const m=String(data?.message||data?.error_description||'');
   if(missingRules&&['PGRST205','42P01'].includes(data?.code))return null;
+  if(missingWork&&data?.code==='PGRST202')return null;
+  if(m.includes('work_conflict'))fail(409,'工時計時已由其他裝置更新，請重新整理');
+  if(m.includes('work_already_open'))fail(409,'已有未完成的工序，請先結束該工序');
+  if(m.includes('work_order_not_ready'))fail(409,'請先將製作單儲存為等待製作、製作中或品質檢查');
+  if(m.includes('work_invalid'))fail(400,'工序或製作單資料不符');
   if(m.includes('rules_version_conflict'))fail(409,'製作規則已有新版，請重新載入後再發布');
   if(m.includes('version_conflict'))fail(409,'製作單已由其他裝置更新，請重新載入');
   if(m.includes('request_conflict'))fail(409,'送出識別碼已使用，請重新整理後再送');
@@ -106,6 +112,19 @@ async function handler(req,res){
    return res.status(200).json({accessToken:session.access_token,role:a.role,expiresIn:session.expires_in});
   }
   const a=await staff(c,req),user={apikey:c.anon,token:a.token};
+  if(req.method==='GET'&&action==='work'){
+   const id=String(req.query?.id||''),day=String(req.query?.day||'');
+   if(id&&!UUID.test(id)||day&&(!/^\d{4}-\d{2}-\d{2}$/.test(day)||!Number.isFinite(Date.parse(day+'T00:00:00Z'))||new Date(day+'T00:00:00Z').toISOString().slice(0,10)!==day||day<'2000-01-01'||day>'2100-12-31'))fail(400,'工時查詢格式不符');
+   const data=await call(c,'/rest/v1/rpc/studio_work_snapshot',{method:'POST',body:{p_actor:a.id,p_order:id||null,p_day:day||null},missingWork:true});
+   return res.status(200).json(data??{configured:false});
+  }
+  if(req.method==='POST'&&action==='work-command'){
+   const b=payload(req);
+   if(!UUID.test(b.orderId||'')||!UUID.test(b.sessionId||'')||!['start','pause','resume','finish'].includes(b.command)||!Number.isInteger(b.revision)||b.revision<0||b.revision>2147483646||b.command==='start'&&(b.revision!==0||!WORK_PHASES.includes(b.phase))||b.command!=='start'&&(b.revision<1||b.phase!==undefined&&b.phase!==null))fail(400,'工序計時資料不符');
+   const data=await call(c,'/rest/v1/rpc/studio_work_command',{method:'POST',body:{p_actor:a.id,p_order:b.orderId,p_session:b.sessionId,p_expected:b.revision,p_action:b.command,p_phase:b.command==='start'?b.phase:null},missingWork:true});
+   if(data===null)fail(503,'需先安裝工時資料表');
+   return res.status(200).json(data);
+  }
   if(req.method==='GET'&&action==='orders'){
    const offset=Math.max(0,Math.min(100000,Number.parseInt(req.query?.offset,10)||0));
    const rows=await call(c,'/rest/v1/studio_orders?select=id,receipt,status,ref,assignee,due,qc,revision,created_at,updated_at&order=created_at.desc,id.desc&limit=50&offset='+offset,user);
