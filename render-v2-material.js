@@ -13,24 +13,30 @@
     return group;
   }
 
-  function render(renderer, ear, strength, prefix) {
-    const tone = strengths[strength];
+  function apply(cat, prefix, strength = 'sculpted') {
     if (!Object.hasOwn(strengths, strength)) throw new Error('未知的材質預覽強度');
-    const svg = renderer.render(ear, 'flat', '', -1, prefix);
-    const cat = svg.lastElementChild;
-    const art = cat.querySelector('g[clip-path]').parentElement;
-    const [base, paintedDesign, outline, previousNose] = art.children;
+    const tone = strengths[strength];
+    const paintedDesign = cat.querySelector('g[clip-path]');
+    const art = paintedDesign.parentElement;
+    const [base, , outline, previousNose, noseReflection] = art.children;
     const head = base.getAttribute('d');
     const clip = paintedDesign.getAttribute('clip-path');
     const id = name => prefix + '-mat-' + name;
     const ink = name => 'url(#' + id(name) + ')';
 
-    svg.setAttribute('viewBox', '17 9 106 113');
-    svg.setAttribute('aria-label', ear === 'left' ? '左耳冷琺瑯成品預覽' : '右耳冷琺瑯成品預覽');
+    // The legacy finish ends with four decorative paths after the entire drawing layer.
+    if (art.hasAttribute('filter')) {
+      [...paintedDesign.children].slice(-4).forEach(node => node.remove());
+      art.removeAttribute('filter');
+    }
+    for (const child of [...cat.children]) {
+      if (child !== art && child.localName !== 'defs') child.remove();
+    }
     outline.remove();
     previousNose.remove();
+    noseReflection?.remove();
 
-    const material = fragment(svg, `
+    const material = fragment(cat, `
       <defs>
         <radialGradient id="${id('shadow')}"><stop stop-color="#56473d" stop-opacity="${tone.shadow}"/><stop offset="1" stop-color="#56473d" stop-opacity="0"/></radialGradient>
         <linearGradient id="${id('metal')}" x2=".85" y2="1">
@@ -62,7 +68,7 @@
     `);
     cat.insertBefore(material, art);
 
-    art.append(fragment(svg, `
+    art.append(fragment(cat, `
       <g clip-path="${clip}" pointer-events="none">
         <path d="${head}" fill="${ink('light')}"/>
         <path d="${head}" fill="${ink('shade')}"/>
@@ -78,8 +84,15 @@
         <path d="M66.6 65.9 Q68.9 64.4 71.1 65" fill="none" stroke="#fff5cd" stroke-width=".85" stroke-linecap="round" opacity=".92"/>
       </g>
     `));
+  }
+
+  function render(renderer, ear, strength, prefix) {
+    const svg = renderer.render(ear, 'flat', '', -1, prefix);
+    svg.setAttribute('viewBox', '17 9 106 113');
+    svg.setAttribute('aria-label', ear === 'left' ? '左耳冷琺瑯成品預覽' : '右耳冷琺瑯成品預覽');
+    apply(svg.lastElementChild, prefix, strength);
     return svg;
   }
 
-  window.CatMaterialV2 = { render };
+  window.CatMaterialV2 = { apply, render };
 })();

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V5.0.1</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V5.0.2</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -286,6 +286,15 @@ select.catux-enhanced{display:none!important}
 @media print{#adminWorkspace .sm47-no-print,#adminWorkspace .sm47-focusbar{display:none!important}}
 
 .cloud50-bar{background:#f9df8d;color:#59451c;border-radius:10px;padding:8px 12px;font-size:12px;margin:4px auto;max-width:760px;overflow-wrap:anywhere}.lab46-mobile .cloud50-bar:not([hidden]){margin:2px 0}.lab46-mobile:has(.cloud50-bar:not([hidden])) #v42Editor{height:max(440px,calc(var(--lab46-vh) - var(--lab46-header) - 38px))}#cloud50Status{overflow-wrap:anywhere}#cloud50Submit{min-height:48px;width:100%}#cloud50Submit:disabled{opacity:.65}
+
+#v2PreviewDesktop{min-height:44px;align-self:center}
+@media(max-width:760px){#v2PreviewDesktop{display:none}}
+#v2Dialog .v2-options{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+#v2Dialog .v2-options button{min-height:44px;border:1px solid #c8d8ce;background:#f2f5ed;color:#355444;border-radius:10px;padding:6px 11px}
+#v2Dialog .v2-options button[aria-pressed=true]{background:#303d36;border-color:#303d36;color:#fff}
+#v2Dialog .v2-art{display:grid;place-items:center;background:#f3efe5;border-radius:16px;overflow:hidden}
+#v2Dialog .v2-art svg{display:block;width:100%;height:min(43vh,280px);height:min(43dvh,280px)}
+#v2Dialog .v2-note,.v2-note{font-size:12px;margin:8px 0 12px;color:#52685c}
 </style>
 </head>
 <body>
@@ -322,8 +331,8 @@ select.catux-enhanced{display:none!important}
    </div>
    <div class="template-card"><div class="template-title"><div><b>實體顏料色票管理</b><p>以實際冷琺瑯試色校正客人看到的名稱與顏色，並填入工作室顏料編號（例如 571、508）。編號不會出現在客人配色介面，只隨已使用的顏色及製作規格匯出。未填編號的色票仍是待校正示意色。</p></div></div><div id="paletteEditor"></div><div class="template-row"><button id="addPalette" class="quiet-btn" type="button">新增工作室色票</button><button id="savePalette" class="action primary" type="button">套用色票</button><button id="resetPalette" class="quiet-btn" type="button">恢復初始色票</button></div><p class="storage-warning">可停用未持有的顏料；客人只可選擇啟用的色票。色票目前僅存於此瀏覽器；正式公開版需由伺服器發布。</p></div>
   </section>
-<section id="v42Editor"><div class="v42-editor-head"><button id="v42Back" class="quiet-btn">我的收藏冊</button><h2>我的貓咪</h2><button id="v42DoneTop" class="action primary">完成作品</button></div><div class="v42-workspace"><div class="v42-canvas"><div id="v42Mode" class="v42-mode"><button data-focus="same">一起設計</button><button data-focus="left">左耳</button><button data-focus="right">右耳</button></div><div id="v42PairPreview"></div><div id="v42CanvasMount"></div><div class="v42-canvas-note" id="v42Hint">選個顏色，直接在貓咪上畫。</div><div id="v42HistoryMount"></div><div id="v42MobileTools"></div></div><div class="v42-controls"><div id="v42DesktopTools"><div id="v42ToolGroup"><div id="v42ToolsMount"></div><div id="v42SizeMount"></div><label class="v42-sym"><input id="v42Sym" type="checkbox"> 對稱畫筆（同一隻貓的左右鏡像）</label><h3>選一個喜歡的顏色</h3><div id="v42PaletteMount"></div></div></div><div class="v42-quick"><button class="quiet-btn" id="v42Base">以此色換底色</button><button class="quiet-btn" id="v42Random">✧ 靈感轉盤</button><button class="quiet-btn" id="v42Blank">重新從純色開始</button></div><details id="v42Patterns"><summary>換一種貓咪花色</summary><div id="v42PresetsMount"></div></details><details><summary>更多花紋與細節</summary><div id="v42AdvancedMount"></div><div id="v42ExtraMount"></div></details><div class="v42-mobile-dock"><div class="v42-actionbar"><button class="quiet-btn" id="v42SaveQuick">收藏作品</button><button class="action primary" id="v42Done">完成我的貓咪</button></div><div class="v42-status" id="v42Status"></div></div></div></div></section>
-<section id="v42Finish" class="v42-finish" hidden><div class="v42-kicker">DESIGNED BY YOU</div><h2>你的貓咪誕生了！</h2><div id="v42FinalArt" class="v42-final-art"></div><label for="v42Name">給你的作品取個名字</label><p><input id="v42Name" maxlength="40" placeholder="例如：奶茶與小藍"></p><div class="v42-actionbar"><button class="action primary" id="v42Order">我要訂製這副耳環</button></div><div class="v42-actionbar"><button class="action" id="v42SaveFinal">收藏我的作品</button><button class="action" id="v42Share">分享／下載作品圖</button></div><div id="v42OrderPanel" hidden><p>請將下方兩份檔案傳給麋鹿斑斑，確認實際製作與訂購方式。</p><div class="v42-actionbar"><button class="action" id="v42OrderImage">下載作品圖</button><button class="action primary" id="v42OrderSpec">下載訂製資料</button></div><p>目前是本機試玩版，尚未送出訂單或付款。</p></div><div class="v42-linkrow"><button class="quiet-btn" id="v42EditAgain">繼續修改</button><button class="quiet-btn" id="v42FinishGallery">我的收藏冊</button></div><p class="small-hint">每副耳環皆為手工上色，花紋、邊緣與色彩可能與模擬圖略有不同。細小圖案及漸層須由工作室確認。</p></section>
+<section id="v42Editor"><div class="v42-editor-head"><button id="v42Back" class="quiet-btn">我的收藏冊</button><h2>我的貓咪</h2><button id="v42DoneTop" class="action primary">完成作品</button></div><div class="v42-workspace"><div class="v42-canvas"><div id="v42Mode" class="v42-mode"><button data-focus="same">一起設計</button><button data-focus="left">左耳</button><button data-focus="right">右耳</button></div><div id="v42PairPreview"></div><button type="button" class="quiet-btn" id="v2PreviewDesktop" aria-haspopup="dialog">成品預覽</button><div id="v42CanvasMount"></div><div class="v42-canvas-note" id="v42Hint">選個顏色，直接在貓咪上畫。</div><div id="v42HistoryMount"></div><div id="v42MobileTools"></div></div><div class="v42-controls"><div id="v42DesktopTools"><div id="v42ToolGroup"><div id="v42ToolsMount"></div><div id="v42SizeMount"></div><label class="v42-sym"><input id="v42Sym" type="checkbox"> 對稱畫筆（同一隻貓的左右鏡像）</label><h3>選一個喜歡的顏色</h3><div id="v42PaletteMount"></div></div></div><div class="v42-quick"><button class="quiet-btn" id="v42Base">以此色換底色</button><button class="quiet-btn" id="v42Random">✧ 靈感轉盤</button><button class="quiet-btn" id="v42Blank">重新從純色開始</button></div><details id="v42Patterns"><summary>換一種貓咪花色</summary><div id="v42PresetsMount"></div></details><details><summary>更多花紋與細節</summary><div id="v42AdvancedMount"></div><div id="v42ExtraMount"></div></details><div class="v42-mobile-dock"><div class="v42-actionbar"><button class="quiet-btn" id="v42SaveQuick">收藏作品</button><button class="action primary" id="v42Done">完成我的貓咪</button></div><div class="v42-status" id="v42Status"></div></div></div></div></section>
+<section id="v42Finish" class="v42-finish" hidden><div class="v42-kicker">DESIGNED BY YOU</div><h2>你的貓咪誕生了！</h2><div id="v42FinalArt" class="v42-final-art"></div><p class="v2-note">成品預覽為模擬效果，實際手工上色、材質與螢幕顏色可能略有差異。</p><label for="v42Name">給你的作品取個名字</label><p><input id="v42Name" maxlength="40" placeholder="例如：奶茶與小藍"></p><div class="v42-actionbar"><button class="action primary" id="v42Order">我要訂製這副耳環</button></div><div class="v42-actionbar"><button class="action" id="v42SaveFinal">收藏我的作品</button><button class="action" id="v42Share">分享／下載作品圖</button></div><div id="v42OrderPanel" hidden><p>請將下方兩份檔案傳給麋鹿斑斑，確認實際製作與訂購方式。</p><div class="v42-actionbar"><button class="action" id="v42OrderImage">下載作品圖</button><button class="action primary" id="v42OrderSpec">下載訂製資料</button></div><p>目前是本機試玩版，尚未送出訂單或付款。</p></div><div class="v42-linkrow"><button class="quiet-btn" id="v42EditAgain">繼續修改</button><button class="quiet-btn" id="v42FinishGallery">我的收藏冊</button></div><p class="small-hint">每副耳環皆為手工上色，花紋、邊緣與色彩可能與模擬圖略有不同。細小圖案及漸層須由工作室確認。</p></section>
 <section id="v42Gallery" class="v42-gallery" hidden><div class="v42-editor-head"><button class="quiet-btn" id="v42GalleryBack">‹ 返回</button><button class="quiet-btn" id="v42Import">載入作品檔</button></div><h2>我的貓咪收藏冊</h2><p>把喜歡的貓咪留在這裡，下次再繼續畫。作品儲存在這台裝置的瀏覽器。</p><div class="v42-linkrow" id="v43DraftRow" hidden><button class="quiet-btn" id="v43RestoreDraft">繼續上次未收藏的創作</button></div><div class="v42-gallery-grid" id="v42GalleryGrid"></div></section>
 <div class="layout v42-legacy" id="customerLayout">
   <section class="preview-col">
@@ -360,8 +369,24 @@ select.catux-enhanced{display:none!important}
   </section>
  </div>
 </main>
-<footer class="footer">MILU BANBAN · CAT LAB V5.0.1｜客製設計收件預覽</footer>
+<footer class="footer">MILU BANBAN · CAT LAB V5.0.2｜客製設計收件預覽</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="v2Dialog" class="catux-dialog" aria-labelledby="v2Title">
+ <div class="catux-content">
+  <div class="catux-head"><h2 id="v2Title">耳環預覽</h2><form method="dialog"><button class="catux-close" aria-label="回到畫布" autofocus>×</button></form></div>
+  <div class="v2-options" role="group" aria-label="預覽模式">
+   <button type="button" data-v2-view="design">設計圖</button>
+   <button type="button" data-v2-view="product">成品預覽</button>
+  </div>
+  <div class="v2-options" role="group" aria-label="預覽哪一耳">
+   <button type="button" data-v2-ear="L">左耳</button>
+   <button type="button" data-v2-ear="R">右耳</button>
+  </div>
+  <div class="v2-art" id="v2DialogArt"></div>
+  <p class="v2-note">成品預覽為模擬效果，實際手工上色、材質與螢幕顏色可能略有差異。</p>
+ </div>
+</dialog>
+<script src="./render-v2-material.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -639,7 +664,7 @@ $('copyBtn').addEventListener('click' ,async()=>{
 });
 $('downloadBtn').addEventListener('click',()=>{
  try{
-  const designId=getDesignCode();const svg=$('earringSvg').cloneNode(true);const idText=document.createElementNS('http://www.w3.org/2000/svg','text');idText.setAttribute('x','260');idText.setAttribute('y','306');idText.setAttribute('text-anchor','middle');idText.setAttribute('font-size','9');idText.setAttribute('fill','#77847b');idText.textContent=designId;svg.appendChild(idText);svg.setAttribute('width','1040');svg.setAttribute('height','640');
+  const designId=getDesignCode();const svg=productArtwork();const idText=document.createElementNS('http://www.w3.org/2000/svg','text');idText.setAttribute('x','260');idText.setAttribute('y','306');idText.setAttribute('text-anchor','middle');idText.setAttribute('font-size','9');idText.setAttribute('fill','#77847b');idText.textContent=designId;svg.appendChild(idText);svg.setAttribute('width','1040');svg.setAttribute('height','640');
   const xml=new XMLSerializer().serializeToString(svg);const src=URL.createObjectURL(new Blob([xml],{type:'image/svg+xml;charset=utf-8'}));const img=new Image();
   img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=1040;canvas.height=640;canvas.getContext('2d').drawImage(img,0,0,1040,640);URL.revokeObjectURL(src);
    canvas.toBlob(blob=>{if(!blob){toast('圖片輸出失敗');return;}const uri=URL.createObjectURL(blob);const a=document.createElement('a');a.href=uri;a.download=designId+'_貓咪耳環.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(uri),4000);toast('已產生配色模擬圖');},'image/png');};
@@ -789,7 +814,38 @@ const move42=()=>{
  mount42('v42ExtraMount',$('refFile').closest('.section'));mount42('v42ExtraMount',$('pairTools'));mount42('v42ExtraMount',$('drawClear'));$('drawClear').className='quiet-btn';mount42('v42ExtraMount',$('useLatest'));
 };
 function svgCopy42(svg,prefix){return svg.outerHTML.replace(/id="([^"]+)"/g,(_,k)=>`id="${prefix}-${k}"`).replace(/url\(#([^)]+)\)/g,(_,k)=>`url(#${prefix}-${k})`);}
-function pairArt42(prefix){const x=$('earringSvg').cloneNode(true);return svgCopy42(x,prefix);}
+function productArtwork({ear,mode='product'}={}){
+ const svg=$('earringSvg').cloneNode(true);
+ for(const side of ['L','R']){
+  const cat=svg.querySelector('#cat'+side+'clip').parentElement.parentElement;
+  if(ear&&side!==ear)cat.remove();
+  else if(mode==='product')CatMaterialV2.apply(cat,'product-'+side);
+ }
+ if(ear){
+  // The same artwork, cropped to one ear for the editor's read-only preview.
+  svg.setAttribute('viewBox',(ear==='L'?88.46:288.46)+' 67.42 146.28 155.94');
+  svg.setAttribute('aria-label',ear==='L'?'左耳環預覽':'右耳環預覽');
+ }
+ return svg;
+}
+function pairArt42(prefix){return svgCopy42(productArtwork(),prefix);}
+function openProductPreview(){
+ const dialog=$('v2Dialog');
+ if(drawPointer!==null||dialog.open)return;
+ let ear=pair.active==='right'?'R':'L',mode='product';
+ const setArt=()=>{
+  for(const button of dialog.querySelectorAll('[data-v2-view]'))button.setAttribute('aria-pressed',String(button.dataset.v2View===mode));
+  for(const button of dialog.querySelectorAll('[data-v2-ear]'))button.setAttribute('aria-pressed',String(button.dataset.v2Ear===ear));
+  $('v2DialogArt').innerHTML=svgCopy42(productArtwork({ear,mode}),'editorProduct');
+ };
+ dialog.onclick=event=>{
+  const button=event.target.closest('button');
+  if(button?.dataset.v2View){mode=button.dataset.v2View;setArt();}
+  if(button?.dataset.v2Ear){ear=button.dataset.v2Ear;setArt();}
+ };
+ setArt();
+ dialog.showModal();
+}
 function previewDesign42(d,prefix){const oldP=designPalette,oldG=designGeom;try{designPalette=d.palette;designGeom=d.geometry;const defs=$('earringSvg').querySelector('defs').outerHTML.replace(/stdDeviation="[\d.]+"(?=\/><\/filter>\s*<filter id="noseSoft")/,'stdDeviation="'+d.geometry.softness+'"');const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 45 520 190');svg.innerHTML=defs+`<rect x="0" y="45" width="520" height="190" fill="#f2efe6"/>`+withState(d.left,()=>paintCat('galleryL',65))+withState(d.same?d.left:d.right,()=>paintCat('galleryR',265));return svgCopy42(svg,prefix);}finally{designPalette=oldP;designGeom=oldG;}}
 function refresh42(){if(adminMode)return;active('v42Mode','data-focus',pair.same?'same':pair.active);$('v42Hint').textContent=drawTool==='shape'?'畫一圈，放開就會填滿顏色。':drawTool==='erase'?'擦掉剛剛畫的花紋，不會擦掉底色。':'選個顏色，直接在貓咪上畫。';$('v42Status').textContent=(state.drawing||[]).length>=MAX_OPS?'花紋已達上限，可復原或清除後再畫。':'';const mini=$('earringSvg').cloneNode(true);mini.setAttribute('viewBox','45 45 430 200');mini.setAttribute('class','v42-pair-thumb');$('v42PairPreview').innerHTML=svgCopy42(mini,'pair42');if(screen42==='finish')$('v42FinalArt').innerHTML=pairArt42('final42');}
 function show42(which){screen42=which;for(const [key,id] of Object.entries({editor:'v42Editor',finish:'v42Finish',gallery:'v42Gallery'}))$(id).hidden=which!==key;if(which==='finish'){$('v42FinalArt').innerHTML=pairArt42('final42');$('v42OrderPanel').hidden=true;}if(which==='gallery')renderGallery42();if(which==='editor')refresh42();window.scrollTo(0,0);}
@@ -803,12 +859,13 @@ function save42(){const d=fullDesign();const i=savedDesigns.findIndex(x=>x.code=
 function new42(){designPalette=null;designGeom=null;pair.same=true;pair.active='left';drawTool='brush';drawColor=mapAvailable('cream');$('v42Sym').checked=false;$('v42Name').value='';blank42(true);const base=colorData(state.cols[0]).hex;drawColor=availablePalette().find(p=>p.id==='caramel'&&p.hex!==base)?.id||availablePalette().find(p=>p.hex!==base)?.id||state.cols[0];renderDraw();refresh42();}
 move42();const mobile42=matchMedia('(max-width:760px)');function placeTools42(){(mobile42.matches?$('v42MobileTools'):$('v42DesktopTools')).append($('v42ToolGroup'));}placeTools42();mobile42.addEventListener('change',placeTools42);v42Ready=true;
 btn42('v42Back',gallery42);
+btn42('v2PreviewDesktop',openProductPreview);
 btn42('v42FinishGallery',gallery42);btn42('v42GalleryBack',()=>show42(galleryReturn42));btn42('v42Import',()=>$('importDesign').click());
 $('v42GalleryGrid').addEventListener('click',async e=>{const o=e.target.closest('[data-open42]'),d=e.target.closest('[data-del42]');if(o){restoreDesign(savedDesigns[+o.dataset.open42]);show42('editor');}if(d&&await catUX.ask('刪除這份收藏？','作品將從這台裝置的收藏冊移除。','刪除',true,'保留作品')){const old=clone(savedDesigns);savedDesigns.splice(+d.dataset.del42,1);if(!storeSaved())savedDesigns=old;renderSaved();renderGallery42();}});
 $('v42Mode').addEventListener('click',e=>{const b=e.target.closest('[data-focus]');if(!b)return;const v=b.dataset.focus;if(v==='same'){if(!pair.same)$('pairMode').querySelector('[data-pair=same]').click();}else{if(pair.same)$('pairMode').querySelector('[data-pair=different]').click();selectEar(v);}});
 $('drawTool').addEventListener('click',refresh42);
 btn42('v42Base',()=>{pushDrawUndo();state.cols[0]=drawColor;if(state.mode===1)state.cols=[drawColor,drawColor,drawColor];renderAll();});btn42('v42Random',async()=>{if(state.drawing?.length&&!await catUX.ask('試試新的靈感？','目前的手繪會被新花色取代，可透過復原找回。','給我靈感',true,'繼續畫'))return;random42();});btn42('v42Blank',async()=>{if(await catUX.ask('重新開始畫？','會改成純色底，清除目前這隻貓咪的花紋。你可以使用復原找回上一個狀態。','重新開始',true,'繼續畫'))blank42();});
-for(const id of ['v42Done','v42DoneTop'])btn42(id,()=>show42('finish'));btn42('v42EditAgain',()=>show42('editor'));btn42('v42SaveQuick',save42);btn42('v42SaveFinal',save42);btn42('v42Order',()=>{$('v42OrderPanel').hidden=false;});btn42('v42OrderImage',()=>$('downloadBtn').click());btn42('v42OrderSpec',()=>$('exportDesign').click());btn42('v42Share',async()=>{if(!navigator.share||!navigator.canShare){$('downloadBtn').click();return;}try{const svg=$('earringSvg').cloneNode(true);svg.setAttribute('width','1040');svg.setAttribute('height','640');const src=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));const img=new Image();try{await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=src;});const canvas=document.createElement('canvas');canvas.width=1040;canvas.height=640;canvas.getContext('2d').drawImage(img,0,0);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));const file=new File([blob],getDesignCode()+'_貓咪耳環.png',{type:'image/png'});if(navigator.canShare({files:[file]}))await navigator.share({files:[file],title:$('v42Name').value||'我的貓咪耳環'});else $('downloadBtn').click();}finally{URL.revokeObjectURL(src);}}catch(e){if(e.name!=='AbortError')$('downloadBtn').click();}});
+for(const id of ['v42Done','v42DoneTop'])btn42(id,()=>show42('finish'));btn42('v42EditAgain',()=>show42('editor'));btn42('v42SaveQuick',save42);btn42('v42SaveFinal',save42);btn42('v42Order',()=>{$('v42OrderPanel').hidden=false;});btn42('v42OrderImage',()=>$('downloadBtn').click());btn42('v42OrderSpec',()=>$('exportDesign').click());
 
 // Initial migration: preserve old snapshots, adapt unavailable colors to actual enabled palette.
 if(designGeom)designGeom=normalizedGeom(designGeom);pair.left=adaptState(pair.left);pair.right=adaptState(pair.right);state=adaptState(state);
@@ -873,7 +930,10 @@ function studioManager44(){
    root.append(defs);
    const temp=document.createElementNS(root.namespaceURI,'g');temp.innerHTML=withState(st,()=>paintCat('smCat',0));const cat=temp.firstElementChild;
    root.append(cat);
-   if(mode!=='normal'){
+   if(mode==='normal'&&limit<0){
+    CatMaterialV2.apply(cat,'localStudio');
+    root.setAttribute('viewBox','23.46 67.42 146.28 155.94');
+   }else{
     cat.removeAttribute('transform');
     const face=cat.querySelector('g[filter="url(#shadow)"]');face.removeAttribute('filter');
     [...cat.children].filter(x=>x!==face&&x.localName!=='defs').forEach(x=>x.remove());
@@ -1042,7 +1102,7 @@ function lab45(){
  function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill()}
  function textFit(ctx,value,maxWidth,maxSize,minSize,weight='700'){let size=maxSize;do{ctx.font=weight+' '+size+'px system-ui, "Noto Sans TC", sans-serif';if(ctx.measureText(value).width<=maxWidth||size<=minSize)break;size-=2;}while(size>=minSize);let output=value;if(ctx.measureText(output).width>maxWidth){let chars=Array.from(output);while(chars.length&&ctx.measureText(chars.join('')+'…').width>maxWidth)chars.pop();output=chars.join('')+'…';}return output}
  async function makeCard(){
-  const svg=$('earringSvg').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('width','1040');svg.setAttribute('height','640');
+  const svg=productArtwork();svg.setAttribute('width','1040');svg.setAttribute('height','640');
   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));
   try{
    const img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url});
@@ -1077,7 +1137,7 @@ function mobileCanvas46(){
  function button(id,label,html){const b=el('button',id,'lab46-only lab46-iconbtn',html||label);b.type='button';b.setAttribute('aria-label',label);b.title=label;return b}
  const modebar=el('div','lab46Modebar','lab46-only lab46-modebar');modeAnchor.after(modebar);
  const focusBtn=button('lab46Focus','專注創作',icon(iconPaths.expand));focusBtn.setAttribute('aria-pressed','false');
- const previewBtn=button('lab46Preview','雙耳成品預覽',icon(iconPaths.eye));previewBtn.setAttribute('aria-haspopup','dialog');
+ const previewBtn=button('lab46Preview','成品預覽',icon(iconPaths.eye));previewBtn.setAttribute('aria-haspopup','dialog');
  modebar.append(previewBtn,focusBtn);
  const history=$('drawUndo').parentElement,symBtn=button('lab46Sym','對稱畫筆',icon(iconPaths.sym)+'<span>對稱</span>');symBtn.setAttribute('aria-pressed','false');history.append(symBtn);
  const sizeBtn=button('lab46Size','筆刷粗細',icon(iconPaths.size)+'<span>粗細</span>');sizeBtn.setAttribute('aria-expanded','false');$('drawTool').append(sizeBtn);
@@ -1127,7 +1187,7 @@ function mobileCanvas46(){
  const oldEnter=enterAdmin;enterAdmin=function(yes){oldEnter(yes);setMobile()};
  // Guard layout and tool changes from a second touch while a stroke is active.
  editor.addEventListener('click',e=>{if(mobile&&drawPointer!==null&&!svg.contains(e.target)){e.preventDefault();e.stopImmediatePropagation()}},true);
- focusBtn.addEventListener('click',()=>setFocus(!focused));previewBtn.addEventListener('click',()=>openSheet('preview'));
+ focusBtn.addEventListener('click',()=>setFocus(!focused));previewBtn.addEventListener('click',()=>{closeSize();openProductPreview()});
  symBtn.addEventListener('click',()=>{if(drawPointer!==null)return;const checkbox=$('v42Sym');checkbox.checked=!checkbox.checked;checkbox.dispatchEvent(new Event('change',{bubbles:true}));refreshPalette()});
  sizeBtn.addEventListener('click',()=>{if(drawPointer!==null)return;sizeOpen=!sizeOpen;$('v42SizeMount').classList.toggle('lab46-size-open',sizeOpen);sizeBtn.setAttribute('aria-expanded',String(sizeOpen))});
  $('drawSize').addEventListener('change',closeSize);$('lab46Colors').addEventListener('click',()=>openSheet('colors'));$('lab46More').addEventListener('click',()=>openSheet('more'));
@@ -1139,7 +1199,7 @@ function mobileCanvas46(){
  handle.addEventListener('click',()=>{if(swiped){swiped=false;return}expandSheet(controls.dataset.lab46Expanded!=='true')});
  tabs.addEventListener('click',e=>{const b=e.target.closest('[data-lab46-tab]');if(b)openSheet(b.dataset.lab46Tab)});
  fullpalette.addEventListener('click',e=>{const b=e.target.closest('[data-lab46-color]');if(!b)return;const real=[...$('drawPalette').querySelectorAll('[data-draw-color]')].find(x=>x.dataset.drawColor===b.dataset.lab46Color);closeSheet();if(real){real.click();const selected=[...$('drawPalette').querySelectorAll('[data-draw-color]')].find(x=>x.dataset.drawColor===b.dataset.lab46Color);if(selected){const row=$('drawPalette');row.scrollLeft=Math.max(0,selected.offsetLeft-row.offsetLeft-row.clientWidth/2+selected.clientWidth/2)}}});
- document.addEventListener('keydown',e=>{if(!mobile)return;if(e.key==='Escape'){if(sheet){e.preventDefault();closeSheet()}else if(sizeOpen){e.preventDefault();closeSize();sizeBtn.focus()}else if(focused){e.preventDefault();setFocus(false)}}if(sheet&&e.key==='Tab'){const all=[...controls.querySelectorAll('button,input,select,textarea,summary,[tabindex]')].filter(x=>!x.disabled&&x.tabIndex>=0&&x.getClientRects().length>0);if(!all.length)return;const first=all[0],last=all[all.length-1];if(e.shiftKey&&(document.activeElement===first||!controls.contains(document.activeElement))){e.preventDefault();last.focus()}else if(!e.shiftKey&&(document.activeElement===last||!controls.contains(document.activeElement))){e.preventDefault();first.focus()}}});
+ document.addEventListener('keydown',e=>{if(!mobile||$('v2Dialog').open)return;if(e.key==='Escape'){if(sheet){e.preventDefault();closeSheet()}else if(sizeOpen){e.preventDefault();closeSize();sizeBtn.focus()}else if(focused){e.preventDefault();setFocus(false)}}if(sheet&&e.key==='Tab'){const all=[...controls.querySelectorAll('button,input,select,textarea,summary,[tabindex]')].filter(x=>!x.disabled&&x.tabIndex>=0&&x.getClientRects().length>0);if(!all.length)return;const first=all[0],last=all[all.length-1];if(e.shiftKey&&(document.activeElement===first||!controls.contains(document.activeElement))){e.preventDefault();last.focus()}else if(!e.shiftKey&&(document.activeElement===last||!controls.contains(document.activeElement))){e.preventDefault();first.focus()}}});
  svg.addEventListener('pointerdown',()=>{if(mobile)closeSize()},true);
  media.addEventListener('change',setMobile);
  setMobile();
