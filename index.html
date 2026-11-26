@@ -316,6 +316,7 @@ select.catux-enhanced{display:none!important}
 #v2Dialog #v2OrbitStatus:empty{display:none}
 #v2Dialog .v2-note,.v2-note{font-size:12px;margin:8px 0 12px;color:#52685c}
  .lab53-viewtools{display:none}.lab46-mobile .lab53-viewtools{display:flex;align-items:center;justify-content:center;gap:6px;margin:3px 0}.lab46-mobile .lab53-viewtools button{min-height:36px;min-width:38px;padding:5px 9px;font-size:12px}.lab53-viewtools button[aria-pressed=true]{background:#426455;color:white}.lab53-zoomtext{font-size:12px;font-variant-numeric:tabular-nums;min-width:42px;text-align:center}.lab46-mobile #drawSvg{touch-action:none}
+#creativePhotoCanvas{display:block;width:100%;max-width:420px;height:auto;max-height:320px;object-fit:contain;background:#eeeae1;border-radius:12px;cursor:crosshair;touch-action:pan-y}#creativePhotoTools[hidden],#curatedPresets[hidden]{display:none!important}.creative-match{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #e6e7e0}.creative-chip{width:23px;height:23px;border:1px solid #c9c9c1;border-radius:50%;flex:none}.creative-match button{min-height:38px}.creative-match span{font-size:12px}.creative-match strong{font-size:12px;flex:1;min-width:90px}.curated-preset svg{height:72px}.curated-swatch{display:inline-block;width:13px;height:13px;border:1px solid #ccc;border-radius:50%;margin:2px} 
 </style>
 </head>
 <body>
@@ -368,8 +369,8 @@ select.catux-enhanced{display:none!important}
   </section>
    <section class="control-card">
     <div class="v4-box"><div class="v4-kicker">01 / 兩隻貓咪</div><div class="v4-pills" id="pairMode"><button type="button" data-pair="same">兩隻一樣</button><button type="button" data-pair="different">左右不同</button></div><div class="pair-tabs" id="earTabs"><button type="button" data-ear="left">左耳環</button><button type="button" data-ear="right">右耳環</button></div><div class="v4-pills" id="pairTools" hidden><button id="copyEar" type="button">複製到另一隻</button><button id="swapEars" type="button">交換左右</button></div><div class="v4-focus" id="earFocus"></div></div>
-    <div class="section"><div class="section-title"><h2>02　從貓咪花色開始</h2><small>點一下就能套用</small></div><p class="v4-note">預設花色會依目前啟用的色票配出最接近的顏色。</p><div class="v4-presets" id="presets"></div></div>
-    <div class="section"><div class="section-title"><h2>參考自己的貓咪</h2><small>選用</small></div><div class="v4-ref"><img id="refImage" alt="你的貓咪參考照片" hidden/><label class="quiet-btn v4-upload">選擇照片<input id="refFile" type="file" accept="image/*"/></label><button id="clearRef" class="quiet-btn" type="button" hidden>移除</button></div><p class="v4-note">照片只在此頁顯示，不會上傳；請手動選擇接近的花色。</p></div>
+    <div class="section"><div class="section-title"><h2>02　從貓咪花色開始</h2><small>點一下就能套用</small></div><p class="v4-note">預設花色會依目前啟用的色票配出最接近的顏色。</p><div class="v4-presets" id="presets"></div><div id="curatedPresets" hidden><h3>麋鹿斑斑精選花色</h3><div class="v4-presets" id="curatedGrid"></div><p class="v4-note" id="curatedNote"></p></div></div>
+    <div class="section"><div class="section-title"><h2>參考自己的貓咪</h2><small>選用</small></div><div class="v4-ref"><img id="refImage" alt="你的貓咪參考照片" hidden/><label class="quiet-btn v4-upload">選擇照片<input id="refFile" type="file" accept="image/*"/></label><button id="clearRef" class="quiet-btn" type="button" hidden>移除</button></div><p class="v4-note">照片只在此裝置暫時處理，不會上傳或加入訂單。點選照片中的毛色，找出接近的可用色票。</p><div id="creativePhotoTools" hidden><p id="creativePhotoStatus" role="status"></p><canvas id="creativePhotoCanvas" aria-label="照片取色區，點選毛色"></canvas><div id="creativeMatches"></div><p class="v4-note">主要色可能包含背景；光線與螢幕會影響色彩，請以實際手工成品為準。</p></div></div>
    <div class="section"><div class="section-title"><h2>03　選擇色彩數量</h2><small>決定可使用的色彩數量</small></div><div class="segment" id="modeGroup"><button type="button" data-mode="3">三花 · 3 色</button><button type="button" data-mode="2">雙色 · 2 色</button><button type="button" data-mode="1">單色 · 1 色</button></div></div>
    <div class="section"><div class="section-title"><h2>04　挑選你喜歡的顏色</h2><small>底色與花色</small></div><div id="colorSelectors"></div></div>
     <section class="draw-box" id="drawingBox"><div class="section-title"><h2>自由畫花紋</h2><small id="drawEarLabel"></small></div><p>像在小貓臉上著色一樣，用手指或滑鼠畫出喜歡的花紋。可以從目前花色開始，也可以從乾淨底色開始。</p><div class="draw-tools"><button id="drawBlank" type="button">從純色開始</button><button id="drawClear" type="button">清除手繪花紋</button></div><div class="draw-stage"><svg id="drawSvg" xmlns="http://www.w3.org/2000/svg" viewBox="15 62 165 170" aria-label="貓咪耳環自由繪製區"></svg></div><div class="draw-tools" id="drawTool"><button data-tool="brush" type="button">畫筆</button><button data-tool="shape" type="button">封閉色塊</button><button data-tool="erase" type="button">橡皮擦</button></div><div class="draw-size"><label for="drawSize">筆刷大小</label><input id="drawSize" type="range" min="2" max="24" value="9"/><span id="drawSizeText">9</span></div><div class="draw-palette" id="drawPalette"></div><div class="draw-color-name" id="drawColorName"></div><div class="draw-tools"><button id="drawUndo" type="button">↶ 復原</button><button id="drawRedo" type="button">↷ 重做</button></div><div class="draw-status" id="drawStatus" aria-live="polite"></div><p>色塊：畫一圈，放開後自動填滿。橡皮擦只擦除手繪層，保留底下花色。金色零件及耳環外框不能上色。</p></section><details class="v4-advanced" id="advanced"><summary>進階自訂花紋</summary><div class="section"><div class="section-title"><h2>決定每個區塊的顏色</h2><small>可個別調整</small></div><p class="section-desc">左、右耳與上額可各自指定顏色；「中央連接色」在選擇中央色橋時啟用，「鼻口重點色」在開啟漸層時啟用。</p><div class="zone-grid" id="zones"></div></div>
@@ -412,6 +413,7 @@ select.catux-enhanced{display:none!important}
 <script src="./render-v2-material.js"></script>
 <script src="./cat-production-check.js"></script>
 <script src="./cat-viewport.js"></script>
+<script src="./cat-creative.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -1470,6 +1472,27 @@ function cloudCustomer50(){
  });
  boot();
 }
+function creative54(){
+ const canvas=$('creativePhotoCanvas'),tools=$('creativePhotoTools'),status=$('creativePhotoStatus'),matches=$('creativeMatches'),img=$('refImage');
+ let pixels=null,samples=[],curated=[],photoRevision=0;
+ function clearPhoto(){photoRevision++;pixels=null;samples=[];matches.replaceChildren();canvas.width=canvas.height=1;tools.hidden=true;status.textContent='';}
+ const oldClear=clearReference;clearReference=function(){oldClear();clearPhoto()};
+ $('clearRef').addEventListener('click',clearPhoto);img.addEventListener('error',clearPhoto);
+ $('refFile').addEventListener('change',()=>{const f=$('refFile').files?.[0];if(f&&f.type.startsWith('image/')&&f.size<=15000000)clearPhoto()});
+ function addSample(h){if(!h)return;samples=[h,...samples.filter(x=>x!==h)].slice(0,6);renderMatches()}
+ function renderMatches(){matches.replaceChildren();for(const h of samples){const p=CatCreative.nearest(h,availablePalette());if(!p)continue;const row=document.createElement('div');row.className='creative-match';for(const color of [h,p.hex]){const sw=document.createElement('i');sw.className='creative-chip';sw.style.background=color;sw.title=color;row.append(sw)}const label=document.createElement('strong');label.textContent='近似 '+p.name+'（'+p.hex+'）';row.append(label);for(const [name,base] of [['選為畫筆',false],['換底色',true]]){const b=document.createElement('button');b.type='button';b.className='quiet-btn';b.textContent=name;b.onclick=()=>{if(drawPointer!==null)return;const next=CatCreative.nearest(h,availablePalette());if(!next)return;drawColor=next.id;if(base){pushDrawUndo();state.cols[0]=next.id;if(state.mode===1)state.cols=[next.id,next.id,next.id];renderAll()}else renderDraw();toast('已選擇 '+next.name)};row.append(b)}matches.append(row)}}
+ img.addEventListener('load',()=>{if(!refUrl||img.src!==refUrl)return;const revision=++photoRevision;try{const scale=Math.min(1,420/Math.max(img.naturalWidth,img.naturalHeight));canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,canvas.width,canvas.height);pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;if(revision!==photoRevision)return;samples=CatCreative.dominant(pixels,canvas.width,canvas.height).map(x=>x.hex);tools.hidden=false;status.textContent='已擷取主要色；可點選照片加入其他毛色。';renderMatches()}catch(_){clearPhoto();toast('無法分析此照片，仍可手動對照')}});
+ canvas.addEventListener('click',e=>{if(!pixels)return;const rect=canvas.getBoundingClientRect(),scale=Math.min(rect.width/canvas.width,rect.height/canvas.height),x=(e.clientX-rect.left-(rect.width-canvas.width*scale)/2)/scale,y=(e.clientY-rect.top-(rect.height-canvas.height*scale)/2)/scale;addSample(CatCreative.sampleAt(pixels,canvas.width,canvas.height,x,y))});
+ const oldDraw=renderDraw;renderDraw=function(){oldDraw();if(pixels&&!adminMode)renderMatches()};
+ function renderCurated(){const host=$('curatedGrid');host.replaceChildren();$('curatedPresets').hidden=!curated.length;for(const p of curated){try{const resolved=CatCreative.resolvePreset(p,availablePalette()),layout=presets[resolved.layout.index],ids=resolved.matches.map(x=>x.id);while(ids.length<3)ids.push(ids[ids.length-1]);const next={...clone(layout),name:p.name,cols:ids,drawing:[]};const btn=document.createElement('button');btn.type='button';btn.className='v4-preset curated-preset';const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','33 73 131 128');const prefix='curated-'+p.id;svg.innerHTML=drawDefs()+withState(next,()=>paintCat(prefix,0,{headOnly:true}));btn.innerHTML=svgCopy42(svg,prefix);const name=document.createElement('span');name.textContent=p.name+(resolved.changed?'（近似色）':'');btn.append(name);for(const c of resolved.matches){const chip=document.createElement('i');chip.className='curated-swatch';chip.style.background=c.hex;btn.append(chip)}btn.onclick=async()=>{if(drawPointer!==null)return;if(!await catUX.ask('套用這組花色？','會替換目前正在編輯的花色與手繪，可透過復原找回。'+(resolved.changed?' 此範本部分顏色已匹配為目前可用近似色。':''),'套用花色',false,'取消'))return;const latest=CatCreative.resolvePreset(p,availablePalette()),cols=latest.matches.map(x=>x.id);while(cols.length<3)cols.push(cols[cols.length-1]);replace42({...clone(presets[latest.layout.index]),name:p.name,cols,drawing:[]})};host.append(btn)}catch(_){}}
+ $('curatedNote').textContent='範本可再自行上色；色票更新時會顯示近似色。';
+ }
+ const oldPresets=renderPresetCards;renderPresetCards=function(){oldPresets();if(curated.length&&!adminMode)renderCurated()};
+ async function loadCurated(){try{const r=await fetch('/api/studio?action=presets',{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)return;const d=await r.json();curated=CatCreative.validatePresets(d.presets).filter(p=>p.enabled);renderCurated()}catch(_){}}
+ void loadCurated();
+}
+creative54();
+
 cloudCustomer50();
 })();
 </script>
