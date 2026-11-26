@@ -168,6 +168,7 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
 
 /* V4.6.2: shared branded dialogs, accessible option sheets and mobile comfort. */
 .catux-dialog{box-sizing:border-box;border:0;border-radius:24px;padding:0;background:#fffdfa;color:#303d36;width:min(440px,calc(100% - 28px));max-width:calc(100% - 28px);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;box-shadow:0 22px 80px #263c3050;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;letter-spacing:0}
+.catux-dialog:not([open]){display:none!important}
 .catux-dialog::backdrop{background:#293b3266;backdrop-filter:blur(2px)}
 .catux-dialog[open]{animation:catux-enter .18s ease-out}
 .catux-dialog.catux-fallback[open]{position:fixed;inset:0;margin:auto;z-index:101}
@@ -185,6 +186,7 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
 .catux-dialog .catux-action.primary{background:#303d36;border-color:#303d36;color:white}
 .catux-dialog[data-tone=destructive] .catux-action.primary{background:#934c55;border-color:#934c55}
 .catux-dialog .catux-close{min-width:44px;min-height:44px;padding:6px;font-size:18px;line-height:1}
+.catux-dialog .catux-search{display:block;width:100%;min-width:0;min-height:44px;padding:10px 12px;margin:10px 0;border:1px solid #cbdacc;border-radius:12px;font:inherit;font-size:16px;background:#f7faf4;color:#303d36}
 .catux-dialog .catux-options{display:grid;gap:6px;max-height:min(52vh,420px);overflow:auto;overscroll-behavior:contain;padding:3px}
 .catux-dialog .catux-choice{display:flex;align-items:center;gap:10px;width:100%;min-height:49px;padding:11px;border:1px solid #e4e7dd;border-radius:12px;background:white;color:#303d36;text-align:left;font-size:15px}
 .catux-dialog .catux-choice[aria-pressed=true]{background:#e7f3ea;border-color:#719782;font-weight:700}
@@ -232,6 +234,8 @@ select.catux-enhanced{display:none!important}
  .lab46-mobile #v42Editor .v42-controls{max-width:100%;overflow-x:hidden}
  .lab46-mobile #v42Editor .lab46-fullpalette button{min-width:44px;min-height:44px}
  .lab46-mobile #v42Editor .lab46-palettebar button{font-size:12px}
+ .lab46-mobile #v42Editor .v42-controls .v42-quick{gap:8px}
+ .lab46-mobile #v42Editor .v42-controls .v42-quick button{min-width:min(100%,95px)}
  .lab46-mobile #v42Editor #drawColorName{font-size:12px}
  .lab46-mobile #v42Editor .v42-canvas-note{font-size:11px}
  .lab45 .toast{bottom:max(16px,env(safe-area-inset-bottom,0px));width:max-content;max-width:calc(100% - 24px);white-space:normal;text-align:center;border-radius:15px;font-size:13px;line-height:1.5;background:#303d36;box-shadow:0 4px 18px #243c3030}
@@ -1051,9 +1055,8 @@ function mobileCanvas46(){
  media.addEventListener('change',setMobile);
  setMobile();
 }
-mobileCanvas46();
 function catUX462(){
- const dialog=document.createElement('dialog');dialog.id='catuxDialog';dialog.className='catux-dialog';dialog.setAttribute('aria-labelledby','catuxTitle');dialog.setAttribute('aria-describedby','catuxMessage');
+ const dialog=document.createElement('dialog');dialog.id='catuxDialog';dialog.className='catux-dialog';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-labelledby','catuxTitle');dialog.setAttribute('aria-describedby','catuxMessage');
  const overlay=document.createElement('div');overlay.className='catux-overlay';overlay.hidden=true;
  const content=document.createElement('div');content.className='catux-content';dialog.append(content);document.body.append(overlay,dialog);
  let active=null,previous=null,fallback=false,oldInert=[];
@@ -1094,7 +1097,7 @@ function catUX462(){
  function update(s,b){const o=s.selectedOptions[0],value=o?.textContent||'請選擇',label=selectName(s),sig=[value,s.value,label,s.disabled].join('|');if(b.dataset.signature!==sig){b.dataset.signature=sig;b.disabled=s.disabled;b.setAttribute('aria-label',label+'：'+value);const sw=chip(s,s.value),txt=node('span','catux-select-label',value),arrow=node('span','','⌄');arrow.setAttribute('aria-hidden','true');b.replaceChildren(...(sw?[sw]:[]),txt,arrow)}}
  async function choose(s){
   if(s.disabled||!s.isConnected||drawPointer!==null)return;
-  const opts=[...s.options];const choice=await show('options',selectName(s),'',body=>{const list=node('div','catux-options');let selected=null;opts.forEach((o,i)=>{const b=action('','catux-choice');const checked=i===s.selectedIndex;b.setAttribute('aria-pressed',String(checked));b.disabled=o.disabled||!!o.closest('optgroup:disabled');const sw=chip(s,o.value),txt=node('span','',o.textContent),tick=node('span','catux-tick',checked?'✓':'');b.append(...(sw?[sw]:[]),txt,tick);b.addEventListener('click',()=>finish(i));list.append(b);if(checked&&!b.disabled)selected=b});body.append(list);return selected||list.querySelector('button:not(:disabled)')});
+  const opts=[...s.options];const choice=await show('options',selectName(s),'',body=>{const list=node('div','catux-options');let selected=null;opts.forEach((o,i)=>{const b=action('','catux-choice');const checked=i===s.selectedIndex;b.setAttribute('aria-pressed',String(checked));b.disabled=o.disabled||!!o.closest('optgroup:disabled');const sw=chip(s,o.value),txt=node('span','',o.textContent),tick=node('span','catux-tick',checked?'✓':'');b.append(...(sw?[sw]:[]),txt,tick);b.addEventListener('click',()=>finish(i));list.append(b);if(checked&&!b.disabled)selected=b});if(opts.length>=12){const search=node('input','catux-search');search.type='search';search.placeholder='搜尋選項';search.setAttribute('aria-label','搜尋選項');search.addEventListener('input',()=>{const q=search.value.trim().toLowerCase();[...list.children].forEach((b,i)=>{b.hidden=!opts[i].textContent.toLowerCase().includes(q)})});body.append(search)}body.append(list);return selected||list.querySelector('button:not(:disabled)')});
   if(choice===null||!Number.isInteger(choice)||!s.isConnected||s.options[choice]!==opts[choice])return;
   if(s.selectedIndex!==choice){s.selectedIndex=choice;s.dispatchEvent(new Event('input',{bubbles:true}));s.dispatchEvent(new Event('change',{bubbles:true}))}
   if(s.isConnected&&buttons.has(s))update(s,buttons.get(s));
@@ -1107,6 +1110,7 @@ function catUX462(){
  return {ask,enhance};
 }
 const catUX=catUX462();
+mobileCanvas46();
 })();
 </script>
 </body>
