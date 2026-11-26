@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f3f2ed">
+<title>CAT LAB｜冷琺瑯材質原型 V2.0</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { color-scheme: light; color: #26332e; background: #f3f2ed; font: 16px/1.65 system-ui, sans-serif; }
+  body { margin: 0; }
+  main { width: min(1056px, 100%); margin: auto; padding: clamp(19px, 4vw, 56px) clamp(14px, 4vw, 40px) 36px; }
+  header { padding-bottom: 21px; border-bottom: 1px solid #d8dcd2; }
+  header p { margin: 0; color: #53635a; }
+  .brand { font-size: .81rem; letter-spacing: .13em; }
+  h1 { margin: 4px 0 9px; font-size: clamp(1.65rem, 4.6vw, 2.7rem); line-height: 1.25; }
+  h2 { margin: 0; font-size: 1.06rem; }
+  fieldset { border: 0; min-width: 0; margin: 0; padding: 0; }
+  legend { padding: 0; font-size: .9rem; font-weight: 650; margin-bottom: 6px; }
+  .controls { display: flex; gap: 12px 24px; align-items: flex-end; flex-wrap: wrap; margin: 17px 0; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+  button { appearance: none; font: inherit; font-size: .88rem; color: inherit; background: #fafaf6; cursor: pointer;
+    min-height: 44px; border: 1px solid #c9d0c4; border-radius: 11px; padding: 6px 12px; }
+  button[aria-pressed="true"] { background: #384d42; color: #fff; border-color: #384d42; }
+  button:focus-visible { outline: 2px solid #765b2b; outline-offset: 2px; }
+  .view-picker { display: none; }
+  #comparison { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .panel { margin: 0; min-width: 0; padding: 15px; border: 1px solid #d8ddd2; border-radius: 17px; background: #fffdfa; }
+  .panel p { margin: 0; color: #526359; font-size: .86rem; }
+  .art { margin: 11px 0 12px; display: grid; align-items: center; justify-items: center; aspect-ratio: 1 / 1.03;
+    border-radius: 12px; background: radial-gradient(ellipse at 45% 40%, #faf7ee, #eeeae0 94%); overflow: hidden; }
+  .art svg { display: block; width: 78%; height: 88%; }
+  .material-note { font-size: .84rem; color: #526359; margin: 15px 0 0; }
+  @media (max-width: 660px) {
+    .view-picker { display: block; }
+    #comparison { grid-template-columns: minmax(0, 1fr); }
+    .panel:not([data-active]) { display: none; }
+    .art { max-height: 49svh; min-height: 220px; }
+  }
+</style>
+<script defer src="./studio-render.js"></script>
+<script defer src="./render-v2-material.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <p class="brand">MILU BANBAN · CAT LAB</p>
+    <h1>冷琺瑯材質原型 V2.0</h1>
+    <p>切換樣本與左右耳，比對原版和兩種冷琺瑯光澤。</p>
+  </header>
+  <div class="controls">
+    <fieldset><legend>配色樣本</legend><div class="buttons" id="samples"></div></fieldset>
+    <fieldset><legend>耳環</legend><div class="buttons" id="ears"></div></fieldset>
+    <fieldset class="view-picker"><legend>比對視圖</legend><div class="buttons" id="views"></div></fieldset>
+  </div>
+  <section id="comparison" aria-label="材質前後對照">
+    <figure class="panel" data-view="original"><h2>原版</h2><div class="art"></div><p>V5.0.1 已驗收成品圖</p></figure>
+    <figure class="panel" data-view="soft" data-active><h2>A｜柔亮</h2><div class="art"></div><p>柔和邊緣與小面積高光</p></figure>
+    <figure class="panel" data-view="sculpted"><h2>B｜較立體</h2><div class="art"></div><p>較深的側邊明暗與金屬反射</p></figure>
+  </section>
+  <p class="material-note">成品預覽為模擬效果，實際手工上色、材質與螢幕顏色可能略有差異。</p>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const palette = [
+    { id: 'cream', name: '暖白', hex: '#F6EFE0' },
+    { id: 'black', name: '午夜黑', hex: '#292C2B' },
+    { id: 'brown', name: '可可棕', hex: '#634634' },
+    { id: 'orange', name: '蜜橘', hex: '#DB8B4F' },
+    { id: 'blue', name: '霧藍', hex: '#889AA8' },
+  ];
+  const geometry = {
+    top: {x:70,y:25}, mid: {x:70,y:48}, bottom: {x:70,y:62},
+    leftInner: {x:51,y:60}, leftOuter: {x:22,y:68}, rightInner: {x:98,y:60}, rightOuter: {x:122,y:68},
+    seamWave:5, gapWidth:11, bridgeWidth:9, leftEarDepth:48, rightEarDepth:48,
+    leftCheek: {x:34,y:87,rx:16,ry:16}, rightCheek: {x:106,y:87,rx:16,ry:16},
+    muzzle: {x:70,y:81,rx:36,ry:27}, stripeY:29, stripeLength:11, stripeSpread:10, stripeWidth:3.1, softness:4.1,
+  };
+  const zones = { leftEar:1, rightEar:2, leftForehead:1, rightForehead:2, centerForehead:0, leftCheek:0, rightCheek:0, muzzle:0 };
+  const state = (mode, cols, rest = {}) => ({mode, cols, zones, join:'meet', finish:'solid', muzzle:0, stripe:0, drawing:[], ...rest});
+  const warm = state(1, ['cream','cream','cream']);
+  const dark = state(1, ['black','black','black']);
+  const split = state(2, ['cream','brown','cream'], {zones:{...zones,rightEar:0,rightForehead:0}});
+  const mirroredSplit = {...split, zones:{...zones,leftEar:0,leftForehead:0,rightEar:1,rightForehead:1}};
+  const drawn = state(3, ['cream','orange','brown'], {drawing:[
+    {tool:'brush',color:'brown',width:6,points:[[38,65],[43,67],[50,65],[56,69],[63,74]]},
+    {tool:'shape',color:'blue',width:3,points:[[76,85],[82,77],[90,74],[96,79],[93,86],[85,91]]},
+    {tool:'erase',color:'cream',width:3,points:[[84,82],[87,83],[90,83]]},
+  ]});
+  const drawnRight = {...drawn, drawing:drawn.drawing.map(stroke => ({...stroke,points:stroke.points.map(([x,y]) => [140-x,y])}))};
+  const samples = [
+    ['純暖白',warm,warm], ['深色',dark,dark], ['雙色中分',split,mirroredSplit], ['三色手繪',drawn,drawnRight],
+  ];
+  const views = [['original','原版'],['soft','A｜柔亮'],['sculpted','B｜較立體']];
+  const panels = [...document.querySelectorAll('.panel')];
+  let sample = 0;
+  let ear = 'left';
+  let view = 'soft';
+
+  function bindChoices(id, choices, selected, update) {
+    const group = document.getElementById(id);
+    function choose(value) {
+      for (const button of group.children) button.setAttribute('aria-pressed', String(button.dataset.value === String(value)));
+      update(value);
+    }
+    for (const [value,label] of choices) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.dataset.value = value;
+      button.setAttribute('aria-pressed', String(value === selected));
+      button.addEventListener('click', () => choose(value));
+      group.append(button);
+    }
+  }
+
+  function draw() {
+    const [,left,right] = samples[sample];
+    const design = {palette,geometry,left,right,same:left===right};
+    const renderer = StudioRender50.create(design);
+    for (const panel of panels) {
+      const mode = panel.dataset.view;
+      const prefix = `sample-${sample}-${ear}-${mode}`;
+      const artwork = mode === 'original'
+        ? renderer.render(ear,'normal','',-1,prefix)
+        : CatMaterialV2.render(renderer,ear,mode,prefix);
+      if (mode === 'original') artwork.setAttribute('viewBox','23.46 67.42 146.28 155.94');
+      panel.querySelector('.art').replaceChildren(artwork);
+    }
+  }
+
+  bindChoices('samples', samples.map(([name],i) => [i,name]), sample, value => { sample = value; draw(); });
+  bindChoices('ears', [['left','左耳'],['right','右耳']], ear, value => { ear = value; draw(); });
+  bindChoices('views', views, view, value => {
+    view = value;
+    for (const panel of panels) panel.toggleAttribute('data-active', panel.dataset.view === view);
+  });
+  draw();
+});
+</script>
+</body>
+</html>
