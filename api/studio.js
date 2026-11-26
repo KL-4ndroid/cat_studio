@@ -1,6 +1,7 @@
 // Vercel Node serverless endpoint. Private keys are used here only.
 const {createHash,createHmac}=require('node:crypto');
 const {DEFAULT_RULES,validateRules}=require('../cat-production-check.js');
+const {validatePresets}=require('../cat-creative.js');
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const ID=/^[A-Za-z0-9_-]{1,48}$/;
 const ZONES=['leftEar','rightEar','leftForehead','rightForehead','centerForehead','leftCheek','rightCheek','muzzle'];
@@ -16,13 +17,16 @@ function config(){
  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url.replace(/\/$/,'')))fail(503,'資料庫網址設定不符');
  return {url:url.replace(/\/$/,''),anon,service,salt};
 }
-async function call(c,path,{method='GET',token=c.service,apikey=c.service,body,missingRules=false,missingWork=false}={}){
+async function call(c,path,{method='GET',token=c.service,apikey=c.service,body,missingRules=false,missingWork=false,missingPresets=false}={}){
  const r=await fetch(c.url+path,{method,headers:{apikey,Authorization:'Bearer '+token,'Content-Type':'application/json',Accept:'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(12000)});
  let data;try{data=await r.json()}catch(_){data=null}
  if(!r.ok){
   const m=String(data?.message||data?.error_description||'');
   if(missingRules&&['PGRST205','42P01'].includes(data?.code))return null;
   if(missingWork&&data?.code==='PGRST202')return null;
+  if(missingPresets&&['PGRST205','42P01'].includes(data?.code))return null;
+  if(m.includes('preset_version_conflict'))fail(409,'花色範本已有新版，請重新載入');
+  if(m.includes('preset_invalid'))fail(400,'範本格式不符');
   if(m.includes('work_conflict'))fail(409,'工時計時已由其他裝置更新，請重新整理');
   if(m.includes('work_already_open'))fail(409,'已有未完成的工序，請先結束該工序');
   if(m.includes('work_order_not_ready'))fail(409,'請先將製作單儲存為等待製作、製作中或品質檢查');
@@ -72,6 +76,14 @@ async function productionRules(c,history=false){
  const clean=rows.map(row=>({revision:row.revision,rules:validateRules(row.rules),createdAt:row.created_at}));
  return {configured:true,...clean[0],...(history?{history:clean}:{})};
 }
+async function curatedPresets(c,owner=false){
+ const rows=await call(c,'/rest/v1/studio_preset_versions?select=revision,presets,created_at&order=revision.desc&limit=1',{missingPresets:true});
+ const v=rows===null?{configured:false,revision:0,presets:[],createdAt:null}:null;
+ if(!v&&(!Array.isArray(rows)||!rows.length))fail(503,'花色範本尚未初始化');
+ const data=v||{configured:true,revision:rows[0].revision,presets:validatePresets(rows[0].presets),createdAt:rows[0].created_at};
+ if(owner){const active=await versionById(c,await activeVersion(c));return {...data,palette:pub(active.palette),paletteVersion:active.id}}
+ return {...data,presets:data.presets.filter(p=>p.enabled)};
+}
 async function activeVersion(c){
  const rows=await call(c,'/rest/v1/studio_config?singleton=eq.true&select=active_version');
  if(!rows?.length)fail(503,'工作室尚未發布實體色票');
@@ -94,6 +106,7 @@ async function handler(req,res){
  res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');
  try{
   const c=config(),action=String(req.query?.action||'');
+  if(req.method==='GET'&&action==='presets')return res.status(200).json(await curatedPresets(c));
   if(req.method==='GET'&&action==='rules')return res.status(200).json(await productionRules(c));
   if(req.method==='GET'&&action==='palette'){const v=await versionById(c,await activeVersion(c));return res.status(200).json({version:v.id,palette:pub(v.palette),geometry:v.geometry})}
   if(req.method==='POST'&&action==='submit'){
@@ -148,6 +161,22 @@ async function handler(req,res){
    if(!object(b.checks)||!['left','right'].every(k=>Array.isArray(b.checks[k])&&b.checks[k].length<=100&&b.checks[k].every(x=>ID.test(x))))fail(400,'上色勾選資料不符');
    const row=await call(c,'/rest/v1/rpc/studio_update_order',{...user,method:'POST',body:{p_id:b.id,p_expected:b.revision,p_status:b.status,p_ref:b.ref,p_note:b.note,p_assignee:b.assignee,p_due:b.due,p_checks:b.checks,p_qc:b.qc}});
    return res.status(200).json({id:row.id,revision:row.revision,status:row.status});
+  }
+  if(req.method==='GET'&&action==='presets-admin'){
+   if(a.role!=='owner')fail(403,'只有管理者可管理範本');
+   return res.status(200).json(await curatedPresets(c,true));
+  }
+  if(req.method==='POST'&&action==='publish-presets'){
+   if(a.role!=='owner')fail(403,'只有管理者可發布範本');
+   const b=payload(req);if(!Number.isInteger(b.revision)||b.revision<1||!UUID.test(b.paletteVersion||''))fail(400,'範本或色票版本不符');
+   let presets;try{presets=validatePresets(b.presets)}catch(e){fail(400,e.message)}
+   const current=await curatedPresets(c,true);
+   if(!current.configured)fail(503,'需先安裝範本資料表');
+   if(current.revision!==b.revision||current.paletteVersion!==b.paletteVersion)fail(409,'範本或色票已有新版，請重新載入');
+   const colors=new Set(current.palette.map(p=>p.hex.toUpperCase()));
+   if(presets.some(p=>p.enabled&&p.colors.some(h=>!colors.has(h))))fail(400,'啟用範本必須使用目前已發布色票');
+   const result=await call(c,'/rest/v1/rpc/studio_publish_presets',{method:'POST',body:{p_actor:a.id,p_expected:b.revision,p_presets:presets}});
+   return res.status(200).json(result);
   }
   if(req.method==='GET'&&action==='rules-history'){
    if(a.role!=='owner')fail(403,'只有管理者可以查看規則版本');
