@@ -93,12 +93,30 @@ vec3 goldReflection(vec3 ray){
  return srgb(vec3(.82,.63,.30))*environment*1.55+vec3(highlights*.45);
 }
 
+// Fixed 16K plated hardware, independent of the customer artwork.
+// Visual calibration starting point: warm champagne gold, not an alloy measurement.
+vec3 hardware16kReflection(vec3 ray){
+ vec3 tint=srgb(vec3(.84,.71,.46));
+ float key=studioPanel(ray,vec3(-.71,.62,1.),vec2(.20,.46),.10);
+ float fill=studioPanel(ray,vec3(.90,.22,.76),vec2(.14,.38),.095);
+ // Broad reflected studio lights keep curved and rear hardware legible.
+ float env=.36+.28*softbox(ray,vec3(-.6,.8,1.),3.)
+   +.21*softbox(ray,vec3(.9,-.35,.5),4.)
+   +.13*softbox(ray,vec3(.15,.40,-1.),3.)+.10*max(ray.y,0.);
+ float highlight=.43*key+.30*fill;
+ return tint*(env+highlight)+vec3(.045,.040,.030)*highlight;
+}
+
 void main(){
  vec3 n=normalize(N),v=vec3(0.,0.,1.);
  if(!gl_FrontFacing)n=-n;
  vec3 r=reflect(-v,n);
  float m=hardware?1.:noseCoverage(orig);
- if(hardware||m>=1.){
+ if(hardware){
+  outColor=vec4(pow(clamp(hardware16kReflection(r),0.,1.),vec3(1./2.2)),1.);
+  return;
+ }
+ if(m>=1.){
   outColor=vec4(pow(clamp(goldReflection(r),0.,1.),vec3(1./2.2)),1.);
   return;
  }
