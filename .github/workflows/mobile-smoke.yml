@@ -1,0 +1,19 @@
+name: CAT LAB mobile smoke
+on:
+  pull_request:
+    branches: [main, feature/mobile-ux-v462]
+  workflow_dispatch:
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock playwright
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/mobile-smoke.cjs
