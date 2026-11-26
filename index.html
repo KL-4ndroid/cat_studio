@@ -293,7 +293,12 @@ select.catux-enhanced{display:none!important}
 #v2Dialog .v2-options button{min-height:44px;border:1px solid #c8d8ce;background:#f2f5ed;color:#355444;border-radius:10px;padding:6px 11px}
 #v2Dialog .v2-options button[aria-pressed=true]{background:#303d36;border-color:#303d36;color:#fff}
 #v2Dialog .v2-art{display:grid;place-items:center;background:#f3efe5;border-radius:16px;overflow:hidden}
-#v2Dialog .v2-art svg{display:block;width:100%;height:min(43vh,280px);height:min(43dvh,280px)}
+#v2Dialog .v2-art :is(svg,canvas){display:block;width:100%;height:min(43vh,280px);height:min(43dvh,280px)}
+#v2Dialog .v2-art canvas{touch-action:none;cursor:grab}
+#v2Dialog .v2-art canvas:active{cursor:grabbing}
+#v2Dialog .v2-art canvas[hidden],#v2Dialog #v2ResetOrbit[hidden]{display:none}
+#v2Dialog #v2OrbitStatus{color:#496050;font-size:.82rem;margin:.6rem 0 0}
+#v2Dialog #v2OrbitStatus:empty{display:none}
 #v2Dialog .v2-note,.v2-note{font-size:12px;margin:8px 0 12px;color:#52685c}
 </style>
 </head>
@@ -377,12 +382,15 @@ select.catux-enhanced{display:none!important}
   <div class="v2-options" role="group" aria-label="預覽模式">
    <button type="button" data-v2-view="design">設計圖</button>
    <button type="button" data-v2-view="product">成品預覽</button>
+   <button type="button" data-v2-view="3d">3D 預覽</button>
   </div>
   <div class="v2-options" role="group" aria-label="預覽哪一耳">
    <button type="button" data-v2-ear="L">左耳</button>
    <button type="button" data-v2-ear="R">右耳</button>
+   <button type="button" id="v2ResetOrbit" hidden>回正</button>
   </div>
   <div class="v2-art" id="v2DialogArt"></div>
+  <p id="v2OrbitStatus" role="status"></p>
   <p class="v2-note">成品預覽為模擬效果，實際手工上色、材質與螢幕顏色可能略有差異。</p>
  </div>
 </dialog>
@@ -525,7 +533,7 @@ const headPath='M27 62 C27 53 30 43 32 37 L36 21 Q38 12 45 19 L56 27 Q70 23 84 2
 function hexMix(a,b,t){const parse=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=parse(a),B=parse(b);return '#'+A.map((x,i)=>Math.round(x*(1-t)+B[i]*t).toString(16).padStart(2,'0')).join('');}
 function stripeColor(){const main=state.join==='bridge'?colorFor('centerForehead'):colorFor('leftForehead');return nearestColor(hexMix(main,'#2b211c',.65));}
 function drawingMarkup(id,ops){let art='',defs='';for(let i=0;i<(ops||[]).length;i++){const o=ops[i];const pts=o.points;const d=pts.map((p,j)=>`${j?'L':'M'}${p[0]} ${p[1]}`).join(' ')+(o.tool==='shape'&&pts.length>=3?' Z':pts.length===1?' l.01 0':'');const color=colorData(o.color).hex;const stroke=`<path d="${d}" fill="${o.tool==='shape'&&pts.length>=3?color:'none'}" stroke="${color}" stroke-width="${o.tool==='shape'?0.5:o.width}" stroke-linecap="round" stroke-linejoin="round"/>`;if(o.tool==='erase'){const mid=id+'erase'+i;defs+=`<mask id="${mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="140" height="130"><rect width="140" height="130" fill="white"/><path d="${d}" fill="none" stroke="black" stroke-width="${o.width}" stroke-linecap="round" stroke-linejoin="round"/></mask>`;art=`<g mask="url(#${mid})">${art}</g>`;}else art+=stroke;}return `<defs>${defs}</defs>${art}`;}
-function paintCat(id,x){
+function paintCat(id,x,{texture=false}={}){
  let forehead='';
  const g=gNow();
  const [left,right]=foreheadShapes(g,state.join);
@@ -552,6 +560,29 @@ function paintCat(id,x){
   const stroke=stripeColor().hex;
   stripes=`<g stroke="${stroke}" stroke-width="${state.stripe===1?g.stripeWidth*.75:g.stripeWidth}" fill="none" stroke-linecap="round" opacity="${state.stripe===1?.46:.73}">${tabbyShapes(g).map(d=>`<path d="${d}"/>`).join('')}</g>`;
  }
+ const markings=`${forehead}
+    ${state.finish==='solid'?`${cheekShape(g,"left")}${cheekShape(g,"right")}`:''}
+    ${noseGradient}
+    ${stripes}
+    ${drawingMarkup(id,state.drawing)}`;
+ const noseDefinition=`<radialGradient id="${id}noseGrad" cx="50%" cy="46%" r="75%">
+    <stop offset="0%" stop-color="${colorFor('muzzle')}" stop-opacity=".86"/>
+    <stop offset="40%" stop-color="${colorFor('muzzle')}" stop-opacity=".58"/>
+    <stop offset="72%" stop-color="${colorFor('muzzle')}" stop-opacity=".14"/>
+    <stop offset="100%" stop-color="${colorFor('muzzle')}" stop-opacity="0"/>
+   </radialGradient>`;
+ if(texture){
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="840" height="780" viewBox="0 0 140 130">
+   <defs>
+    <clipPath id="textureHead"><path d="${headPath}"/></clipPath>
+    ${noseDefinition}
+    <filter id="softMark" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="${g.softness}"/></filter>
+    <filter id="noseSoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.5"/></filter>
+   </defs>
+   <rect width="140" height="130" fill="${colAt(0)}"/>
+   <g clip-path="url(#textureHead)">${markings}</g>
+  </svg>`;
+ }
  return `<g transform="translate(${x} 55) scale(1.38)">
   <ellipse cx="72" cy="120" rx="48" ry="5" fill="#6d695f" opacity=".075"/>
   <path d="M67 92 L67 110 Q67 119 73 119 Q79 119 79 109 L79 92" fill="url(#gold)" stroke="#b18843" stroke-width=".8"/>
@@ -559,21 +590,12 @@ function paintCat(id,x){
   <ellipse cx="71" cy="27" rx="14" ry="6.5" fill="none" stroke="#b68e50" stroke-width="5.3"/>
   <ellipse cx="71" cy="27" rx="14" ry="6.5" fill="none" stroke="url(#gold)" stroke-width="3.4"/>
   <defs><clipPath id="${id}clip"><path d="${headPath}"/></clipPath>
-   <radialGradient id="${id}noseGrad" cx="50%" cy="46%" r="75%">
-    <stop offset="0%" stop-color="${colorFor('muzzle')}" stop-opacity=".86"/>
-    <stop offset="40%" stop-color="${colorFor('muzzle')}" stop-opacity=".58"/>
-    <stop offset="72%" stop-color="${colorFor('muzzle')}" stop-opacity=".14"/>
-    <stop offset="100%" stop-color="${colorFor('muzzle')}" stop-opacity="0"/>
-   </radialGradient>
+   ${noseDefinition}
   </defs>
   <g filter="url(#shadow)">
    <path d="${headPath}" fill="${colAt(0)}"/>
    <g clip-path="url(#${id}clip)">
-    ${forehead}
-    ${state.finish==='solid'?`${cheekShape(g,"left")}${cheekShape(g,"right")}`:''}
-    ${noseGradient}
-    ${stripes}
-    ${drawingMarkup(id,state.drawing)}
+    ${markings}
     <path d="M35 48 Q43 31 54 33" stroke="white" stroke-width="3.2" opacity=".30" fill="none" stroke-linecap="round"/>
     <path d="M88 32 Q98 35 105 48" stroke="white" stroke-width="2.5" opacity=".20" fill="none" stroke-linecap="round"/>
     <path d="M35 87 Q60 106 91 91" stroke="white" stroke-width="4.1" opacity=".17" fill="none" stroke-linecap="round"/>
@@ -832,17 +854,83 @@ function pairArt42(prefix){return svgCopy42(productArtwork(),prefix);}
 function openProductPreview(){
  const dialog=$('v2Dialog');
  if(drawPointer!==null||dialog.open)return;
+ const artwork=$('v2DialogArt'),status=$('v2OrbitStatus'),reset=$('v2ResetOrbit');
  let ear=pair.active==='right'?'R':'L',mode='product';
- const setArt=()=>{
+ let preview=null,canvas=null,request=0;
+
+ function clear3D(){
+  request++;
+  preview?.dispose();
+  preview=canvas=null;
+  reset.hidden=true;
+ }
+
+ function show2D(){
+  clear3D();
+  artwork.innerHTML=svgCopy42(productArtwork({ear,mode}),'editorProduct');
+ }
+
+ function showUnavailable(){
+  if(mode!=='3d'||!dialog.open)return;
+  mode='product';
+  show2D();
+  updateSelection();
+  status.textContent='目前無法開啟 3D，已切回 2D 成品預覽。';
+ }
+
+ function updateSelection(){
   for(const button of dialog.querySelectorAll('[data-v2-view]'))button.setAttribute('aria-pressed',String(button.dataset.v2View===mode));
   for(const button of dialog.querySelectorAll('[data-v2-ear]'))button.setAttribute('aria-pressed',String(button.dataset.v2Ear===ear));
-  $('v2DialogArt').innerHTML=svgCopy42(productArtwork({ear,mode}),'editorProduct');
- };
+ }
+
+ async function show3D(){
+  const id=++request;
+  if(!canvas){
+   canvas=document.createElement('canvas');
+   canvas.tabIndex=0;
+   canvas.setAttribute('aria-label','3D 耳環。方向鍵旋轉，加號或減號縮放，Home 回正。');
+   artwork.replaceChildren(canvas);
+  }
+  canvas.hidden=true;
+  reset.hidden=true;
+  status.textContent='載入 3D 預覽…';
+  try{
+   const {createPreview}=await import('./cat-preview-3d.js');
+   if(id!==request||!dialog.open)return;
+   preview??=createPreview(canvas,showUnavailable);
+   const right=!pair.same&&ear==='R';
+   const side=right?'right':'left';
+   const selected=pair.active===side?state:pair[side];
+   const {svg,color}=withState(selected,()=>({svg:paintCat('face',0,{texture:true}),color:colAt(0)}));
+   await preview.setArtwork(svg,color);
+   if(id!==request||!dialog.open)return;
+   canvas.hidden=false;
+   reset.hidden=false;
+   status.textContent='拖曳旋轉 · 雙指或滾輪縮放';
+  }catch(error){
+   if(id===request)showUnavailable();
+  }
+ }
+
+ function setArt(){
+  updateSelection();
+  status.textContent='';
+  if(mode==='3d')void show3D();
+  else show2D();
+ }
+
+ reset.onclick=()=>preview?.reset();
  dialog.onclick=event=>{
   const button=event.target.closest('button');
-  if(button?.dataset.v2View){mode=button.dataset.v2View;setArt();}
-  if(button?.dataset.v2Ear){ear=button.dataset.v2Ear;setArt();}
+  const view=button?.dataset.v2View,side=button?.dataset.v2Ear;
+  if(view&&view!==mode){mode=view;setArt();}
+  if(side&&side!==ear){ear=side;setArt();}
  };
+ dialog.addEventListener('close',()=>{
+  clear3D();
+  artwork.replaceChildren();
+  status.textContent='';
+ },{once:true});
  setArt();
  dialog.showModal();
 }
