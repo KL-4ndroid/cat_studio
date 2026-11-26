@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.6.2</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.7.2</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -247,6 +247,44 @@ select.catux-enhanced{display:none!important}
 }
 @media(prefers-reduced-motion:reduce){.catux-dialog[open]{animation:none}}
 
+
+/* V4.7 Studio Manager: mobile-first workbench. */
+#adminWorkspace{--studio-ink:#303d36;--studio-soft:#e1ebe0;min-width:0;max-width:100%;color:var(--studio-ink)}
+#adminWorkspace .sm44-nav{gap:6px}#adminWorkspace .sm44-nav button{min-height:44px;flex:1;text-align:center;font-weight:650}
+#adminWorkspace .sm44-card{background:#fffdfa;border-radius:18px;overflow-wrap:anywhere}
+#adminWorkspace .sm44-card h3{font-size:16px}#adminWorkspace .sm44-card p{font-size:13px;line-height:1.65}
+#adminWorkspace .sm47-status{display:inline-block;border-radius:99px;background:#e1ebe0;color:#405b4b;padding:5px 9px;font-size:12px;font-weight:650}
+#adminWorkspace .sm47-status[data-status="待確認"]{background:#efe3cb;color:#725829}#adminWorkspace .sm47-status[data-status="製作中"]{background:#f4e9c8;color:#705a25}#adminWorkspace .sm47-status[data-status="品質檢查"]{background:#e1e9f0;color:#39586c}
+#adminWorkspace .sm47-orderbody{display:flex;align-items:center;gap:9px;min-width:0}#adminWorkspace .sm47-thumb{width:70px;flex:none;background:#f1eee6;border-radius:9px;overflow:hidden}#adminWorkspace .sm47-thumb svg{width:100%;height:60px;display:block}#adminWorkspace .sm47-orderinfo{min-width:0;flex:1}#adminWorkspace .sm47-orderinfo b{display:block;overflow-wrap:anywhere}
+#adminWorkspace .sm47-statusline{display:flex;justify-content:space-between;gap:6px;align-items:center;flex-wrap:wrap}
+#adminWorkspace .sm47-pigments{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:14px 0}#adminWorkspace .sm47-pigment{border:1px solid #dce4da;border-radius:13px;padding:10px;background:white;text-align:left;min-width:0;color:#303d36;overflow-wrap:anywhere}#adminWorkspace .sm47-pigment .sm47-chip{display:block;height:65px;border:1px solid #303d3620;border-radius:9px;margin-bottom:8px}#adminWorkspace .sm47-pigment small{display:block;font-size:12px;color:#52685c;margin-top:4px}#adminWorkspace .sm47-pigment:focus-visible{outline:3px solid #789488}
+#adminWorkspace .sm47-form{display:grid;gap:9px;max-width:550px;margin:12px 0}#adminWorkspace .sm47-form label{display:block;font-size:13px}#adminWorkspace .sm47-form input:not([type=checkbox]),#adminWorkspace .sm47-form textarea,#adminWorkspace .sm47-form select{width:100%;min-height:44px;border:1px solid #dce4da;border-radius:10px;padding:9px;font:inherit;font-size:16px;background:#fff;color:#303d36}#adminWorkspace .sm47-form input[type=color]{padding:4px}
+#adminWorkspace .sm47-actionbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}#adminWorkspace .sm47-actionbar button,#adminWorkspace .sm44-toolbar button,#adminWorkspace .sm44-card button,#adminWorkspace .sm47-form button{min-height:44px}
+#adminWorkspace .sm47-check{display:flex;align-items:center;gap:9px;min-height:48px;padding:6px 0;border-bottom:1px solid #e8ebe3}#adminWorkspace .sm47-check button{flex:1;display:flex;align-items:center;gap:9px;text-align:left;background:transparent;border:0;color:#303d36;font:inherit;min-width:0;padding:4px}#adminWorkspace .sm47-check button span{overflow-wrap:anywhere}#adminWorkspace .sm47-check input{width:23px;height:23px;flex:none;accent-color:#547663}#adminWorkspace .sm47-check b{margin-left:auto;font-size:14px}
+#adminWorkspace .sm47-progress{height:7px;background:#e6ebe3;border-radius:99px;overflow:hidden}#adminWorkspace .sm47-progress span{display:block;height:100%;background:#789488;border-radius:99px}
+#adminWorkspace .sm47-focusbar{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}#adminWorkspace.sm47-focus .admin-heading,#adminWorkspace.sm47-focus .sm44-nav,#adminWorkspace.sm47-focus #sm44Drop,#adminWorkspace.sm47-focus .sm47-list,#adminWorkspace.sm47-focus .sm47-detailfields,#adminWorkspace.sm47-focus .sm47-normalactions{display:none!important}#adminWorkspace.sm47-focus .sm44-orders{display:block}#adminWorkspace.sm47-focus .sm44-art svg{height:clamp(240px,48vh,580px)}#adminWorkspace .sm47-back{display:none}
+#adminWorkspace .sm47-checks{padding:12px 0}#adminWorkspace .sm47-checks h3{margin-bottom:7px}
+#adminWorkspace .sm47-settings{display:grid;gap:8px}#adminWorkspace .sm47-settings button{min-height:48px;text-align:left}
+#adminWorkspace .sm47-dirty{color:#935e37;font-size:12px;font-weight:650}
+@media(max-width:760px){
+ #adminWorkspace{width:100%;max-width:100%;min-width:0;padding:12px 10px calc(90px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
+ #adminWorkspace .admin-heading{display:block}#adminWorkspace .admin-heading h2{font-size:24px}#adminWorkspace .admin-heading .tag{display:inline-block;margin-top:6px}
+ #adminWorkspace .sm44-nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:#fffdfa;border-top:1px solid #dce4da;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:6px 8px max(7px,env(safe-area-inset-bottom,0px));margin:0;gap:4px}
+ #adminWorkspace .sm44-nav button{min-height:53px;font-size:12px;padding:5px;min-width:0}
+ #adminWorkspace .sm44-nav button[data-sm44-tab=rules],#adminWorkspace .sm44-nav button[data-sm44-tab=geometry],#adminWorkspace .sm44-nav button[data-sm44-tab=backup]{display:none}
+ #adminWorkspace .sm44-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#adminWorkspace .sm44-orders{display:block}
+ #adminWorkspace .sm47-detail-open .sm47-list,#adminWorkspace .sm47-detail-open #sm44Drop{display:none}
+ #adminWorkspace .sm47-orders-list #sm44Sheet{display:none}#adminWorkspace .sm47-back{display:inline-flex;align-items:center}
+ #adminWorkspace .sm44-card{padding:13px;margin:9px 0}#adminWorkspace .sm44-art svg{height:185px}#adminWorkspace .sm44-art:has(figure:only-child) svg{height:clamp(240px,38vh,370px)}
+ #adminWorkspace .sm44-two{grid-template-columns:1fr;gap:5px}#adminWorkspace .sm44-card input:not([type=checkbox]):not([type=range]),#adminWorkspace .sm44-card textarea,#adminWorkspace .sm44-search,#adminWorkspace .catux-select-trigger{font-size:16px;min-height:44px}
+ #adminWorkspace .sm47-pigments{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #adminWorkspace .sm44-toolbar{gap:5px}#adminWorkspace .sm44-toolbar button{flex:1;padding:8px 6px;font-size:13px;min-width:0;text-align:center}
+ #adminWorkspace .sm44-order{padding:10px}#adminWorkspace .sm47-actionbar button{flex:1;min-width:100px}
+ #adminWorkspace .sm47-form{max-width:none}#adminWorkspace .sm44-sheethead{align-items:flex-start}
+ #adminWorkspace .admin-grid{min-width:0;max-width:100%;grid-template-columns:1fr}#adminWorkspace .admin-grid>*{min-width:0;max-width:100%}
+}
+@media print{#adminWorkspace .sm47-no-print,#adminWorkspace .sm47-focusbar{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -321,7 +359,7 @@ select.catux-enhanced{display:none!important}
   </section>
  </div>
 </main>
-<footer class="footer">MILU BANBAN · CAT LAB V4.6.2｜尚未串接購物車或訂單系統</footer>
+<footer class="footer">MILU BANBAN · CAT LAB V4.7.2｜尚未串接購物車或訂單系統</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (()=>{
@@ -674,7 +712,7 @@ updateTemplateList();
 // V4 design workflow — snapshots are portable and do not overwrite the admin defaults.
 const savedKey='mb-cat-v4-saved';
 let savedDesigns=[];try{const a=JSON.parse(localStorage.getItem(savedKey));if(Array.isArray(a))savedDesigns=a.filter(validDesign).slice(0,30);}catch(_){}
-function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.6.2',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
+function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.7.2',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
 function hashCode(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36).toUpperCase().padStart(7,'0');}
 function getDesignCode(){const p=designPayload();const clean=st=>({mode:st.mode,cols:st.cols.slice(0,st.mode),zones:Object.fromEntries(zoneKeys.map(k=>[k,Math.min(st.zones[k],st.mode-1)])),join:st.join,finish:st.finish,muzzle:st.muzzle,stripe:st.stripe,drawing:st.drawing||[]});return 'MB-CAT-'+hashCode(JSON.stringify({same:p.same,left:clean(p.left),right:clean(p.right),geometry:p.geometry,palette:p.palette.map(c=>({...c,code:[...usedColors(p.left),...usedColors(p.right)].some(x=>x.id===c.id)?c.code:''}))}));}
 function validDesign(d){return d&&d.format==='MILUBANBAN-CAT-DESIGN-V4'&&d.version===4&&typeof d.same==='boolean'&&validSave(d.left)&&validSave(d.right)&&d.geometry&&validPalette(d.palette)&&[d.left,d.right].every(st=>[...st.cols,...(st.drawing||[]).map(o=>o.color)].every(id=>d.palette.some(p=>p.id===id)));}
@@ -781,14 +819,14 @@ btn42('v43RestoreDraft',()=>{if(previousDraft43){restoreDesign(previousDraft43);
 renderSaved();setDirty(JSON.stringify(draftGeom)!==JSON.stringify(publishedGeom));new42();show42('editor');checkMobilePreview();
 function studioManager44(){
  const key='mb-cat-v44-orders', rulesKey='mb-cat-v44-rules', metaKey='mb-cat-v44-pigment-meta';
- const statuses=['待確認','等待製作','製作中','已完成'];
+ const statuses=['待確認','等待製作','製作中','品質檢查','已完成'];
  const read=(k,fallback)=>{try{return JSON.parse(localStorage.getItem(k))??fallback}catch(_){return fallback}};
  const defaults={widthMm:0,minMm:0,maxColors:0,gradient:true};
  let rules={...defaults,...read(rulesKey,{})}, meta=read(metaKey,{}), orders=read(key,[]);
  if(!Array.isArray(orders))orders=[];
  if(!meta||typeof meta!=='object'||Array.isArray(meta))meta={};
  orders=orders.filter(o=>o&&typeof o.id==='string'&&validDesign(o.design)&&statuses.includes(o.status));
- let selected='',tab='home',view='normal',side='both',target='',step=-1;
+ let selected='',tab='home',view='normal',side='both',target='',step=-1,focus47=false,pigmentEdit='',pigmentQuery='',pigmentFilter='all',wake47=null;
  const safe=s=>esc(String(s??''));
  const uid=()=>globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
  const store=(k,value)=>{try{localStorage.setItem(k,JSON.stringify(value));return true}catch(_){toast('本機儲存失敗：容量不足或瀏覽器限制，請先備份');return false}};
@@ -797,7 +835,7 @@ function studioManager44(){
  const json=(obj,name)=>downloadBlob(new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),name);
  const workspace=$('adminWorkspace'), heading=workspace.querySelector('.admin-heading');
  heading.querySelector('h2').textContent='貓咪 DIY 工作室';
- heading.querySelector('.eyebrow').textContent='STUDIO MANAGER / V4.4';
+ heading.querySelector('.eyebrow').textContent='STUDIO / V4.7.2';
  heading.querySelector('p').textContent='接收客製設計、確認顏料與手工製作，讓每副作品有清楚的製作依據。';
  heading.querySelector('.tag').textContent='本機管理版';
  const legacy=document.createElement('section');legacy.id='sm44Geometry';
@@ -805,11 +843,11 @@ function studioManager44(){
  workspace.append(legacy);legacy.append(grid,geomCard);
  paletteCard.id='sm44Palette';
  const nav=document.createElement('nav');nav.className='sm44-nav';
- nav.innerHTML=[['home','工作室首頁'],['orders','客製作品'],['palette','實體顏料'],['rules','製作規範'],['geometry','進階版型'],['backup','備份設定']].map(([id,label])=>`<button type="button" data-sm44-tab="${id}">${label}</button>`).join('');
+ nav.innerHTML=[['home','首頁'],['orders','製作單'],['palette','顏料'],['settings','設定'],['rules','製作規範'],['geometry','進階版型'],['backup','備份還原']].map(([id,label])=>`<button type="button" data-sm44-tab="${id}">${label}</button>`).join('');
  heading.after(nav);
  const panel=document.createElement('div');panel.id='sm44Panel';nav.after(panel);
- function go(t){tab=t;for(const b of nav.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.sm44Tab===t));legacy.hidden=t!=='geometry';paletteCard.hidden=t!=='palette';panel.hidden=t==='geometry'||t==='palette';if(t==='palette'){renderPaletteEditor();renderMeta()}else if(t==='geometry'){renderGeometryControls();renderPreview()}else render();}
- nav.addEventListener('click',e=>{const b=e.target.closest('[data-sm44-tab]');if(b)go(b.dataset.sm44Tab)});
+ function go(t){if(t!=='orders')leaveFocus47();tab=t;for(const b of nav.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.sm44Tab===t));legacy.hidden=t!=='geometry';paletteCard.hidden=t!=='palette';panel.hidden=t==='geometry'||t==='palette';if(t==='palette'){renderPigments47()}else if(t==='geometry'){renderGeometryControls();renderPreview()}else render();}
+ nav.addEventListener('click',async e=>{const b=e.target.closest('[data-sm44-tab]');if(b&&await canLeave47())go(b.dataset.sm44Tab)});
  const metaPanel=document.createElement('div');metaPanel.className='sm44-meta';paletteCard.append(metaPanel);
  function renderMeta(){
   metaPanel.innerHTML='<h3>顏料工藝備註</h3><p class="sm44-muted">此區僅供工作室參考，與畫面色碼分開儲存。</p>'+palette.map(p=>{const m=meta[p.id]||{};return `<div class="sm44-meta-row"><span class="sm44-swatch" style="background:${p.hex}"></span><b>${safe(p.name)} ${safe(p.code||'（待編號）')}</b><select data-meta-type="${safe(p.id)}" aria-label="透明度">${['未設定','不透明','半透明','透明'].map(v=>`<option ${m.type===v?'selected':''}>${v}</option>`).join('')}</select><input data-meta-note="${safe(p.id)}" aria-label="製作備註" placeholder="珠光、金屬色、上色備註" value="${safe(m.note)}" maxlength="200"></div>`}).join('')+'<button class="action primary" id="sm44SaveMeta">儲存工藝備註</button>';
@@ -880,20 +918,61 @@ function studioManager44(){
   const d={format:raw.format,version:4,revision:String(raw.revision||'4').slice(0,20),same:raw.same,left:clone(raw.left),right:clone(raw.same?raw.left:raw.right),geometry:normalizedGeom(raw.geometry),palette:normalizedPalette(raw.palette),title:String(raw.title||'未命名貓咪').slice(0,40),code:String(raw.code||'').slice(0,64)};
   const signature=JSON.stringify([d.same,d.left,d.right,d.geometry,d.palette]);const duplicate=orders.find(o=>JSON.stringify([o.design.same,o.design.left,o.design.right,o.design.geometry,o.design.palette])===signature&&o.design.code===d.code);
   if(duplicate){selected=duplicate.id;toast('這份設計已匯入，已開啟原製作單');go('orders');return}
-  const o={id:uid(),design:d,status:'待確認',ref:'',note:'',created:new Date().toISOString()};
+  const o={id:uid(),design:d,status:'待確認',ref:'',note:'',assignee:'',due:'',checks:{left:[],right:[]},qc:false,created:new Date().toISOString()};
   if(replaceOrders([o,...orders])){selected=o.id;view='normal';side='both';step=-1;go('orders');toast('已建立客製製作單')}
  }
  async function fileImport(f){if(!f)return;try{if(f.size>64000000)throw Error('檔案過大');importOne(JSON.parse(await f.text()))}catch(e){toast('匯入失敗：'+e.message)}}
+
+ function orderCard47(o){
+  let thumb='';try{thumb=art(o.design,'left','flat')}catch(_){}
+  return `<button class="sm44-order" data-sm-id="${safe(o.id)}" aria-pressed="${o.id===selected}"><div class="sm47-orderbody"><span class="sm47-thumb">${thumb}</span><span class="sm47-orderinfo"><b>${safe(o.design.title)}</b><small>${safe(o.ref||o.design.code||'未填編號')}</small><small>${safe(o.assignee||'未分派')}${o.due?' · '+safe(o.due):''}</small></span><span class="sm47-status" data-status="${safe(o.status)}">${safe(o.status)}</span></div></button>`;
+ }
+ function checklist47(o,ears){
+  const d=o.design;return ears.map(ear=>{const st=ear==='right'&&!d.same?d.right:d.left,colors=colorsFor(d,st),done=Array.isArray(o.checks?.[ear])?o.checks[ear]:[],count=colors.filter(p=>done.includes(p.id)).length;return `<section class="sm47-checks"><h3>${ear==='left'?'左耳':'右耳'}上色確認 · ${count}/${colors.length}</h3><div class="sm47-progress"><span style="width:${colors.length?100*count/colors.length:0}%"></span></div>${colors.map(p=>`<div class="sm47-check"><button type="button" data-sm47-color="${safe(p.id)}" data-sm47-ear="${ear}"><i class="sm44-swatch" style="background:${p.hex}"></i><span>${safe(p.name)}</span><b>${safe(resolved(p).code||'待編號')}</b></button><input type="checkbox" aria-label="${safe(ear==='left'?'左耳':'右耳')}${safe(p.name)} 已確認" data-sm47-check="${safe(p.id)}" data-sm47-ear="${ear}" ${done.includes(p.id)?'checked':''}></div>`).join('')}<p class="sm44-muted">清單含可能被覆蓋的顏料，勾選僅代表工作室人工確認，不是實際製作順序。</p></section>`}).join('');
+ }
+ function toggleCheck47(t){const o=current();if(!o)return;const ear=t.dataset.sm47Ear,id=t.dataset.sm47Check;if(!['left','right'].includes(ear))return;const checks={left:[],right:[],...o.checks};const next=new Set(Array.isArray(checks[ear])?checks[ear]:[]);if(t.checked)next.add(id);else next.delete(id);checks[ear]=[...next];if(replaceOrders(orders.map(x=>x.id===o.id?{...o,checks}:x)))redrawSheet();else t.checked=!t.checked}
+ function dirty47(){const o=current();if(tab!=='orders'||!o||!$('sm44Ref'))return false;return $('sm44Ref').value.trim()!==(o.ref||'')||$('sm44Note').value!==(o.note||'')||$('sm44Status').value!==o.status||$('sm47Assignee').value.trim()!==(o.assignee||'')||$('sm47Due').value!==(o.due||'')||$('sm47QC').checked!==!!o.qc}
+ function showDirty47(){if($('sm47Dirty'))$('sm47Dirty').hidden=!dirty47()}
+ async function canLeave47(){if(tab==='palette'&&pigmentDirty47()){if(!await catUX.ask('離開顏料編輯？','未儲存的顏料資料將被放棄。','放棄',true,'繼續編輯'))return false;pigmentEdit=''}return !dirty47()||await catUX.ask('離開未儲存的製作單？','尚未儲存的訂單資料與備註會被放棄。','放棄變更',true,'繼續編輯')}
+ function leaveFocus47(){focus47=false;workspace.classList.remove('sm47-focus');if(wake47){wake47.release().catch(()=>{});wake47=null}}
+ async function toggleWake47(){if(wake47){await wake47.release().catch(()=>{});wake47=null;toast('已停止保持螢幕亮起');return}if(!navigator.wakeLock){toast('此裝置不支援保持螢幕亮起');return}try{wake47=await navigator.wakeLock.request('screen');wake47.addEventListener('release',()=>{wake47=null});toast('製作時保持螢幕亮起')}catch(_){toast('無法保持螢幕亮起，請檢查裝置設定')}}
+ const pigmentUI=document.createElement('div');pigmentUI.id='sm47Pigments';paletteCard.append(pigmentUI);
+ const oldPaletteChildren=[...paletteCard.children].filter(x=>x!==pigmentUI);for(const x of oldPaletteChildren)x.hidden=true;
+ function renderPigments47(){
+  const shown=palette.filter(p=>(pigmentFilter==='all'||(pigmentFilter==='enabled'?p.enabled!==false:p.enabled===false))&&[p.name,p.code,p.hex].join(' ').toLowerCase().includes(pigmentQuery.toLowerCase()));
+  const p=pigmentEdit==='new'?{id:'',name:'',code:'',hex:'#F6EFE0',enabled:true}:palette.find(x=>x.id===pigmentEdit),m=p?meta[p.id]||{}:{};
+  pigmentUI.innerHTML=`<div class="sm44-card"><h3>實體顏料 · ${palette.length} 種</h3><p>供應中 ${palette.filter(p=>p.enabled!==false).length} 種 · 待填編號 ${palette.filter(p=>!p.code).length} 種。僅本機色票，尚未雲端發布。</p><div class="sm47-actionbar"><button class="action primary" id="sm47AddPigment">＋ 新增顏料</button><button class="quiet-btn" id="sm47Batch">批次匯入 JSON</button><input id="sm47BatchFile" type="file" accept=".json,application/json" hidden></div><input class="sm44-search" type="search" id="sm47PigmentSearch" placeholder="搜尋名稱、編號或色碼" value="${safe(pigmentQuery)}"><div class="sm44-toolbar">${[['all','全部'],['enabled','供應中'],['disabled','已停用']].map(([v,n])=>`<button data-sm47-filter="${v}" aria-pressed="${pigmentFilter===v}">${n}</button>`).join('')}</div><div class="sm47-pigments">${shown.map(p=>`<button type="button" class="sm47-pigment" data-sm47-pigment="${safe(p.id)}"><i class="sm47-chip" style="background:${p.hex}"></i><b>${safe(p.name)}</b><small>${safe(p.code||'待編號')}</small><small>${p.enabled!==false?'供應中':'已停用'} · ${safe(meta[p.id]?.type||'未設定')}</small></button>`).join('')||'<p>沒有符合的顏料。</p>'}</div></div>${p?`<div class="sm44-card" id="sm47PigmentEdit"><h3>${p.id?'編輯顏料':'新增顏料'}</h3><div class="sm47-form"><label>顏料名稱<input id="sm47PName" maxlength="30" value="${safe(p.name)}"></label><label>工作室編號<input id="sm47PCode" maxlength="40" value="${safe(p.code)}"></label><label>模擬色碼<input id="sm47PHex" maxlength="7" value="${safe(p.hex)}"></label><label>調整模擬色<input id="sm47PPick" type="color" value="${p.hex}"></label><label>透明度<select id="sm47PType">${['未設定','透明','半透明','不透明'].map(t=>`<option ${m.type===t?'selected':''}>${t}</option>`).join('')}</select></label><label>工藝備註<textarea id="sm47PNote" maxlength="200" rows="3">${safe(m.note)}</textarea></label><label><input id="sm47PEnabled" type="checkbox" ${p.enabled!==false?'checked':''}> 開放顧客使用</label><div class="sm47-actionbar"><button class="quiet-btn" id="sm47CancelPigment">取消</button><button class="action primary" id="sm47SavePigment">儲存顏料</button></div></div></div>`:''}`;
+ }
+ function pigmentDirty47(){if(!pigmentEdit||!$('sm47PName'))return false;const p=pigmentEdit==='new'?{name:'',code:'',hex:'#F6EFE0',enabled:true}:palette.find(x=>x.id===pigmentEdit);if(!p)return false;const m=meta[p.id]||{};return $('sm47PName').value!==p.name||$('sm47PCode').value!==(p.code||'')||$('sm47PHex').value.toUpperCase()!==p.hex.toUpperCase()||$('sm47PEnabled').checked!==(p.enabled!==false)||$('sm47PType').value!==(m.type||'未設定')||$('sm47PNote').value!==(m.note||'')}
+ function transaction47(entries){const old=entries.map(([k])=>[k,localStorage.getItem(k)]);try{for(const [k,v] of entries)localStorage.setItem(k,JSON.stringify(v));return true}catch(_){for(const [k,v] of old)try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(_){}toast('儲存失敗，請確認瀏覽器容量並備份');return false}}
+ function setPalette47(next,nextMeta){if(!validPalette(next)||new Set(next.filter(p=>p.code).map(p=>p.code)).size!==next.filter(p=>p.code).length){toast('請確認名稱、色碼、編號不重複，且至少一種顏料啟用');return false}if(!transaction47([[paletteKey,normalizedPalette(next)],[metaKey,nextMeta]]))return false;applyPalette(next);meta=nextMeta;designPalette=null;pair.left=adaptState(pair.left);pair.right=adaptState(pair.right);state=adaptState(state);resetDrawHistory();renderAll();return true}
+ pigmentUI.addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='sm47SavePigment'){const id=pigmentEdit==='new'?'p-'+uid().replace(/[^a-zA-Z0-9-]/g,'').slice(0,30):pigmentEdit,p={id,name:$('sm47PName').value.trim(),code:$('sm47PCode').value.trim(),hex:$('sm47PHex').value.trim().toUpperCase(),enabled:$('sm47PEnabled').checked};const next=pigmentEdit==='new'?[...palette,p]:palette.map(x=>x.id===id?p:x);if(setPalette47(next,{...meta,[id]:{type:$('sm47PType').value,note:$('sm47PNote').value}})){pigmentEdit='';renderPigments47();toast('顏料已儲存')}return}
+ if(pigmentDirty47()&&!await catUX.ask('放棄顏料編輯？','未儲存的顏料資料將不會保留。','放棄',true,'繼續編輯'))return;
+ if(b.id==='sm47Batch'){$('sm47BatchFile').click();return}if(b.id==='sm47AddPigment')pigmentEdit='new';else if(b.id==='sm47CancelPigment')pigmentEdit='';else if(b.dataset.sm47Pigment)pigmentEdit=b.dataset.sm47Pigment;else if(b.dataset.sm47Filter){pigmentFilter=b.dataset.sm47Filter;pigmentEdit=''}else return;renderPigments47();$('sm47PigmentEdit')?.scrollIntoView({block:'start',behavior:'smooth'})});
+ pigmentUI.addEventListener('input',e=>{if(e.target.id==='sm47PigmentSearch'){pigmentQuery=e.target.value;for(const b of pigmentUI.querySelectorAll('[data-sm47-pigment]')){const p=palette.find(x=>x.id===b.dataset.sm47Pigment);b.hidden=![p.name,p.code,p.hex].join(' ').toLowerCase().includes(pigmentQuery.toLowerCase())}}if(e.target.id==='sm47PPick')$('sm47PHex').value=e.target.value.toUpperCase()});
+ pigmentUI.addEventListener('change',async e=>{if(e.target.id!=='sm47BatchFile'||!e.target.files[0])return;try{const file=e.target.files[0];if(file.size>2000000)throw Error('檔案過大');const raw=JSON.parse(await file.text()),arr=Array.isArray(raw)?raw:raw.palette;if(!validPalette(arr))throw Error('需為完整有效的色票 JSON 陣列');const next=normalizedPalette(arr);if(!await catUX.ask('取代本機顏料？',`將以 ${next.length} 種顏料取代目前色票。先前製作單的設計快照不會改色。`,'匯入並取代',true))return;if(setPalette47(next,{})){pigmentEdit='';renderPigments47();toast('顏料匯入完成')}}catch(err){toast('匯入失敗：'+err.message)}});
+ async function restoreBackup47(file){if(!file)return;try{if(file.size>64000000)throw Error('檔案過大');const r=JSON.parse(await file.text());if(!['MILUBANBAN-STUDIO-BACKUP-V44','MILUBANBAN-STUDIO-BACKUP-V47'].includes(r.format)||!Array.isArray(r.orders)||r.orders.length>1000||!r.orders.every(o=>o&&typeof o.id==='string'&&validDesign(o.design)&&statuses.includes(o.status))||new Set(r.orders.map(o=>o.id)).size!==r.orders.length||!validPalette(r.palette)||!r.geometry||!Array.isArray(r.geometry.templates)||!r.rules||!r.meta||typeof r.meta!=='object'||Array.isArray(r.meta))throw Error('備份格式不符');
+ const codes=r.palette.filter(p=>p.code).map(p=>p.code);if(new Set(codes).size!==codes.length)throw Error('顏料編號重複');
+ const nextRules={widthMm:Number(r.rules.widthMm),minMm:Number(r.rules.minMm),maxColors:Number(r.rules.maxColors),gradient:!!r.rules.gradient};if(!(nextRules.widthMm>=0&&nextRules.widthMm<=100&&nextRules.minMm>=0&&nextRules.minMm<=10&&Number.isInteger(nextRules.maxColors)&&nextRules.maxColors>=0&&nextRules.maxColors<=100))throw Error('規範數值不符');
+ const g={published:normalizedGeom(r.geometry.published),draft:normalizedGeom(r.geometry.draft),templates:r.geometry.templates.slice(0,100).filter(t=>t&&typeof t.name==='string'&&t.geom).map(t=>({...t,name:t.name.slice(0,60),geom:normalizedGeom(t.geom)}))};
+ if(!await catUX.ask('還原並取代本機資料？',`將還原 ${r.orders.length} 張製作單與 ${r.palette.length} 種顏料。請先確認已有目前資料的備份。`,'還原備份',true))return;
+ if(!transaction47([[key,r.orders],[paletteKey,normalizedPalette(r.palette)],[metaKey,r.meta],[rulesKey,nextRules],[geomStorage,g]]))return;
+ orders=r.orders;applyPalette(r.palette);meta=r.meta;rules=nextRules;publishedGeom=g.published;draftGeom=g.draft;templates=g.templates;designPalette=null;designGeom=null;pair.left=adaptState(pair.left);pair.right=adaptState(pair.right);state=adaptState(state);resetDrawHistory();updateTemplateList();renderGeometryControls();renderAll();selected='';go('home');toast('工作室備份已還原');
+ }catch(e){toast('還原失敗：'+e.message)}}
+
  function render(){
+  panel.classList.toggle('sm47-detail-open',tab==='orders'&&!!current());panel.classList.toggle('sm47-orders-list',tab==='orders'&&!current());
   if(tab==='home'){
-   panel.innerHTML=`<div class="sm44-stats">${statuses.map(s=>`<button data-status="${s}"><span>${s}</span><strong>${orders.filter(o=>o.status===s).length}</strong></button>`).join('')}</div><div class="sm44-card"><h3>今天要處理什麼？</h3><button class="action primary" data-sm-go="orders">接收顧客設計</button> <button class="quiet-btn" data-sm-go="palette">管理實體顏料</button><p class="sm44-muted">本機試用：製作單只儲存在這個瀏覽器，請定期備份。未連接購物車、付款、登入或雲端同步。</p></div>`;
+   panel.innerHTML=`<div class="sm44-stats">${statuses.map(s=>`<button data-status="${s}"><span>${s}</span><strong>${orders.filter(o=>o.status===s).length}</strong></button>`).join('')}</div><div class="sm44-card"><h3>今天要處理什麼？</h3><button class="action primary" data-sm-go="orders">接收顧客設計</button> <button class="quiet-btn" data-sm-go="palette">管理實體顏料</button><p class="sm44-muted">本機管理：資料只存於此瀏覽器，請定期備份。</p></div><div class="sm44-card"><h3>近期未完成作品</h3>${orders.filter(o=>o.status!=='已完成').slice(0,6).map(orderCard47).join('')||'<p>目前沒有待辦製作單。</p>'}</div>`;
   }else if(tab==='orders'){
    const o=current(), d=o?.design;
-   panel.innerHTML=`<div class="sm44-card sm44-no-print" id="sm44Drop"><h3>接收顧客的設計</h3><p>拖曳或選擇顧客下載的訂製 JSON。原始設計及色票會獨立保存。</p><input type="file" id="sm44Import" accept=".json,application/json"></div><div class="sm44-orders"><div class="sm44-card sm44-no-print"><h3>客製作品（${orders.length}）</h3><input type="search" id="sm44Find" placeholder="搜尋名稱、設計編號、訂單編號"><select id="sm44StatusFilter"><option value="">所有進度</option>${statuses.map(s=>`<option>${s}</option>`).join('')}</select><div id="sm44OrderList">${orders.map(x=>`<button class="sm44-order" data-sm-id="${safe(x.id)}" aria-pressed="${x.id===selected}"><b>${safe(x.design.title)}</b><small>${safe(x.design.code||'無設計編號')} · ${safe(x.ref||'未填訂單編號')}</small><small>${safe(x.status)}</small></button>`).join('')||'<p>尚無客製作品</p>'}</div></div><div class="sm44-card" id="sm44Sheet">${d?sheet(o):'<h3>選擇一份客製作品</h3><p>匯入設計後，即可查看顏料及製作視圖。</p>'}</div></div>`;
+   panel.innerHTML=`<div class="sm44-card sm44-no-print" id="sm44Drop"><h3>接收顧客的設計</h3><p>拖曳或選擇顧客下載的訂製 JSON。原始設計及色票會獨立保存。</p><input type="file" id="sm44Import" accept=".json,application/json"></div><div class="sm44-orders"><div class="sm44-card sm44-no-print sm47-list"><h3>客製作品（${orders.length}）</h3><input type="search" id="sm44Find" placeholder="搜尋名稱、設計編號、訂單編號"><select id="sm44StatusFilter"><option value="">所有進度</option>${statuses.map(s=>`<option>${s}</option>`).join('')}</select><div id="sm44OrderList">${orders.map(orderCard47).join('')||'<p>尚無客製作品</p>'}</div></div><div class="sm44-card" id="sm44Sheet">${d?sheet(o):'<h3>選擇一份客製作品</h3><p>匯入設計後，即可查看顏料及製作視圖。</p>'}</div></div>`;
+  }else if(tab==='settings'){
+   panel.innerHTML='<div class="sm44-card sm47-settings"><h3>工作室設定</h3><button class="quiet-btn" data-sm-go="rules">手工製作規範 ›</button><button class="quiet-btn" data-sm-go="geometry">進階版型 ›</button><button class="quiet-btn" data-sm-go="backup">資料備份與還原 ›</button><p>目前為單裝置本機管理，尚未接上雲端登入。</p></div>';
   }else if(tab==='rules'){
    panel.innerHTML=`<div class="sm44-card"><h3>手工製作規範</h3><p>先以後台柔性提醒為主，不改變顧客畫布。0 表示尚未設定，不任意限制創作。</p><label>耳環貓臉實際最大寬度（mm）<input id="sm44Width" type="number" min="0" max="100" step=".1" value="${Number(rules.widthMm)||0}"></label><label>建議最小線條寬度（mm）<input id="sm44Min" type="number" min="0" max="10" step=".1" value="${Number(rules.minMm)||0}"></label><label>單隻建議顏色數<input id="sm44Max" type="number" min="0" max="100" step="1" value="${Number(rules.maxColors)||0}"></label><label><input id="sm44Gradient" type="checkbox" ${rules.gradient?'checked':''}> 工藝可接受漸層（仍須人工確認）</label><p class="sm44-muted">線寬以貓臉約 90 SVG 單位換算；不代表精密實體量測。</p><button class="action primary" id="sm44SaveRules">儲存規範</button></div>`;
   }else if(tab==='backup'){
-   panel.innerHTML='<div class="sm44-card"><h3>本機資料備份</h3><p>製作單、顏料、版型與規範儲存在此瀏覽器。請妥善保存備份；可能包含客製資料，不要公開分享。</p><button class="action primary" id="sm44Backup">下載完整工作室備份</button><p>單一作品也可在製作單內下載設計快照。完整備份還原目前尚未開放。</p><p class="sm44-muted">正式上線需受保護後台、伺服器顏料映射及資料庫；此頁不具真正權限隔離。</p></div>';
+   panel.innerHTML='<div class="sm44-card"><h3>本機資料備份</h3><p>製作單、顏料、版型與規範儲存在此瀏覽器。請妥善保存備份；可能包含客製資料，不要公開分享。</p><button class="action primary" id="sm44Backup">下載完整工作室備份</button><p>單一作品也可下載設計快照。還原前請下載目前的完整備份。</p><label>還原工作室備份<input type="file" id="sm47Restore" accept=".json,application/json"></label><p>還原會取代目前本機製作單、顏料、規範與版型，不會合併資料。</p><p class="sm44-muted">正式上線需受保護後台、伺服器顏料映射及資料庫；此頁不具真正權限隔離。</p></div>';
   }
  }
  function sheet(o){
@@ -901,31 +980,35 @@ function studioManager44(){
   if(!union.some(p=>p.id===target))target=union[0]?.id||'';
   const p=union.find(p=>p.id===target), warning=report(d), max=(st.drawing||[]).length;
   const showSides=side==='both'?['left','right']:[side];
-  return `<div class="sm44-sheethead"><div><small>麋鹿斑斑｜客製製作單</small><h2>${safe(d.title)}</h2><p>${safe(d.code||'無設計編號')} · ${d.same?'兩隻相同':'左右不同'}</p></div><b>${safe(o.status)}</b></div><div class="sm44-no-print sm44-toolbar">${[['normal','成品'],['flat','平面'],['color','分色'],['grid','格線']].map(([id,n])=>`<button data-sm-view="${id}" aria-pressed="${view===id}">${n}</button>`).join('')}</div><div class="sm44-no-print sm44-toolbar">${[['both','雙耳'],['left','左耳'],['right','右耳']].map(([id,n])=>`<button data-sm-side="${id}" aria-pressed="${side===id}">${n}</button>`).join('')}</div>${view==='color'?`<label>顯示指定顏料 <select id="sm44Target">${union.map(c=>`<option value="${safe(c.id)}" ${c.id===target?'selected':''}>${safe(c.name)} / ${safe(resolved(c).code||'待編號')}</option>`).join('')}</select></label><p class="sm44-muted">分色依畫面色碼辨識，保留覆蓋及擦除；相同色碼會一起顯示，暈染僅供參考。</p>`:''}${side!=='both'?`<label class="sm44-no-print">手繪順序參考：<span>${step<0?max:Math.min(step,max)} / ${max}</span><input type="range" id="sm44Step" min="0" max="${max}" value="${step<0?max:Math.min(step,max)}"></label>`:''}<div class="sm44-art">${showSides.map(s=>`<figure>${art(d,s,view,p?.hex,side==='both'?-1:step)}<figcaption>${s==='left'?'左耳環':'右耳環'}</figcaption></figure>`).join('')}</div><div class="sm44-two"><div><h3>左耳顏料</h3>${swatches(d,d.left)}</div><div><h3>右耳顏料</h3>${swatches(d,d.same?d.left:d.right)}</div></div><p class="sm44-muted">顏料清單含可能被覆蓋的底層色。順序回放是顧客繪製順序，不是實體上色工序。</p><h3>製作前確認</h3>${warning.length?`<ul class="sm44-warning">${warning.map(w=>`<li>${safe(w)}</li>`).join('')}</ul>`:'<p>未發現已設定規範的提醒；仍須人工確認。</p>'}<label>訂單參考編號<input id="sm44Ref" maxlength="80" value="${safe(o.ref)}"></label><label>製作備註<textarea id="sm44Note" maxlength="3000" rows="4">${safe(o.note)}</textarea></label><label class="sm44-no-print">製作進度<select id="sm44Status">${statuses.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></label><div class="sm44-no-print sm44-toolbar"><button id="sm44Save" class="action primary">儲存製作單</button><button id="sm44Print" class="quiet-btn">列印製作單</button><button id="sm44Download" class="quiet-btn">下載設計快照</button><button id="sm44Delete" class="quiet-btn danger">刪除製作單</button></div>`;
+  return `<div class="sm47-focusbar sm44-no-print"><button id="sm47Back" class="quiet-btn sm47-back">‹ 製作單</button><button id="sm47Focus" class="quiet-btn">${focus47?'離開專注製作':'專注製作'}</button>${focus47?'<button id="sm47Wake" class="quiet-btn">保持螢幕亮起</button>':''}</div><div class="sm44-sheethead"><div><small>麋鹿斑斑｜客製製作單</small><h2>${safe(d.title)}</h2><p>${safe(d.code||'無設計編號')} · ${d.same?'兩隻相同':'左右不同'}</p></div><span class="sm47-status" data-status="${safe(o.status)}">${safe(o.status)}</span></div><div class="sm44-no-print sm44-toolbar">${[['normal','成品'],['flat','平面'],['color','分色'],['grid','格線']].map(([id,n])=>`<button data-sm-view="${id}" aria-pressed="${view===id}">${n}</button>`).join('')}</div><div class="sm44-no-print sm44-toolbar">${[['both','雙耳'],['left','左耳'],['right','右耳']].map(([id,n])=>`<button data-sm-side="${id}" aria-pressed="${side===id}">${n}</button>`).join('')}</div>${view==='color'?`<label>顯示指定顏料 <select id="sm44Target">${union.map(c=>`<option value="${safe(c.id)}" ${c.id===target?'selected':''}>${safe(c.name)} / ${safe(resolved(c).code||'待編號')}</option>`).join('')}</select></label><p class="sm44-muted">分色依畫面色碼辨識，保留覆蓋及擦除；相同色碼會一起顯示，暈染僅供參考。</p>`:''}${side!=='both'?`<label class="sm44-no-print">手繪順序參考：<span>${step<0?max:Math.min(step,max)} / ${max}</span><input type="range" id="sm44Step" min="0" max="${max}" value="${step<0?max:Math.min(step,max)}"></label>`:''}<div class="sm44-art">${showSides.map(s=>`<figure>${art(d,s,view,p?.hex,side==='both'?-1:step)}<figcaption>${s==='left'?'左耳環':'右耳環'}</figcaption></figure>`).join('')}</div>${checklist47(o,showSides)}<div class="sm47-detailfields"><div class="sm44-two"><div><h3>左耳顏料</h3>${swatches(d,d.left)}</div><div><h3>右耳顏料</h3>${swatches(d,d.same?d.left:d.right)}</div></div><p class="sm44-muted">顏料清單含可能被覆蓋的底層色。順序回放是顧客繪製順序，不是實體上色工序。</p><h3>製作前確認</h3>${warning.length?`<ul class="sm44-warning">${warning.map(w=>`<li>${safe(w)}</li>`).join('')}</ul>`:'<p>未發現已設定規範的提醒；仍須人工確認。</p>'}<label>訂單參考編號<input id="sm44Ref" maxlength="80" value="${safe(o.ref)}"></label><label>製作備註<textarea id="sm44Note" maxlength="3000" rows="4">${safe(o.note)}</textarea></label><label>負責人<input id="sm47Assignee" maxlength="60" value="${safe(o.assignee)}" placeholder="選填"></label><label>預計完成日<input id="sm47Due" type="date" value="${safe(o.due)}"></label><label><input id="sm47QC" type="checkbox" ${o.qc?'checked':''}> 已完成成品品質確認</label><label class="sm44-no-print">製作進度<select id="sm44Status">${statuses.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></label><div id="sm47Dirty" class="sm47-dirty sm44-no-print" hidden>有尚未儲存的變更</div></div><div class="sm44-no-print sm44-toolbar sm47-normalactions"><button id="sm44Save" class="action primary">儲存製作單</button><button id="sm44Print" class="quiet-btn">列印製作單</button><button id="sm44Download" class="quiet-btn">下載設計快照</button><button id="sm44Delete" class="quiet-btn danger">刪除製作單</button></div>`;
  }
- function redrawSheet(){const o=current();if(!o)return;const el=$('sm44Sheet');const values=['sm44Ref','sm44Note','sm44Status'].map(id=>$(id)?.value);el.innerHTML=sheet(o);['sm44Ref','sm44Note','sm44Status'].forEach((id,i)=>{if(values[i]!=null)$(id).value=values[i]})}
- function saveSheet(){const o=current();if(!o)return false;const next={...o,ref:$('sm44Ref').value.trim(),note:$('sm44Note').value,status:$('sm44Status').value};if(!replaceOrders(orders.map(x=>x.id===o.id?next:x)))return false;return true}
+ function redrawSheet(){const o=current();if(!o)return;const el=$('sm44Sheet');const values=['sm44Ref','sm44Note','sm44Status','sm47Assignee','sm47Due'].map(id=>$(id)?.value),qc=$('sm47QC')?.checked;el.innerHTML=sheet(o);['sm44Ref','sm44Note','sm44Status','sm47Assignee','sm47Due'].forEach((id,i)=>{if(values[i]!=null)$(id).value=values[i]});if(qc!=null)$('sm47QC').checked=qc;showDirty47()}
+ function saveSheet(){const o=current();if(!o)return false;const next={...o,ref:$('sm44Ref').value.trim(),note:$('sm44Note').value,status:$('sm44Status').value,assignee:$('sm47Assignee').value.trim(),due:$('sm47Due').value,qc:$('sm47QC').checked,updated:new Date().toISOString()};if(next.status==='已完成'&&!next.qc){toast('請先完成品質確認');return false}if(!replaceOrders(orders.map(x=>x.id===o.id?next:x)))return false;return true}
  panel.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.smGo){go(b.dataset.smGo);return}
-  if(b.dataset.status){go('orders');$('sm44StatusFilter').value=b.dataset.status;filterOrders();return}
-  if(b.dataset.smId){selected=b.dataset.smId;step=-1;view='normal';side='both';go('orders');return}
+  if(b.dataset.smGo){if(await canLeave47()){if(b.dataset.smGo==='orders')selected='';go(b.dataset.smGo)}return}
+  if(b.dataset.status){if(!await canLeave47())return;selected='';go('orders');$('sm44StatusFilter').value=b.dataset.status;filterOrders();return}
+  if(b.dataset.smId){if(!await canLeave47())return;leaveFocus47();selected=b.dataset.smId;step=-1;view='normal';side='both';go('orders');return}
+  if(b.id==='sm47Back'){if(await canLeave47()){leaveFocus47();selected='';go('orders')}return}
+  if(b.id==='sm47Focus'){if(focus47){leaveFocus47();redrawSheet()}else{focus47=true;workspace.classList.add('sm47-focus');side='left';view='flat';step=-1;redrawSheet()}return}
+  if(b.id==='sm47Wake'){await toggleWake47();return}
+  if(b.dataset.sm47Color){target=b.dataset.sm47Color;side=b.dataset.sm47Ear;view='color';step=-1;redrawSheet();return}
   if(b.dataset.smView){view=b.dataset.smView;redrawSheet();return}
   if(b.dataset.smSide){side=b.dataset.smSide;step=-1;redrawSheet();return}
   if(b.id==='sm44Save'){if(saveSheet()){render();toast('製作單已儲存')}return}
   if(b.id==='sm44Print'){if(!saveSheet())return;const old=[view,side,step];view='normal';side='both';step=-1;redrawSheet();document.body.classList.add('sm44-print');try{window.print()}finally{document.body.classList.remove('sm44-print');[view,side,step]=old;redrawSheet()}return}
   if(b.id==='sm44Download'){const o=current();if(o)json(o.design,'cat-design.json');return}
-  if(b.id==='sm44Delete'&&await catUX.ask('刪除製作單？','這張本機製作單及製作備註將被移除。','刪除',true)){if(replaceOrders(orders.filter(x=>x.id!==selected))){selected='';render()}return}
+  if(b.id==='sm44Delete'&&await catUX.ask('刪除製作單？','這張本機製作單及製作備註將被移除。','刪除',true)){if(replaceOrders(orders.filter(x=>x.id!==selected))){leaveFocus47();selected='';render()}return}
   if(b.id==='sm44SaveRules'){const a=Number($('sm44Width').value),m=Number($('sm44Min').value),c=Number($('sm44Max').value);if(!(a>=0&&a<=100&&m>=0&&m<=10&&Number.isInteger(c)&&c>=0&&c<=100)){toast('請確認規範數值');return}const next={widthMm:a,minMm:m,maxColors:c,gradient:$('sm44Gradient').checked};if(store(rulesKey,next)){rules=next;toast('規範已儲存')}return}
-  if(b.id==='sm44Backup')json({format:'MILUBANBAN-STUDIO-BACKUP-V44',exportedAt:new Date().toISOString(),orders,palette,meta,rules,geometry:{published:publishedGeom,draft:draftGeom,templates}},'milubanban-studio-backup.json');
+  if(b.id==='sm44Backup')json({format:'MILUBANBAN-STUDIO-BACKUP-V47',exportedAt:new Date().toISOString(),orders,palette,meta,rules,geometry:{published:publishedGeom,draft:draftGeom,templates}},'milubanban-studio-backup.json');
  });
  function filterOrders(){const q=$('sm44Find')?.value.toLowerCase()||'',s=$('sm44StatusFilter')?.value||'';for(const b of panel.querySelectorAll('[data-sm-id]')){const o=orders.find(x=>x.id===b.dataset.smId);b.hidden=!!((s&&o.status!==s)||(q&&!b.textContent.toLowerCase().includes(q)))}}
- panel.addEventListener('input',e=>{if(e.target.id==='sm44Find')filterOrders()});
- panel.addEventListener('change',e=>{const t=e.target;if(t.id==='sm44Import')fileImport(t.files[0]);if(t.id==='sm44StatusFilter')filterOrders();if(t.id==='sm44Target'){target=t.value;redrawSheet()}if(t.id==='sm44Step'){step=Number(t.value);redrawSheet()}});
+ panel.addEventListener('input',e=>{if(e.target.id==='sm44Find')filterOrders();showDirty47()});
+ panel.addEventListener('change',e=>{const t=e.target;if(t.id==='sm44Import')fileImport(t.files[0]);if(t.id==='sm47Restore')restoreBackup47(t.files[0]);if(t.dataset.sm47Check)toggleCheck47(t);showDirty47();if(t.id==='sm44StatusFilter')filterOrders();if(t.id==='sm44Target'){target=t.value;redrawSheet()}if(t.id==='sm44Step'){step=Number(t.value);redrawSheet()}});
  panel.addEventListener('dragover',e=>{if(e.target.closest('#sm44Drop'))e.preventDefault()});
  panel.addEventListener('drop',e=>{if(e.target.closest('#sm44Drop')){e.preventDefault();fileImport(e.dataTransfer.files[0])}});
  const oldEnter=enterAdmin;
- enterAdmin=function(yes){oldEnter(yes);if(yes)go('home')};
+ enterAdmin=function(yes){if(!yes){leaveFocus47();}oldEnter(yes);if(yes)go('home')};
  // Keep public customer page clean; query entry is convenience, not authentication.
  const local=location.protocol==='file:', explicit=new URLSearchParams(location.search).get('studio')==='1';
  $('adminToggle').hidden=!(local||explicit);
