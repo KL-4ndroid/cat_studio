@@ -315,6 +315,7 @@ select.catux-enhanced{display:none!important}
 #v2Dialog #v2OrbitStatus{color:#496050;font-size:.82rem;margin:.6rem 0 0}
 #v2Dialog #v2OrbitStatus:empty{display:none}
 #v2Dialog .v2-note,.v2-note{font-size:12px;margin:8px 0 12px;color:#52685c}
+ .lab53-viewtools{display:none}.lab46-mobile .lab53-viewtools{display:flex;align-items:center;justify-content:center;gap:6px;margin:3px 0}.lab46-mobile .lab53-viewtools button{min-height:36px;min-width:38px;padding:5px 9px;font-size:12px}.lab53-viewtools button[aria-pressed=true]{background:#426455;color:white}.lab53-zoomtext{font-size:12px;font-variant-numeric:tabular-nums;min-width:42px;text-align:center}.lab46-mobile #drawSvg{touch-action:none}
 </style>
 </head>
 <body>
@@ -410,6 +411,7 @@ select.catux-enhanced{display:none!important}
 </dialog>
 <script src="./render-v2-material.js"></script>
 <script src="./cat-production-check.js"></script>
+<script src="./cat-viewport.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -1299,7 +1301,35 @@ function mobileCanvas46(){
  controls.prepend(handle,sheetbar,tabs,palettehint,fullpalette,previewmount);
  function expandSheet(yes){controls.dataset.lab46Expanded=String(yes);handle.setAttribute('aria-expanded',String(yes));handle.textContent=yes?'縮小面板 ↓':'展開面板 ↑'}
  const closeSize=()=>{sizeOpen=false;$('v42SizeMount').classList.remove('lab46-size-open');sizeBtn.setAttribute('aria-expanded','false')};
- function applyView(){svg.setAttribute('viewBox',mobile?(focused?'33 70 131 133':'28 65 142 144'):originalView)}
+ let viewBase=CatViewport.parseView(originalView),viewNow=viewBase.slice(),panMode=false,gesture=null,blocked=false;
+ const touches=new Map();
+ const viewTools=el('div','lab53ViewTools','lab46-only lab53-viewtools');
+ const panBtn=button('lab53Pan','移動畫布','移動'),resetViewBtn=button('lab53Reset','畫布回正','回正'),zoomBtn=button('lab53Zoom','放大畫布','＋'),zoomOutBtn=button('lab53ZoomOut','縮小畫布','－');
+ const zoomText=el('span','lab53ZoomText','lab53-zoomtext','100%');
+ viewTools.append(panBtn,zoomOutBtn,zoomText,zoomBtn,resetViewBtn);$('v42CanvasMount').before(viewTools);panBtn.setAttribute('aria-pressed','false');
+ function paintView(v){viewNow=CatViewport.constrain(v,viewBase);svg.setAttribute('viewBox',viewNow.join(' '));const zoom=viewBase[2]/viewNow[2];zoomText.textContent=Math.round(zoom*100)+'%';zoomOutBtn.disabled=zoom<=1.001;zoomBtn.disabled=zoom>=2.999;resetViewBtn.disabled=zoom<=1.001}
+ function resetGesture(){touches.clear();gesture=null;blocked=false;panMode=false;panBtn.setAttribute('aria-pressed','false');panBtn.textContent='移動';panBtn.setAttribute('aria-label','移動畫布')}
+ function applyView(){resetGesture();viewBase=CatViewport.parseView(mobile?(focused?'33 70 131 133':'28 65 142 144'):originalView);paintView(viewBase)}
+ function viewChange(ratio){if(!mobile||drawPointer!==null||touches.size)return;paintView(CatViewport.transform(viewNow,viewBase,[.5,.5],[.5,.5],ratio))}
+ zoomBtn.onclick=()=>viewChange(1.25);zoomOutBtn.onclick=()=>viewChange(.8);resetViewBtn.onclick=()=>{if(drawPointer===null&&!touches.size)paintView(viewBase)};
+ panBtn.onclick=()=>{if(drawPointer!==null||touches.size)return;panMode=!panMode;panBtn.setAttribute('aria-pressed',String(panMode));panBtn.textContent=panMode?'繪畫':'移動';panBtn.setAttribute('aria-label',panMode?'返回繪畫':'移動畫布')};
+ function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:points.reduce((t,p)=>t+p.x,0)/points.length,y:points.reduce((t,p)=>t+p.y,0)/points.length,d:points.length===2?Math.max(1,Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)):1}}
+ function stopEvent(e){e.preventDefault();e.stopImmediatePropagation()}
+ function setGesture(){const g=touchGeometry();gesture={g,view:viewNow.slice()}}
+ svg.addEventListener('pointerdown',e=>{
+  if(!mobile||e.pointerType!=='touch')return;
+  touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(touches.size>=2||panMode||blocked){stopEvent(e);if(drawPointer!==null)finishDraw({pointerId:drawPointer},false);blocked=true;try{svg.setPointerCapture(e.pointerId)}catch(_){};setGesture()}
+ },true);
+ svg.addEventListener('pointermove',e=>{
+  if(!mobile||!touches.has(e.pointerId))return;
+  touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(!blocked)return;stopEvent(e);if(!gesture||!(touches.size>=2||panMode))return;
+  const next=touchGeometry(),rect=svg.getBoundingClientRect(),from=CatViewport.relativePoint(gesture.g.x,gesture.g.y,rect,gesture.view),to=CatViewport.relativePoint(next.x,next.y,rect,gesture.view);
+  paintView(CatViewport.transform(gesture.view,viewBase,from,to,next.d/gesture.g.d))
+ },true);
+ function endTouch(e){if(!touches.has(e.pointerId))return;touches.delete(e.pointerId);if(blocked){stopEvent(e);if(touches.size)setGesture();else{blocked=false;gesture=null}}}
+ for(const event of ['pointerup','pointercancel','lostpointercapture'])svg.addEventListener(event,endTouch,true);
  function refreshPalette(){
   const buttons=[...$('drawPalette').querySelectorAll('[data-draw-color]')];
   const sig=JSON.stringify(buttons.map(b=>[b.dataset.drawColor,b.style.background,b.getAttribute('aria-label'),b.getAttribute('aria-pressed')]));
@@ -1311,7 +1341,7 @@ function mobileCanvas46(){
   if(restore&&previousFocus?.isConnected)previousFocus.focus({preventScroll:true});previousFocus=null;
  }
  function openSheet(tab){
-  if(!mobile||drawPointer!==null)return;closeSize();if(!sheet)previousFocus=document.activeElement;
+  if(!mobile||drawPointer!==null||touches.size)return;closeSize();if(!sheet)previousFocus=document.activeElement;
   sheet=tab;editor.classList.add('lab46-sheet-open');controls.dataset.lab46Tab=tab;expandSheet(tab==='more');controls.setAttribute('role','dialog');controls.setAttribute('aria-modal','true');controls.setAttribute('aria-labelledby','lab46SheetTitle');
   for(const b of tabs.children)b.setAttribute('aria-selected',String(b.dataset.lab46Tab===tab));
   $('lab46SheetTitle').textContent=({colors:'挑個喜歡的顏色',more:'更多創作工具',preview:'我的雙耳環'})[tab];
@@ -1324,7 +1354,7 @@ function mobileCanvas46(){
   }
   refreshPalette();controls.scrollTop=0;canvas.inert=true;editor.querySelector('.v42-editor-head').inert=true;$('lab46Close').focus({preventScroll:true});
  }
- function setFocus(yes){if(!mobile||drawPointer!==null)return;closeSize();closeSheet(false);focused=yes;document.body.classList.toggle('lab46-focus',yes);focusBtn.innerHTML=icon(yes?iconPaths.shrink:iconPaths.expand);focusBtn.setAttribute('aria-label',yes?'離開專注創作':'專注創作');focusBtn.title=focusBtn.getAttribute('aria-label');focusBtn.setAttribute('aria-pressed',String(yes));applyView();window.scrollTo(0,0)}
+ function setFocus(yes){if(!mobile||drawPointer!==null||touches.size)return;closeSize();closeSheet(false);focused=yes;document.body.classList.toggle('lab46-focus',yes);focusBtn.innerHTML=icon(yes?iconPaths.shrink:iconPaths.expand);focusBtn.setAttribute('aria-label',yes?'離開專注創作':'專注創作');focusBtn.title=focusBtn.getAttribute('aria-label');focusBtn.setAttribute('aria-pressed',String(yes));applyView();window.scrollTo(0,0)}
  function setMobile(){
   const next=media.matches&&!adminMode&&screen42==='editor';
   if(next===mobile)return;
@@ -1338,7 +1368,7 @@ function mobileCanvas46(){
  const oldShow=show42;show42=function(which){if(which!=='editor'){closeSize();closeSheet(false)}oldShow(which);setMobile()};
  const oldEnter=enterAdmin;enterAdmin=function(yes){oldEnter(yes);setMobile()};
  // Guard layout and tool changes from a second touch while a stroke is active.
- editor.addEventListener('click',e=>{if(mobile&&drawPointer!==null&&!svg.contains(e.target)){e.preventDefault();e.stopImmediatePropagation()}},true);
+ editor.addEventListener('click',e=>{if(mobile&&(drawPointer!==null||touches.size>0)&&!svg.contains(e.target)){e.preventDefault();e.stopImmediatePropagation()}},true);
  focusBtn.addEventListener('click',()=>setFocus(!focused));previewBtn.addEventListener('click',()=>{closeSize();openProductPreview()});
  symBtn.addEventListener('click',()=>{if(drawPointer!==null)return;const checkbox=$('v42Sym');checkbox.checked=!checkbox.checked;checkbox.dispatchEvent(new Event('change',{bubbles:true}));refreshPalette()});
  sizeBtn.addEventListener('click',()=>{if(drawPointer!==null)return;sizeOpen=!sizeOpen;$('v42SizeMount').classList.toggle('lab46-size-open',sizeOpen);sizeBtn.setAttribute('aria-expanded',String(sizeOpen))});
