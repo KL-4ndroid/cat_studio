@@ -62,6 +62,7 @@ function paintCat(id,x,{texture=false}={}){
   const stroke=stripeColor().hex;
   stripes=`<g stroke="${stroke}" stroke-width="${state.stripe===1?g.stripeWidth*.75:g.stripeWidth}" fill="none" stroke-linecap="round" opacity="${state.stripe===1?.46:.73}">${tabbyShapes(g).map(d=>`<path d="${d}"/>`).join('')}</g>`;
  }
+ if(texture){
  const markings=`${forehead}
     ${state.finish==='solid'?`${cheekShape(g,"left")}${cheekShape(g,"right")}`:''}
     ${noseGradient}
@@ -73,7 +74,6 @@ function paintCat(id,x,{texture=false}={}){
     <stop offset="72%" stop-color="${colorFor('muzzle')}" stop-opacity=".14"/>
     <stop offset="100%" stop-color="${colorFor('muzzle')}" stop-opacity="0"/>
    </radialGradient>`;
- if(texture){
   return `<svg xmlns="http://www.w3.org/2000/svg" width="840" height="780" viewBox="0 0 140 130">
    <defs>
     <clipPath id="textureHead"><path d="${headPath}"/></clipPath>
