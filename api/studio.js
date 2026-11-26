@@ -103,6 +103,16 @@ async function handler(req,res){
   if(req.method==='GET'&&action==='order'){
    const id=String(req.query?.id||'');if(!UUID.test(id))fail(400,'訂單識別碼不符');const rows=await call(c,'/rest/v1/studio_orders?id=eq.'+id+'&select=id,receipt,status,ref,note,assignee,due,checks,qc,revision,design,created_at,updated_at',user);if(!rows?.length)fail(404,'找不到製作單');return res.status(200).json(rows[0]);
   }
+  if(req.method==='GET'&&action==='photo'){
+   const id=String(req.query?.id||'');if(!UUID.test(id))fail(400,'訂單識別碼不符');
+   const rows=await call(c,'/rest/v1/studio_order_photos?order_id=eq.'+id+'&select=jpeg,updated_at',user);
+   return res.status(200).json({photo:rows?.[0]?.jpeg||null,updatedAt:rows?.[0]?.updated_at||null});
+  }
+  if(req.method==='POST'&&action==='photo'){
+   const b=payload(req);if(!UUID.test(b.id||'')||!Number.isInteger(b.revision)||b.revision<1||!(b.photo===null||typeof b.photo==='string'&&b.photo.length<=700000&&/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(b.photo)))fail(400,'成品照片格式不符');
+   if(b.photo!==null){const bytes=Buffer.from(b.photo.slice(23),'base64');if(bytes.length<4||bytes[0]!==255||bytes[1]!==216||bytes[bytes.length-2]!==255||bytes[bytes.length-1]!==217)fail(400,'成品照片必須為 JPEG')}
+   const result=await call(c,'/rest/v1/rpc/studio_set_photo',{...user,method:'POST',body:{p_id:b.id,p_expected:b.revision,p_jpeg:b.photo}});return res.status(200).json(result);
+  }
   if(req.method==='POST'&&action==='update'){
    const b=payload(req);if(!UUID.test(b.id||'')||!Number.isInteger(b.revision)||b.revision<1||!STATUSES.includes(b.status)||!str(b.ref,80)||!str(b.note,3000)||!str(b.assignee,60)||typeof b.qc!=='boolean'||b.status==='已完成'&&!b.qc||!(b.due===null||/^\d{4}-\d{2}-\d{2}$/.test(b.due||'')))fail(400,'製作單資料不符');
    if(!object(b.checks)||!['left','right'].every(k=>Array.isArray(b.checks[k])&&b.checks[k].length<=100&&b.checks[k].every(x=>ID.test(x))))fail(400,'上色勾選資料不符');
