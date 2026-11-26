@@ -62,16 +62,35 @@ async function showOrbit(ear){
 }
 $('inspect3d').onclick=()=>{if(!renderer||!selected)return;if(!orbitDialog.open)orbitDialog.showModal();void showOrbit(prodEar==='right'?'right':'left')};
 $('orbitLeft').onclick=()=>void showOrbit('left');$('orbitRight').onclick=()=>void showOrbit('right');$('orbitReset').onclick=()=>orbitPreview?.reset();$('orbitClose').onclick=closeOrbit;orbitDialog.addEventListener('close',releaseOrbit);
+let reviewRevision=0;
 function showReview(){
+ const revision=++reviewRevision,orderId=selected?.id;
  $('reviewMetrics').replaceChildren();$('qcDesign').replaceChildren();$('estimateMinutes').value=(selected?.note||'').match(/^\[預計工時\][ \t]*(\d+)[ \t]*分鐘$/m)?.[1]||'';
- try{const r=CatProductionCheck.analyze(selected.design);$('reviewLevel').textContent=r.level;for(const e of r.ears){const p=el('p',(e.ear==='left'?'左耳':'右耳')+'｜'+e.strokes+' 筆上色 · '+e.colors.length+' 個候選色'+(e.flags.length?'｜'+e.flags.join('、'):'｜無明顯提醒'));$('reviewMetrics').append(p)}$('reviewMetrics').append(el('p',r.notice,'production-info'))}catch(_){$('reviewLevel').textContent='請人工確認'}
+ try{
+  const r=CatProductionCheck.analyze(selected.design);$('reviewLevel').textContent='原始筆畫：'+r.level;
+  for(const e of r.ears){const p=el('p',(e.ear==='left'?'左耳':'右耳')+'｜'+e.strokes+' 筆上色 · '+e.colors.length+' 個候選色'+(e.flags.length?'｜'+e.flags.join('、'):'｜無明顯提醒'));$('reviewMetrics').append(p)}
+  $('reviewMetrics').append(el('p',r.notice,'production-info'));
+  const final=el('section',undefined,'production');final.append(el('h4','最終可見圖案分析'),el('p','正在取樣…'));$('reviewMetrics').append(final);
+  if(!renderer){final.lastElementChild.textContent='無法讀取設計，請人工覆核。';return;}
+  const jobs=['left','right'].map((ear,i)=>CatProductionCheck.analyzeArtwork(renderer.texture(ear).svg,r.ears[i].colors));
+  Promise.all(jobs).then(values=>{
+   if(revision!==reviewRevision||selected?.id!==orderId)return;
+   final.replaceChildren(el('h4','最終可見圖案分析'));
+   values.forEach((v,i)=>{
+    const box=el('div');box.append(el('b',i?'右耳':'左耳'),el('p','可辨識覆蓋 '+Math.round(v.coverage*100)+'% · '+v.regions+' 個連通色區 · '+v.tinyRegions+' 個細小色區'));
+    box.append(el('p','可辨識異色邊界約 '+v.boundaryMm.toFixed(1)+' mm','production-info'));
+    for(const p of v.colors){const row=el('div',undefined,'checkrow'),chip=el('i',undefined,'chip');chip.style.background=p.hex;const candidates=r.ears[i].colors.filter(c=>c.hex.toUpperCase()===p.hex);row.append(chip,el('span',p.names.join('／')+' · '+(p.fraction*100).toFixed(1)+'%'+(candidates.some(c=>c.code)?' · '+candidates.map(c=>c.code).filter(Boolean).join('／'):'')));box.append(row)}
+    if(v.coverage<.90)box.append(el('p','混色或柔邊比例較高，色區數與邊界長度僅供參考。','production-info'));final.append(box);
+   });final.append(el('p','面積為正面投影取樣比例，不是顏料重量或耗用量。細小色區以面積等效直徑 0.55 mm 為暫定提醒，非實測製程極限。','production-info'));
+  }).catch(()=>{if(revision===reviewRevision&&selected?.id===orderId)final.lastElementChild.textContent='暫時無法取樣，請使用原始製作圖覆核。'});
+ }catch(_){$('reviewLevel').textContent='請人工確認'}
  try{if(renderer)for(const ear of ['left','right']){const fig=el('figure');fig.append(CatMaterialV2.render(renderer,ear,'sculpted','qc-'+ear),el('figcaption',ear==='left'?'左耳':'右耳'));$('qcDesign').append(fig)}}catch(_){$('qcDesign').replaceChildren(el('p','請下載原始設計檔比對'))}
 }
 function applyNote(next){if(next.length>3000){msg('備註超過 3000 字，請先縮短內容。',true);return}$('note').value=next;dirty=true;msg('已加入備註，請儲存雲端製作進度。')}
 $('estimateApply').onclick=()=>{const minutes=Number($('estimateMinutes').value);if(!Number.isInteger(minutes)||minutes<1||minutes>1440){msg('請輸入 1–1440 分鐘的整數工時。',true);return}const note=$('note').value.replace(/^\[預計工時\][ \t]*\d+[ \t]*分鐘[ \t]*$/gm,'').trim();applyNote([note,'[預計工時] '+minutes+' 分鐘'].filter(Boolean).join('\n'))};
 $('qcNoteTemplate').onclick=()=>{const note=$('note').value;if(note.includes('[品檢紀錄]')){msg('備註中已有品檢紀錄，請直接補寫。');return}applyNote([note.trim(),'[品檢紀錄]\n色彩／花紋：\n邊緣／封層：\n五金／耳夾：\n需修正處：'].filter(Boolean).join('\n\n'))};
 
-function resetProduction(){closeOrbit();$('qcDesign').replaceChildren();$('reviewMetrics').replaceChildren();$('reviewLevel').textContent='';$('estimateMinutes').value='';clearPhoto();releaseWake();focusMode=false;renderer=null;prodEar='both';prodView='normal';prodStep=-1;prodPigment='';$('detail').classList.remove('focus-mode');$('focusProduction').textContent='專注製作';$('wakeProduction').hidden=true;$('focusSaveRow').hidden=true;$('productionArt').replaceChildren();$('productionPigments').replaceChildren();}
+function resetProduction(){reviewRevision++;closeOrbit();$('qcDesign').replaceChildren();$('reviewMetrics').replaceChildren();$('reviewLevel').textContent='';$('estimateMinutes').value='';clearPhoto();releaseWake();focusMode=false;renderer=null;prodEar='both';prodView='normal';prodStep=-1;prodPigment='';$('detail').classList.remove('focus-mode');$('focusProduction').textContent='專注製作';$('wakeProduction').hidden=true;$('focusSaveRow').hidden=true;$('productionArt').replaceChildren();$('productionPigments').replaceChildren();}
 
 function clearPhoto(){ $('photoPreview').removeAttribute('src');$('photoPreview').hidden=true;$('photoRemove').hidden=true;$('photoFile').value='';$('photoInfo').textContent='尚未載入照片。';}
 async function loadPhoto(id){clearPhoto();try{const r=await api('photo',undefined,'&id='+encodeURIComponent(id));if(selected?.id!==id)return;if(r.photo&&/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(r.photo)){$('photoPreview').src=r.photo;$('photoPreview').hidden=false;$('photoRemove').hidden=false;$('photoInfo').textContent='成品照片已儲存'}else $('photoInfo').textContent='尚未上傳成品照片。'}catch(e){$('photoInfo').textContent='照片暫時無法載入：'+e.message}}
