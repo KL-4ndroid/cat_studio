@@ -80,11 +80,9 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
  .lab46-mobile .shell{padding:0 8px;max-width:none}
  .lab46-mobile #v42Editor{height:max(440px,calc(var(--lab46-vh) - var(--lab46-header)));display:flex;flex-direction:column;gap:4px;padding-bottom:max(6px,var(--lab46-safe));min-width:0}
  .lab46-mobile #v42Editor .v42-editor-head{flex:none;margin:0;min-height:44px;gap:5px}
- .lab46-mobile #v42Editor .v42-editor-head h2{font-size:15px;white-space:nowrap}
  .lab46-mobile #v42Editor .v42-editor-head button{min-height:44px;padding:7px 10px;font-size:12px}
  .lab46-mobile #v42Editor .v42-workspace{display:flex;flex-direction:column;flex:1;min-height:0;gap:0;position:relative}
  .lab46-mobile #v42Editor .v42-canvas{flex:1;min-height:0;min-width:0;position:relative;top:auto;z-index:auto;display:flex;flex-direction:column;gap:3px;padding:5px 7px 7px;margin:0;border-radius:16px;background:#fffdfa}
- .lab46-mobile #v42Editor .lab46-modebar{display:flex!important;align-items:center;gap:4px;flex:none}
  .lab46-mobile #v42Editor .v42-mode{flex:1;min-width:0;padding:3px;gap:2px}
  .lab46-mobile #v42Editor .v42-mode button{font-size:12px;min-height:38px;padding:4px}
  .lab46-mobile #v42Editor .lab46-iconbtn{flex:none;min-width:44px;min-height:44px;display:inline-flex!important;align-items:center;justify-content:center;gap:4px;background:#f0f3ec;border:1px solid #dfe6dd;color:#3d594a;border-radius:11px;padding:5px;font-weight:650;font-size:11px}
@@ -146,7 +144,6 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
  .lab46-mobile #v42Editor .v42-controls .v42-quick button,.lab46-mobile #v42Editor .v42-controls .v42-actionbar button{min-height:44px}
  .lab46-mobile #v42Editor.lab46-sheet-open .v42-canvas{pointer-events:none}
  .lab46-mobile .toast{z-index:40}
- .lab46-mobile.lab46-focus #v42Editor .v42-editor-head h2{font-size:14px}
  @media(max-height:580px){.lab46-mobile #v42Editor{height:max(430px,calc(var(--lab46-vh) - var(--lab46-header)))}.lab46-mobile #v42Editor .v42-canvas-note{display:none}.lab46-mobile #v42Editor .v42-editor-head{min-height:40px}}
 }
 
@@ -159,7 +156,7 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
  .lab46-mobile #v42Editor .v42-canvas{align-self:stretch}
  .lab46-mobile #v42Editor .draw-stage{position:relative;display:block}
  .lab46-mobile #v42Editor .draw-stage svg{position:absolute;inset:0;width:100%;height:100%;min-width:0;max-width:100%}
- .lab46-mobile #v42Editor .v42-editor-head,.lab46-mobile #v42Editor .lab46-modebar{min-width:0;max-width:100%}
+ .lab46-mobile #v42Editor .v42-editor-head{min-width:0;max-width:100%}
  .lab46-mobile #v42Editor .draw-tools button,.lab46-mobile #v42Editor .v42-mode button{min-width:0}
  .lab46-mobile #v42Editor #drawPalette{contain:inline-size}
 }
@@ -226,7 +223,7 @@ select.catux-enhanced{display:none!important}
  .lab45 #v42Editor .v42-controls .selector{min-width:0;padding:0;border:0;background:none}
  .lab45 #v42Editor .v42-controls .catux-select-trigger{font-size:14px}
  .lab45 #v42Editor .v42-controls .quiet-btn,.lab45 #v42Editor .v42-controls .text-btn,.lab45 #v42Editor .v42-controls .import-btn{min-height:44px}
- .lab46-mobile #v42Editor .lab46-modebar .v42-mode button{min-height:44px}
+ .lab46-mobile #v42Editor .v42-mode button{min-height:44px}
  .lab46-mobile #v42Editor .lab46-handle{min-height:44px}
  .lab46-mobile #v42Editor #drawSize{min-height:44px;width:100%;min-width:0}
  .lab46-mobile #v42Editor .draw-size label{white-space:nowrap}
@@ -242,7 +239,7 @@ select.catux-enhanced{display:none!important}
  .lab45 #v42OrderPanel{background:#f4f8ef;border:1px solid #dbe6d8;border-radius:16px;padding:14px;margin:12px 0}
  .lab45 #v42OrderPanel .v42-actionbar{flex-direction:column;gap:8px}
  .lab45 #v42Gallery .v42-editor-head{flex-wrap:wrap}
- @media(max-width:360px){.lab46-mobile #v42Editor .v42-editor-head h2{font-size:13px}.lab46-mobile #v42Editor .v42-editor-head button{padding:6px;font-size:11px}.lab46-mobile #v42Editor #drawTool button{font-size:10px;gap:2px}.lab46-mobile #v42Editor .lab46-iconbtn svg{width:15px;height:15px}.lab46-mobile #v42Editor .lab46-modebar{gap:2px}.lab46-mobile #v42Editor .v42-mode button{font-size:11px;padding:3px}}
+ @media(max-width:360px){.lab46-mobile #v42Editor .v42-editor-head button{padding:6px;font-size:11px}.lab46-mobile #v42Editor #drawTool button{font-size:10px;gap:2px}.lab46-mobile #v42Editor .lab46-iconbtn svg{width:15px;height:15px}.lab46-mobile #v42Editor .v42-mode button{font-size:11px;padding:3px}}
 }
 @media(prefers-reduced-motion:reduce){.catux-dialog[open]{animation:none}}
 
@@ -287,7 +284,7 @@ select.catux-enhanced{display:none!important}
 .cloud50-bar{background:#f9df8d;color:#59451c;border-radius:10px;padding:8px 12px;font-size:12px;margin:4px auto;max-width:760px;overflow-wrap:anywhere}.lab46-mobile .cloud50-bar:not([hidden]){margin:2px 0}.lab46-mobile:has(.cloud50-bar:not([hidden])) #v42Editor{height:max(440px,calc(var(--lab46-vh) - var(--lab46-header) - 38px))}#cloud50Status{overflow-wrap:anywhere}#cloud50Submit{min-height:48px;width:100%}#cloud50Submit:disabled{opacity:.65}
 
 .v42-canvas-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.v42-canvas-toolbar > .v42-mode,.lab46-mobile #v42Editor .v42-canvas-toolbar > .lab46-modebar{flex:1;min-width:0}
+.v42-canvas-toolbar > .v42-mode{flex:1;min-width:0}
 .lab45 #v42Editor #v42Mode button[data-ear-thumb]{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
 .v42-ear-thumb{display:grid;place-items:center;flex:none;width:35px;height:32px;border-radius:7px;background:#fbf7ed;pointer-events:none}
 .v42-ear-thumb svg{display:block;width:100%;height:100%}
@@ -296,7 +293,12 @@ select.catux-enhanced{display:none!important}
 .v42-ear-pair p{margin:4px 0}
 #v2PreviewDesktop{min-height:44px;flex:none}
 @media(max-width:760px){
- .v42-canvas-toolbar{margin-bottom:4px}
+ .lab46-mobile #v42Editor .v42-editor-head{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:4px;align-items:center}
+ .lab46-mobile #v42Editor .v42-editor-head h2{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ .lab46-mobile #v42Editor .v42-editor-head button{white-space:nowrap}
+ .lab46-mobile #v42Editor #v42Back{justify-self:start;background:transparent;border-color:transparent;padding-inline:6px}
+ .lab46-mobile #v42Editor .v42-canvas-toolbar{margin-bottom:2px}
+ .lab46-mobile #v42Editor .v42-mode button{font-size:13px}
  .v42-ear-thumb{width:27px;height:27px}
  .lab45 #v42Editor #v42Mode button[data-ear-thumb]{gap:3px}
 }
@@ -1233,16 +1235,13 @@ function mobileCanvas46(){
  const editor=$('v42Editor'), canvas=editor.querySelector('.v42-canvas'), controls=editor.querySelector('.v42-controls');
  const media=matchMedia('(max-width:760px)'), svg=$('drawSvg'), originalView=svg.getAttribute('viewBox');
  let mobile=false,focused=false,sheet=null,sizeOpen=false,previousFocus=null,scrollLeft=0,paletteSignature='';
- const mark=(node)=>{const a=document.createComment('lab46 original position');node.before(a);return a};
- const mode=$('v42Mode'),modeAnchor=mark(mode);
  const icon=(path)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
  const iconPaths={expand:'<path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/>',shrink:'<path d="M3 8h5V3m13 5h-5V3M8 21v-5H3m13 5v-5h5"/>',eye:'<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/>',sym:'<path d="M12 3v18M9 6 3 12l6 6Zm6 0 6 6-6 6Z"/>',size:'<circle cx="8" cy="16" r="3"/><circle cx="17" cy="7" r="5"/>'};
  function el(tag,id,cls,html){const x=document.createElement(tag);if(id)x.id=id;if(cls)x.className=cls;if(html)x.innerHTML=html;return x}
  function button(id,label,html){const b=el('button',id,'lab46-only lab46-iconbtn',html||label);b.type='button';b.setAttribute('aria-label',label);b.title=label;return b}
- const modebar=el('div','lab46Modebar','lab46-only lab46-modebar');modeAnchor.after(modebar);
  const focusBtn=button('lab46Focus','專注創作',icon(iconPaths.expand));focusBtn.setAttribute('aria-pressed','false');
- const previewBtn=button('lab46Preview','預覽',icon(iconPaths.eye));previewBtn.setAttribute('aria-haspopup','dialog');
- modebar.append(previewBtn,focusBtn);
+ const previewBtn=button('lab46Preview','預覽',icon(iconPaths.eye)+'<span>預覽</span>');previewBtn.setAttribute('aria-haspopup','dialog');
+ $('v42DoneTop').before(previewBtn,focusBtn);
  const history=$('drawUndo').parentElement,symBtn=button('lab46Sym','對稱畫筆',icon(iconPaths.sym)+'<span>對稱</span>');symBtn.setAttribute('aria-pressed','false');history.append(symBtn);
  const sizeBtn=button('lab46Size','筆刷粗細',icon(iconPaths.size)+'<span>粗細</span>');sizeBtn.setAttribute('aria-expanded','false');$('drawTool').append(sizeBtn);
  const palettebar=el('div','lab46Palettebar','lab46-only lab46-palettebar');
@@ -1290,8 +1289,8 @@ function mobileCanvas46(){
   if(drawPointer!==null){const id=drawPointer;finishDraw({pointerId:id},true);try{if(svg.hasPointerCapture(id))svg.releasePointerCapture(id)}catch(_){}}
   mobile=next;
   document.body.classList.toggle('lab46-mobile',mobile);
-  if(mobile){modebar.prepend(mode);applyView();refreshPalette()}
-  else{closeSize();closeSheet(false);focused=false;document.body.classList.remove('lab46-focus');focusBtn.innerHTML=icon(iconPaths.expand);focusBtn.setAttribute('aria-label','專注創作');focusBtn.title='專注創作';focusBtn.setAttribute('aria-pressed','false');modeAnchor.after(mode);applyView()}
+  if(mobile){applyView();refreshPalette()}
+  else{closeSize();closeSheet(false);focused=false;document.body.classList.remove('lab46-focus');focusBtn.innerHTML=icon(iconPaths.expand);focusBtn.setAttribute('aria-label','專注創作');focusBtn.title='專注創作';focusBtn.setAttribute('aria-pressed','false');applyView()}
  }
  const oldDraw=renderDraw;renderDraw=function(){const row=$('drawPalette');if(mobile)scrollLeft=row.scrollLeft;oldDraw();if(mobile){row.scrollLeft=scrollLeft;refreshPalette()}};
  const oldShow=show42;show42=function(which){if(which!=='editor'){closeSize();closeSheet(false)}oldShow(which);setMobile()};
