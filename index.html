@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V5.0</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V5.0.1</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -360,7 +360,7 @@ select.catux-enhanced{display:none!important}
   </section>
  </div>
 </main>
-<footer class="footer">MILU BANBAN · CAT LAB V5.0｜客製設計收件預覽</footer>
+<footer class="footer">MILU BANBAN · CAT LAB V5.0.1｜客製設計收件預覽</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (()=>{
@@ -713,7 +713,7 @@ updateTemplateList();
 // V4 design workflow — snapshots are portable and do not overwrite the admin defaults.
 const savedKey='mb-cat-v4-saved';
 let savedDesigns=[];try{const a=JSON.parse(localStorage.getItem(savedKey));if(Array.isArray(a))savedDesigns=a.filter(validDesign).slice(0,30);}catch(_){}
-function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'5.0',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
+function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'5.0.1',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
 function hashCode(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36).toUpperCase().padStart(7,'0');}
 function getDesignCode(){const p=designPayload();const clean=st=>({mode:st.mode,cols:st.cols.slice(0,st.mode),zones:Object.fromEntries(zoneKeys.map(k=>[k,Math.min(st.zones[k],st.mode-1)])),join:st.join,finish:st.finish,muzzle:st.muzzle,stripe:st.stripe,drawing:st.drawing||[]});return 'MB-CAT-'+hashCode(JSON.stringify({same:p.same,left:clean(p.left),right:clean(p.right),geometry:p.geometry,palette:p.palette.map(c=>({...c,code:[...usedColors(p.left),...usedColors(p.right)].some(x=>x.id===c.id)?c.code:''}))}));}
 function validDesign(d){return d&&d.format==='MILUBANBAN-CAT-DESIGN-V4'&&d.version===4&&typeof d.same==='boolean'&&validSave(d.left)&&validSave(d.right)&&d.geometry&&validPalette(d.palette)&&[d.left,d.right].every(st=>[...st.cols,...(st.drawing||[]).map(o=>o.color)].every(id=>d.palette.some(p=>p.id===id)));}
@@ -1207,7 +1207,7 @@ function cloudCustomer50(){
  const submit=document.createElement('button');submit.id='cloud50Submit';submit.type='button';submit.className='action primary';submit.textContent='送出客製設計';submit.disabled=true;
  const actions=document.createElement('div');actions.className='v42-actionbar';actions.append(submit);panel.prepend(status,actions);
  const msg=panel.querySelectorAll('p');if(msg[1])msg[1].textContent='也可以下載作品圖及設計檔，與工作室聯絡。';if(msg[2])msg[2].textContent='送出設計不代表完成訂購或付款，仍須由工作室確認。';
- function publicDesign(){const d=fullDesign();return {format:d.format,version:d.version,revision:'5.0',same:d.same,left:d.left,right:d.right,geometry:d.geometry,palette:d.palette.map(p=>({id:p.id,name:p.name,hex:p.hex,enabled:p.enabled!==false})),title:d.title,code:d.code}}
+ function publicDesign(){const d=fullDesign();return {format:d.format,version:d.version,revision:'5.0.1',same:d.same,left:d.left,right:d.right,geometry:d.geometry,palette:d.palette.map(p=>({id:p.id,name:p.name,hex:p.hex,enabled:p.enabled!==false})),title:d.title,code:d.code}}
  function syncSubmit50(){if(!version||busy)return;const sig=JSON.stringify({version,design:publicDesign()});const done=sig===submittedSig;submit.disabled=done;submit.textContent=done?'已送出':'送出客製設計';status.textContent=done?'已收到作品！收件編號：'+receipt50+'。請保留編號，等待工作室確認。':'送出作品後會收到專屬收件編號。'}
  $('v42Order').addEventListener('click',syncSubmit50);$('v42Name').addEventListener('input',()=>{if(!panel.hidden)syncSubmit50()});
  function disable(msg){version=null;editor.inert=false;submit.disabled=true;bar.textContent=msg;status.textContent='目前可下載作品及設計檔；尚不能線上送出。'}
