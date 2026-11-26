@@ -409,6 +409,7 @@ select.catux-enhanced{display:none!important}
  </div>
 </dialog>
 <script src="./render-v2-material.js"></script>
+<script src="./cat-production-check.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -1195,7 +1196,33 @@ function lab45(){
  const tag=document.createElement('span');tag.className='lab45-tag';tag.textContent='MAKE IT YOURS';document.querySelector('.header-right').prepend(tag);
  function theme(){body.classList.toggle('lab45',!adminMode);brand.innerHTML=adminMode?originalBrand:newBrand;tag.hidden=adminMode;}
  const oldEnter=enterAdmin;enterAdmin=function(yes){oldEnter(yes);theme()};
- const oldShow=show42;show42=function(which){oldShow(which);const finish=$('v42Finish');finish.classList.remove('lab45-reveal');if(which==='finish')requestAnimationFrame(()=>{if(screen42==='finish')finish.classList.add('lab45-reveal')})};
+ const oldShow=show42;show42=function(which){oldShow(which);const finish=$('v42Finish');finish.classList.remove('lab45-reveal');if(which==='finish'){refreshProductionCheck();requestAnimationFrame(()=>{if(screen42==='finish')finish.classList.add('lab45-reveal')})}};
+ const checkBox=document.createElement('details');checkBox.style.cssText='margin:18px 0;padding:12px 15px;background:#f3f5ef;border-radius:14px;text-align:left;color:#303d36';const checkTitle=document.createElement('summary'),checkBody=document.createElement('div');checkBox.append(checkTitle,checkBody);$('v42Order').parentElement.before(checkBox);
+ let productionReviewRevision=0;
+ async function refreshProductionCheck(){
+  const revision=++productionReviewRevision,active=()=>revision===productionReviewRevision&&screen42==='finish';
+  checkTitle.textContent='手工製作提醒｜讀取規則';checkBody.replaceChildren();
+  const status=document.createElement('p');status.setAttribute('role','status');status.textContent='正在讀取工作室規則…';checkBody.append(status);
+  try{
+   const design=fullDesign(),artworks=['left','right'].map(ear=>withState(ear==='right'&&!design.same?design.right:design.left,()=>paintCat('face',0,{texture:true})));
+   let config;try{config=await CatProductionCheck.fetchRules()}catch(_){config={revision:0,configured:false,rules:CatProductionCheck.DEFAULT_RULES,offline:true}}
+   if(!active())return;
+   const rules=config.rules,r=CatProductionCheck.analyze(design,rules);
+   status.textContent=config.configured?'工作室規則 v'+config.revision:config.offline?'暫時離線，使用預設提醒門檻':'使用初始提醒門檻（尚未發布）';
+   checkTitle.textContent='手工製作提醒｜初步檢查';
+   const result=document.createElement('div');result.setAttribute('role','status');result.textContent='正在分析最後呈現的圖案…';checkBody.append(result);
+   const history=document.createElement('details'),historyTitle=document.createElement('summary');historyTitle.textContent='原始筆畫提醒（可能已覆蓋）';history.append(historyTitle);
+   for(const e of r.ears){const p=document.createElement('p');p.textContent=(e.ear==='left'?'左耳：':'右耳：')+(e.flags.join('、')||'未發現明顯提醒');history.append(p)}
+   checkBody.append(history);const notice=document.createElement('p');notice.className='small-hint';notice.textContent='此為平面圖案取樣，並非製作保證。你可以保留原本創作並送出，由工作室確認。';checkBody.append(notice);checkBox.open=r.review;
+   try{
+    const values=await Promise.all(artworks.map((svg,i)=>CatProductionCheck.analyzeArtwork(svg,r.ears[i].colors,rules)));
+    if(!active())return;
+    result.replaceChildren();let tiny=false,uncertain=false;
+    values.forEach((v,i)=>{const p=document.createElement('p'),mixed=v.coverage*100<rules.minCoverage;uncertain||=mixed;tiny||=v.tinyRegions>0;p.textContent=(i?'右耳：':'左耳：')+'約 '+v.colors.length+' 個可辨識顏色'+(v.tinyRegions?'，有 '+v.tinyRegions+' 處細小色區':'')+(mixed?'；部分混色或柔邊需人工確認':'');result.append(p)});
+    checkTitle.textContent='手工製作提醒｜'+(tiny?'細節需覆核':uncertain||r.review?'由工作室確認':'未發現明顯提醒');checkBox.open=tiny||uncertain||r.review;
+   }catch(_){if(active()){result.textContent='最後圖案暫時無法分析，仍可查看原始筆畫提醒。';checkTitle.textContent='手工製作提醒｜由工作室確認'}}
+  }catch(_){if(active()){checkTitle.textContent='手工製作提醒｜由工作室確認';checkBody.textContent='作品仍可正常送出。'}}
+ }
  $('v42Editor').querySelector('.v42-editor-head h2').textContent='我的貓咪';
  $('v42Back').textContent='♡ 收藏冊';$('v42DoneTop').textContent='完成作品';
  $('v42Mode').querySelector('[data-focus=same]').textContent='一起畫';
@@ -1207,27 +1234,42 @@ function lab45(){
  const caption=document.createElement('p');caption.className='lab45-caption';caption.textContent='專屬作品卡｜適合分享到限時動態';newShare.parentElement.after(caption);
  function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill()}
  function textFit(ctx,value,maxWidth,maxSize,minSize,weight='700'){let size=maxSize;do{ctx.font=weight+' '+size+'px system-ui, "Noto Sans TC", sans-serif';if(ctx.measureText(value).width<=maxWidth||size<=minSize)break;size-=2;}while(size>=minSize);let output=value;if(ctx.measureText(output).width>maxWidth){let chars=Array.from(output);while(chars.length&&ctx.measureText(chars.join('')+'…').width>maxWidth)chars.pop();output=chars.join('')+'…';}return output}
- async function makeCard(){
-  const svg=productArtwork();svg.setAttribute('width','1040');svg.setAttribute('height','640');
+ const shareDialog=document.createElement('dialog');shareDialog.setAttribute('aria-label','作品分享卡');shareDialog.style.cssText='border:1px solid #e6e2d8;border-radius:20px;padding:18px;width:min(440px,calc(100% - 28px));max-height:90dvh;color:#303d36;background:#fffdfa;overflow:auto';
+ shareDialog.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><strong>我的作品卡</strong><button type="button" id="cardClose" class="quiet-btn">關閉</button></div><label style="display:block;margin:10px 0">圖片尺寸 <select id="cardFormat"><option value="story">IG 限時動態 · 9:16</option><option value="feed">IG 貼文 · 4:5</option></select></label><p id="cardStatus" role="status" style="font-size:13px"></p><img id="cardPreview" alt="作品卡預覽" style="display:block;max-width:100%;max-height:52dvh;margin:0 auto 12px;border-radius:10px"><div class="v42-actionbar"><button type="button" class="action primary" id="cardDownload" disabled>下載 PNG</button><button type="button" class="action" id="cardShare" disabled>分享圖片</button></div>';
+ document.body.append(shareDialog);
+ let cardBlob=null,cardURL='',cardName='',cardRevision=0;
+ async function makeCard(format){
+  const title=$('v42Name').value.trim()||'我的貓咪',svg=productArtwork();
+  // Reframe the original paired product artwork; remove its decorative caption only.
+  for(const n of [...svg.children])if(n.localName==='text'||n.localName==='path')n.remove();
+  svg.querySelector(':scope > rect')?.setAttribute('fill','#F5F1E8');
+  svg.setAttribute('viewBox','78 62 364 174');svg.setAttribute('width','1456');svg.setAttribute('height','696');
   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));
   try{
    const img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url});
-   const c=document.createElement('canvas');c.width=1080;c.height=1920;const ctx=c.getContext('2d');if(!ctx)throw Error('無法建立作品卡');
-   ctx.fillStyle='#F9DF8D';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#303D36';ctx.textAlign='left';ctx.font='700 32px system-ui,sans-serif';ctx.fillText('MILU BANBAN  /  CAT LAB',80,150);
-   ctx.font='850 103px system-ui,sans-serif';ctx.fillText('LOOK WHAT',75,315);ctx.fillText('I MADE!',75,425);
-   ctx.font='500 37px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('我自己設計的貓咪耳環。',80,520);
-   ctx.fillStyle='#C1E5D7';round(ctx,56,623,968,980,54);
-   ctx.fillStyle='#FFFDF5';round(ctx,80,647,920,932,42);
-   ctx.save();ctx.beginPath();ctx.rect(104,746,872,537);ctx.clip();ctx.drawImage(img,104,746,872,537);ctx.restore();
-   ctx.fillStyle='#303D36';ctx.textAlign='center';const title=$('v42Name').value.trim()||'我的貓咪';const line=textFit(ctx,title,830,63,26);ctx.fillText(line,540,1400);
-   ctx.font='600 24px system-ui,sans-serif';ctx.fillStyle='#607368';ctx.fillText('DESIGNED BY ME',540,1462);
-   ctx.textAlign='left';ctx.fillStyle='#303D36';ctx.font='700 42px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('你也來畫一隻吧！',80,1735);
-   ctx.font='500 30px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('麋鹿斑斑 · 貓咪 DIY 實驗室',80,1795);
-   ctx.fillStyle='#F3C5CA';round(ctx,884,1680,112,112,28);ctx.strokeStyle='#79565E';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(940,1755);ctx.bezierCurveTo(902,1727,919,1704,940,1725);ctx.bezierCurveTo(961,1704,978,1727,940,1755);ctx.stroke();
+   const c=document.createElement('canvas');c.width=1080;c.height=format==='feed'?1350:1920;const h=c.height,story=format!=='feed',ctx=c.getContext('2d');if(!ctx)throw Error('無法建立作品卡');
+   ctx.fillStyle='#F7F3EA';ctx.fillRect(0,0,1080,h);
+   ctx.textAlign='center';ctx.fillStyle='#3C5149';ctx.font='600 31px system-ui,sans-serif';ctx.fillText('MILU BANBAN  /  CAT LAB',540,story?235:128);
+   ctx.strokeStyle='#A9B9AD';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(430,story?275:168);ctx.lineTo(650,story?275:168);ctx.stroke();
+   ctx.fillStyle='#303D36';ctx.font='600 50px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('今天，畫了一隻貓。',540,story?428:280);
+   ctx.fillStyle='#758479';ctx.font='400 28px system-ui,sans-serif';ctx.fillText('A LITTLE CAT, DESIGNED BY ME',540,story?484:333);
+   const artY=story?640:410;ctx.fillStyle='#F5F1E8';round(ctx,64,artY-20,952,480,36);ctx.drawImage(img,84,artY,912,436);
+   ctx.fillStyle='#303D36';ctx.fillText(textFit(ctx,title,870,64,30,'650'),540,story?1300:1020);
+   ctx.fillStyle='#758479';ctx.font='400 28px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('我的專屬貓咪耳環',540,story?1360:1072);
+   ctx.strokeStyle='#D9DCD1';ctx.beginPath();ctx.moveTo(160,story?1500:1140);ctx.lineTo(920,story?1500:1140);ctx.stroke();
+   ctx.fillStyle='#3C5149';ctx.font='500 31px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('麋鹿斑斑 · 貓咪 DIY 實驗室',540,story?1570:1200);
+   ctx.font='400 24px system-ui,sans-serif';ctx.fillText('@milubanban',540,story?1615:1244);
+   ctx.fillStyle='#7C8178';ctx.font='400 21px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('設計模擬圖｜手工成品略有差異',540,story?1660:1285);
    return await new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('作品卡輸出失敗')),'image/png'));
   }finally{URL.revokeObjectURL(url)}
  }
- newShare.addEventListener('click',async()=>{if(newShare.disabled)return;newShare.disabled=true;newShare.textContent='製作作品卡…';try{const blob=await makeCard();const name=getDesignCode()+'_CAT-LAB_作品卡.png';const file=new File([blob],name,{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:$('v42Name').value.trim()||'我的貓咪耳環'});return}catch(e){if(e.name==='AbortError')return;}}downloadBlob(blob,name)}catch(e){toast('無法製作分享卡，請重新嘗試');}finally{newShare.disabled=false;newShare.textContent='分享／下載作品卡'}});
+ function clearCard(){cardRevision++;if(cardURL)URL.revokeObjectURL(cardURL);cardURL='';cardBlob=null;$('cardPreview').removeAttribute('src');$('cardDownload').disabled=$('cardShare').disabled=true;}
+ async function refreshCard(){clearCard();const rev=cardRevision,format=$('cardFormat').value;$('cardStatus').textContent='正在製作作品卡…';try{const name=getDesignCode()+'_CAT-LAB_'+format+'.png',blob=await makeCard(format);if(rev!==cardRevision||!shareDialog.open)return;cardBlob=blob;cardName=name;cardURL=URL.createObjectURL(blob);$('cardPreview').src=cardURL;$('cardDownload').disabled=$('cardShare').disabled=false;$('cardStatus').textContent='預覽完成，可下載或分享。'}catch(_){if(rev===cardRevision)$('cardStatus').textContent='無法製作作品卡，請重新嘗試。'}}
+ newShare.addEventListener('click',()=>{if(!shareDialog.open){shareDialog.showModal();void refreshCard()}});
+ $('cardFormat').onchange=refreshCard;$('cardClose').onclick=()=>shareDialog.close();shareDialog.addEventListener('close',clearCard);
+ $('cardDownload').onclick=()=>{if(cardBlob)downloadBlob(cardBlob,cardName)};
+ $('cardShare').onclick=async()=>{if(!cardBlob)return;const file=new File([cardBlob],cardName,{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'我的貓咪耳環'});return}catch(e){if(e.name==='AbortError')return;}}downloadBlob(cardBlob,cardName)};
+
  theme();
 }
 lab45();
