@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.7.2</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V5.0</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -285,6 +285,7 @@ select.catux-enhanced{display:none!important}
 }
 @media print{#adminWorkspace .sm47-no-print,#adminWorkspace .sm47-focusbar{display:none!important}}
 
+.cloud50-bar{background:#f9df8d;color:#59451c;border-radius:10px;padding:8px 12px;font-size:12px;margin:4px auto;max-width:760px;overflow-wrap:anywhere}.lab46-mobile .cloud50-bar:not([hidden]){margin:2px 0}.lab46-mobile:has(.cloud50-bar:not([hidden])) #v42Editor{height:max(440px,calc(var(--lab46-vh) - var(--lab46-header) - 38px))}#cloud50Status{overflow-wrap:anywhere}#cloud50Submit{min-height:48px;width:100%}#cloud50Submit:disabled{opacity:.65}
 </style>
 </head>
 <body>
@@ -359,7 +360,7 @@ select.catux-enhanced{display:none!important}
   </section>
  </div>
 </main>
-<footer class="footer">MILU BANBAN · CAT LAB V4.7.2｜尚未串接購物車或訂單系統</footer>
+<footer class="footer">MILU BANBAN · CAT LAB V5.0｜客製設計收件預覽</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (()=>{
@@ -388,7 +389,7 @@ function validId(id){return typeof id==='string'&&/^[a-zA-Z0-9_-]{1,48}$/.test(i
 function validPalette(arr){return Array.isArray(arr)&&arr.length>=1&&arr.length<=100&&new Set(arr.map(p=>p?.id)).size===arr.length&&arr.some(p=>p?.enabled!==false)&&arr.every(p=>p&&validId(p.id)&&typeof p.name==='string'&&p.name.trim().length>0&&p.name.length<=30&&/^#[0-9a-f]{6}$/i.test(p.hex)&&(p.code===undefined||typeof p.code==='string'&&p.code.length<=40)&&(p.enabled===undefined||typeof p.enabled==='boolean'));}
 function normalizedPalette(arr){return arr.map(p=>({id:p.id,name:p.name,hex:p.hex.toUpperCase(),code:p.code||'',enabled:p.enabled!==false}));}
 function applyPalette(arr){if(!validPalette(arr))throw Error('色票格式不符');const normalized=normalizedPalette(arr);palette.splice(0,palette.length,...normalized);Object.keys(colors).forEach(k=>delete colors[k]);palette.forEach(p=>colors[p.id]=p);}
-try{const stored=JSON.parse(localStorage.getItem(paletteKey));if(validPalette(stored))applyPalette(stored);}catch(_){}
+// Cloud customer mode never loads local private pigment codes or local palette overrides.
 const labels={leftEar:'左耳尖',rightEar:'右耳尖',leftForehead:'左上額',rightForehead:'右上額',centerForehead:'中央連接色',leftCheek:'左下臉斑',rightCheek:'右下臉斑',muzzle:'鼻口重點色'};
 const zoneKeys=Object.keys(labels);
 const baseZones={leftEar:1,rightEar:2,leftForehead:1,rightForehead:2,centerForehead:1,leftCheek:0,rightCheek:0,muzzle:2};
@@ -712,7 +713,7 @@ updateTemplateList();
 // V4 design workflow — snapshots are portable and do not overwrite the admin defaults.
 const savedKey='mb-cat-v4-saved';
 let savedDesigns=[];try{const a=JSON.parse(localStorage.getItem(savedKey));if(Array.isArray(a))savedDesigns=a.filter(validDesign).slice(0,30);}catch(_){}
-function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.7.2',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
+function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'5.0',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
 function hashCode(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36).toUpperCase().padStart(7,'0');}
 function getDesignCode(){const p=designPayload();const clean=st=>({mode:st.mode,cols:st.cols.slice(0,st.mode),zones:Object.fromEntries(zoneKeys.map(k=>[k,Math.min(st.zones[k],st.mode-1)])),join:st.join,finish:st.finish,muzzle:st.muzzle,stripe:st.stripe,drawing:st.drawing||[]});return 'MB-CAT-'+hashCode(JSON.stringify({same:p.same,left:clean(p.left),right:clean(p.right),geometry:p.geometry,palette:p.palette.map(c=>({...c,code:[...usedColors(p.left),...usedColors(p.right)].some(x=>x.id===c.id)?c.code:''}))}));}
 function validDesign(d){return d&&d.format==='MILUBANBAN-CAT-DESIGN-V4'&&d.version===4&&typeof d.same==='boolean'&&validSave(d.left)&&validSave(d.right)&&d.geometry&&validPalette(d.palette)&&[d.left,d.right].every(st=>[...st.cols,...(st.drawing||[]).map(o=>o.color)].every(id=>d.palette.some(p=>p.id===id)));}
@@ -727,7 +728,7 @@ $('swapEars').addEventListener('click',()=>{resetDrawHistory();syncPair();[pair.
 function fullDesign(){syncPair();return {...designPayload(),title:(v42Ready?$('v42Name').value.trim().slice(0,40):''),code:getDesignCode(),exportedAt:new Date().toISOString(),specification:specification(),productionColors:{left:usedColors(pair.left),right:usedColors(pair.same?pair.left:pair.right)}};}
 $('saveDesign').addEventListener('click',()=>{const d=fullDesign();const i=savedDesigns.findIndex(x=>x.code===d.code);if(i>=0)savedDesigns[i]=d;else{if(savedDesigns.length>=30){toast('已達 30 份上限，請先匯出或刪除');return;}savedDesigns.unshift(d);}if(storeSaved()){renderSaved();$('savedDesigns').value=String(i>=0?i:0);toast('設計已儲存於此瀏覽器');}});
 $('exportDesign').addEventListener('click',()=>{const d=fullDesign();const used=new Set([...d.productionColors.left,...d.productionColors.right].map(p=>p.id));d.palette=d.palette.map(p=>({...p,code:used.has(p.id)?p.code:''}));d.unassignedStudioColors=[...new Set([...d.productionColors.left,...d.productionColors.right].filter(p=>!p.code).map(p=>p.id))];downloadBlob(new Blob([JSON.stringify(d)],{type:'application/json'}),d.code+'_製作規格.json');toast('訂製資料已下載');});
-function restoreDesign(d){resetDrawHistory();if(!validDesign(d))throw Error('設計檔格式不符');pair={same:d.same,left:clone(d.left),right:clone(d.same?d.left:d.right),active:'left'};state=clone(pair.left);designGeom=normalizedGeom(d.geometry);designPalette=normalizedPalette(d.palette);if(v42Ready)$('v42Name').value=typeof d.title==='string'?d.title.slice(0,40):'';renderAll();if(v42Ready&&screen42==='gallery')show42('editor');toast('已載入設計快照');}
+function restoreDesign(d){resetDrawHistory();if(!validDesign(d))throw Error('設計檔格式不符');pair={same:d.same,left:clone(d.left),right:clone(d.same?d.left:d.right),active:'left'};state=clone(pair.left);designGeom=normalizedGeom(d.geometry);designPalette=normalizedPalette(d.palette).map(p=>({...p,code:''}));if(v42Ready)$('v42Name').value=typeof d.title==='string'?d.title.slice(0,40):'';renderAll();if(v42Ready&&screen42==='gallery')show42('editor');toast('已載入設計快照');}
 $('loadDesign').addEventListener('click',()=>{const v=$('savedDesigns').value;if(v===''||!savedDesigns[Number(v)]){toast('請先選擇設計');return;}restoreDesign(savedDesigns[Number(v)]);});
 $('deleteDesign').addEventListener('click',async()=>{const v=$('savedDesigns').value;if(v===''||!savedDesigns[Number(v)])return;if(!await catUX.ask('刪除這份作品？','這份作品將從本機收藏中移除。','刪除',true))return;savedDesigns.splice(Number(v),1);storeSaved();renderSaved();});
 $('importDesign').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>64000000)throw Error('檔案過大');restoreDesign(JSON.parse(await f.text()));}catch(err){toast('匯入失敗：'+err.message);}e.target.value='';});
@@ -1019,7 +1020,8 @@ function studioManager44(){
  go('home');
  if(explicit)enterAdmin(true);
 }
-studioManager44();
+$('adminToggle').hidden=true;
+if(new URLSearchParams(location.search).get('studio')==='1')location.replace('/studio.html');
 function lab45(){
  const body=document.body,brand=document.querySelector('.site-header .brand');
  const originalBrand=brand.innerHTML;
@@ -1198,6 +1200,33 @@ function catUX462(){
 }
 const catUX=catUX462();
 mobileCanvas46();
+function cloudCustomer50(){
+ const panel=$('v42OrderPanel'), editor=$('v42Editor');let version=null,pending=null,busy=false;
+ const status=document.createElement('p');status.id='cloud50Status';status.setAttribute('role','status');status.textContent='正在讀取工作室發布色票…';
+ const bar=document.createElement('div');bar.className='cloud50-bar';bar.setAttribute('role','status');bar.textContent='正在讀取工作室色票…';editor.before(bar);
+ const submit=document.createElement('button');submit.id='cloud50Submit';submit.type='button';submit.className='action primary';submit.textContent='送出客製設計';submit.disabled=true;
+ const actions=document.createElement('div');actions.className='v42-actionbar';actions.append(submit);panel.prepend(status,actions);
+ const msg=panel.querySelectorAll('p');if(msg[1])msg[1].textContent='也可以下載作品圖及設計檔，與工作室聯絡。';if(msg[2])msg[2].textContent='送出設計不代表完成訂購或付款，仍須由工作室確認。';
+ function publicDesign(){const d=fullDesign();return {format:d.format,version:d.version,revision:'5.0',same:d.same,left:d.left,right:d.right,geometry:d.geometry,palette:d.palette.map(p=>({id:p.id,name:p.name,hex:p.hex,enabled:p.enabled!==false})),title:d.title,code:d.code}}
+ function disable(msg){version=null;editor.inert=false;submit.disabled=true;bar.textContent=msg;status.textContent='目前可下載作品及設計檔；尚不能線上送出。'}
+ async function boot(){
+  editor.inert=true;
+  try{const res=await fetch('/api/studio?action=palette',{cache:'no-store',signal:AbortSignal.timeout(12000)});const data=await res.json();if(!res.ok)throw Error(data.error||'工作室色票尚未發布');if(!validPalette(data.palette)||!data.version||!data.geometry)throw Error('色票格式不符');
+   applyPalette(data.palette.map(p=>({...p,code:''})));publishedGeom=normalizedGeom(data.geometry);new42();version=data.version;bar.textContent='工作室色票已更新';bar.hidden=true;status.textContent='送出作品後會收到專屬收件編號。';submit.disabled=false;
+  }catch(_){disable('目前為試玩色票，工作室尚未開放線上送出。')}finally{editor.inert=false}
+ }
+ submit.addEventListener('click',async()=>{
+  if(!version||busy)return;if(!await catUX.ask('送出這副貓咪？','作品將交給麋鹿斑斑確認製作可行性，尚未成立付款訂單。','送出設計',false,'繼續修改'))return;
+  const design=publicDesign(),sig=JSON.stringify({version,design});
+  if(!pending||pending.sig!==sig)pending={sig,requestId:crypto.randomUUID()};
+  busy=true;submit.disabled=true;submit.textContent='正在送出…';try{
+   const res=await fetch('/api/studio?action=submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({version,requestId:pending.requestId,design}),signal:AbortSignal.timeout(16000)});const data=await res.json();if(!res.ok)throw Error(data.error||'送出未完成');
+   status.textContent='已收到作品！收件編號：'+data.receipt+'。請保留編號，等待工作室確認。';submit.textContent='已送出';toast('作品已送出');
+  }catch(err){status.textContent=err.message+'。可重試，或下載作品檔聯絡工作室。';submit.textContent='重試送出';submit.disabled=false}finally{busy=false}
+ });
+ boot();
+}
+cloudCustomer50();
 })();
 </script>
 </body>
