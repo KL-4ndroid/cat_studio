@@ -1,5 +1,6 @@
 // Vercel Node serverless endpoint. Private keys are used here only.
 const {createHash,createHmac}=require('node:crypto');
+const {DEFAULT_RULES,validateRules}=require('../cat-production-check.js');
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const ID=/^[A-Za-z0-9_-]{1,48}$/;
 const ZONES=['leftEar','rightEar','leftForehead','rightForehead','centerForehead','leftCheek','rightCheek','muzzle'];
@@ -14,11 +15,13 @@ function config(){
  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url.replace(/\/$/,'')))fail(503,'資料庫網址設定不符');
  return {url:url.replace(/\/$/,''),anon,service,salt};
 }
-async function call(c,path,{method='GET',token=c.service,apikey=c.service,body}={}){
+async function call(c,path,{method='GET',token=c.service,apikey=c.service,body,missingRules=false}={}){
  const r=await fetch(c.url+path,{method,headers:{apikey,Authorization:'Bearer '+token,'Content-Type':'application/json',Accept:'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(12000)});
  let data;try{data=await r.json()}catch(_){data=null}
  if(!r.ok){
   const m=String(data?.message||data?.error_description||'');
+  if(missingRules&&['PGRST205','42P01'].includes(data?.code))return null;
+  if(m.includes('rules_version_conflict'))fail(409,'製作規則已有新版，請重新載入後再發布');
   if(m.includes('version_conflict'))fail(409,'製作單已由其他裝置更新，請重新載入');
   if(m.includes('request_conflict'))fail(409,'送出識別碼已使用，請重新整理後再送');
   if(m.includes('palette_changed'))fail(409,'色票已有新版，請重新開始或下載作品與工作室聯絡');
@@ -56,6 +59,13 @@ function cleanDesign(d,version){
  // Ignore client-provided codes, productionColors, specification, receipt and status.
  return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'5.0.1',same:d.same,left,right,geometry:version.geometry,palette:version.palette.filter(x=>x.enabled!==false),title:str(d.title,40)?d.title:'未命名貓咪',code:str(d.code,64)?d.code:''};
 }
+async function productionRules(c,history=false){
+ const rows=await call(c,'/rest/v1/studio_production_rules?select=revision,rules,created_at&order=revision.desc&limit='+(history?10:1),{missingRules:true});
+ if(rows===null)return {configured:false,revision:0,rules:DEFAULT_RULES,createdAt:null,...(history?{history:[]}:{})};
+ if(!Array.isArray(rows)||!rows.length)fail(503,'製作規則尚未初始化');
+ const clean=rows.map(row=>({revision:row.revision,rules:validateRules(row.rules),createdAt:row.created_at}));
+ return {configured:true,...clean[0],...(history?{history:clean}:{})};
+}
 async function activeVersion(c){
  const rows=await call(c,'/rest/v1/studio_config?singleton=eq.true&select=active_version');
  if(!rows?.length)fail(503,'工作室尚未發布實體色票');
@@ -78,6 +88,7 @@ async function handler(req,res){
  res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');
  try{
   const c=config(),action=String(req.query?.action||'');
+  if(req.method==='GET'&&action==='rules')return res.status(200).json(await productionRules(c));
   if(req.method==='GET'&&action==='palette'){const v=await versionById(c,await activeVersion(c));return res.status(200).json({version:v.id,palette:pub(v.palette),geometry:v.geometry})}
   if(req.method==='POST'&&action==='submit'){
    const b=payload(req);if(!UUID.test(b.requestId||''))fail(400,'送出識別碼不符');const v=await versionById(c,b.version),design=cleanDesign(b.design,v);
@@ -118,6 +129,19 @@ async function handler(req,res){
    if(!object(b.checks)||!['left','right'].every(k=>Array.isArray(b.checks[k])&&b.checks[k].length<=100&&b.checks[k].every(x=>ID.test(x))))fail(400,'上色勾選資料不符');
    const row=await call(c,'/rest/v1/rpc/studio_update_order',{...user,method:'POST',body:{p_id:b.id,p_expected:b.revision,p_status:b.status,p_ref:b.ref,p_note:b.note,p_assignee:b.assignee,p_due:b.due,p_checks:b.checks,p_qc:b.qc}});
    return res.status(200).json({id:row.id,revision:row.revision,status:row.status});
+  }
+  if(req.method==='GET'&&action==='rules-history'){
+   if(a.role!=='owner')fail(403,'只有管理者可以查看規則版本');
+   return res.status(200).json(await productionRules(c,true));
+  }
+  if(req.method==='POST'&&action==='publish-rules'){
+   if(a.role!=='owner')fail(403,'只有管理者可以發布製作規則');
+   const b=payload(req);if(!Number.isInteger(b.revision)||b.revision<1)fail(400,'規則版本不符');
+   let rules;try{rules=validateRules(b.rules)}catch(e){fail(400,e.message)}
+   const current=await productionRules(c);if(!current.configured)fail(503,'需先安裝製作規則資料表');
+   if(current.revision!==b.revision)fail(409,'製作規則已有新版，請重新載入');
+   const result=await call(c,'/rest/v1/rpc/studio_publish_rules',{method:'POST',body:{p_actor:a.id,p_expected:b.revision,p_rules:rules}});
+   return res.status(200).json(result);
   }
   if(req.method==='POST'&&action==='publish'){
    if(a.role!=='owner')fail(403,'只有工作室管理者可以發布色票');const b=payload(req),p=validatePalette(b.palette),g=geometry(b.geometry);
