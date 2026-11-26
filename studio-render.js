@@ -30,7 +30,8 @@ function cheekShape(g,side){const a=side==='left'?g.leftCheek:g.rightCheek;retur
 function tabbyShapes(g){const xs=[70-g.stripeSpread,70,70+g.stripeSpread];return xs.map((x,i)=>`M${x} ${g.stripeY} Q${x+(i===0?3:i===2?-3:0)} ${g.stripeY+g.stripeLength*.55} ${x+(i===0?4:i===2?-4:0)} ${g.stripeY+g.stripeLength}`);}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-const headPath='M27 62 C27 53 30 43 32 37 L36 21 Q38 12 45 19 L56 27 Q70 23 84 27 L97 19 Q105 13 108 22 L113 47 Q118 60 115 73 Q111 96 89 100 Q70 104 49 100 Q29 96 27 76 Z';
+// Orthographic CAT6 front projection in the original 140 × 130 drawing coordinates.
+const headPath='M38.08 15.71 Q38.67 15.62 39.33 15.67 Q40.00 15.71 41.58 16.71 Q43.17 17.71 47.23 21.81 Q51.29 25.92 54.44 29.56 Q57.58 33.21 59.12 33.62 Q60.67 34.04 67.21 33.79 Q73.75 33.54 77.00 34.12 Q80.25 34.71 81.92 34.75 Q83.58 34.79 84.33 34.50 Q85.08 34.21 88.38 31.29 Q91.67 28.38 95.75 25.75 Q99.83 23.12 102.17 22.29 Q104.50 21.46 105.42 21.42 Q106.33 21.38 107.35 21.81 Q108.38 22.25 109.08 23.46 Q109.79 24.67 110.12 27.96 Q110.46 31.25 110.54 36.00 Q110.62 40.75 110.21 46.21 Q109.79 51.67 109.92 52.75 Q110.04 53.83 112.67 61.04 Q115.29 68.25 115.62 71.50 Q115.96 74.75 115.83 77.00 Q115.71 79.25 115.29 81.29 Q114.88 83.33 113.42 86.33 Q111.96 89.33 110.02 91.77 Q108.08 94.21 105.67 95.96 Q103.25 97.71 101.54 98.54 Q99.83 99.38 97.88 99.96 Q95.92 100.54 89.54 101.54 Q83.17 102.54 73.88 102.67 Q64.58 102.79 62.50 102.71 Q60.42 102.62 55.33 101.92 Q50.25 101.21 47.12 100.42 Q44.00 99.62 41.12 98.21 Q38.25 96.79 36.02 94.90 Q33.79 93.00 32.08 90.79 Q30.38 88.58 29.38 86.33 Q28.38 84.08 27.75 81.04 Q27.12 78.00 27.08 75.83 Q27.04 73.67 27.33 71.17 Q27.62 68.67 28.29 66.33 Q28.96 64.00 30.79 59.88 Q32.62 55.75 33.29 53.54 Q33.96 51.33 34.08 49.71 Q34.21 48.08 33.71 40.29 Q33.21 32.50 33.79 27.25 Q34.38 22.00 35.33 19.50 Q36.29 17.00 36.90 16.40 Q37.50 15.79 38.08 15.71 Z';
 function hexMix(a,b,t){const parse=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=parse(a),B=parse(b);return '#'+A.map((x,i)=>Math.round(x*(1-t)+B[i]*t).toString(16).padStart(2,'0')).join('');}
 function stripeColor(){const main=state.join==='bridge'?colorFor('centerForehead'):colorFor('leftForehead');return nearestColor(hexMix(main,'#2b211c',.65));}
 function drawingMarkup(id,ops){let art='',defs='';for(let i=0;i<(ops||[]).length;i++){const o=ops[i];const pts=o.points;const d=pts.map((p,j)=>`${j?'L':'M'}${p[0]} ${p[1]}`).join(' ')+(o.tool==='shape'&&pts.length>=3?' Z':pts.length===1?' l.01 0':'');const color=colorData(o.color).hex;const stroke=`<path d="${d}" fill="${o.tool==='shape'&&pts.length>=3?color:'none'}" stroke="${color}" stroke-width="${o.tool==='shape'?0.5:o.width}" stroke-linecap="round" stroke-linejoin="round"/>`;if(o.tool==='erase'){const mid=id+'erase'+i;defs+=`<mask id="${mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="140" height="130"><rect width="140" height="130" fill="white"/><path d="${d}" fill="none" stroke="black" stroke-width="${o.width}" stroke-linecap="round" stroke-linejoin="round"/></mask>`;art=`<g mask="url(#${mid})">${art}</g>`;}else art+=stroke;}return `<defs>${defs}</defs>${art}`;}
@@ -89,8 +90,8 @@ function paintCat(id,x){
     <path d="M28 60 Q24 83 42 94" stroke="#fff" stroke-width="2.5" opacity=".16" fill="none"/>
    </g>
    <path d="${headPath}" fill="none" stroke="#c6bfae" stroke-width=".75" opacity=".6"/>
-   <circle cx="70" cy="67" r="5.5" fill="url(#gold)" stroke="#ae803e" stroke-width=".8"/>
-   <ellipse cx="68.5" cy="65.3" rx="2.1" ry="1.2" fill="#fff0ba" opacity=".95"/>
+   <circle transform="translate(.7 13)" cx="70" cy="67" r="5.5" fill="url(#gold)" stroke="#ae803e" stroke-width=".8"/>
+   <ellipse transform="translate(.7 13)" cx="68.5" cy="65.3" rx="2.1" ry="1.2" fill="#fff0ba" opacity=".95"/>
   </g>
  </g>`;
 }
