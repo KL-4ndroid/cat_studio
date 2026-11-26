@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7f6f1" />
-<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.6.1</title>
+<title>CAT LAB 貓咪 DIY 實驗室｜麋鹿斑斑 V4.6.2</title>
 <style>
 :root{--bg:#f7f6f1;--panel:#fffdfa;--ink:#333d3a;--muted:#828a85;--line:#e6e7e0;--teal:#6b8982;--teal-light:#e8efeb;--gold:#cda668;--shadow:0 16px 48px rgba(72,80,72,.065)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.02em}button,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #7c9e94;outline-offset:3px}
@@ -165,6 +165,84 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
  .lab46-mobile #v42Editor #drawPalette{contain:inline-size}
 }
 
+
+/* V4.6.2: shared branded dialogs, accessible option sheets and mobile comfort. */
+.catux-dialog{box-sizing:border-box;border:0;border-radius:24px;padding:0;background:#fffdfa;color:#303d36;width:min(440px,calc(100% - 28px));max-width:calc(100% - 28px);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;box-shadow:0 22px 80px #263c3050;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;letter-spacing:0}
+.catux-dialog::backdrop{background:#293b3266;backdrop-filter:blur(2px)}
+.catux-dialog[open]{animation:catux-enter .18s ease-out}
+.catux-dialog.catux-fallback[open]{position:fixed;inset:0;margin:auto;z-index:101}
+.catux-overlay{position:fixed;inset:0;z-index:100;background:#293b3266}
+.catux-dialog .catux-content{padding:23px}
+.catux-dialog .catux-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.catux-dialog .catux-mark{width:44px;height:44px;border-radius:14px;background:#c1e5d7;display:grid;place-items:center;font-size:23px;color:#303d36;margin-bottom:12px}
+.catux-dialog[data-tone=destructive] .catux-mark{background:#f3c5ca;color:#74434b}
+.catux-dialog h2{margin:0;font-size:21px;line-height:1.35;font-weight:780;overflow-wrap:anywhere}
+.catux-dialog p{font-size:15px;line-height:1.65;margin:10px 0 20px;color:#52685c;overflow-wrap:anywhere}
+.catux-dialog button,.catux-select-trigger{font:inherit;cursor:pointer;touch-action:manipulation}
+.catux-dialog button:focus-visible,.catux-select-trigger:focus-visible{outline:3px solid #42745d;outline-offset:2px}
+.catux-dialog .catux-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
+.catux-dialog .catux-action,.catux-dialog .catux-close{border:1px solid #d9e3d8;border-radius:13px;min-height:48px;padding:12px 10px;font-size:15px;font-weight:700;color:#42594a;background:#f3f4ec}
+.catux-dialog .catux-action.primary{background:#303d36;border-color:#303d36;color:white}
+.catux-dialog[data-tone=destructive] .catux-action.primary{background:#934c55;border-color:#934c55}
+.catux-dialog .catux-close{min-width:44px;min-height:44px;padding:6px;font-size:18px;line-height:1}
+.catux-dialog .catux-options{display:grid;gap:6px;max-height:min(52vh,420px);overflow:auto;overscroll-behavior:contain;padding:3px}
+.catux-dialog .catux-choice{display:flex;align-items:center;gap:10px;width:100%;min-height:49px;padding:11px;border:1px solid #e4e7dd;border-radius:12px;background:white;color:#303d36;text-align:left;font-size:15px}
+.catux-dialog .catux-choice[aria-pressed=true]{background:#e7f3ea;border-color:#719782;font-weight:700}
+.catux-dialog .catux-choice:disabled{opacity:.5;cursor:not-allowed}
+.catux-dialog .catux-choice span:nth-last-child(2){flex:1;min-width:0;overflow-wrap:anywhere}
+.catux-dialog .catux-chip,.catux-select-trigger .catux-chip{display:inline-block;width:24px;height:24px;flex:none;border:1px solid #303d3630;border-radius:50%}
+.catux-dialog .catux-tick{margin-left:auto;flex:none}
+.catux-select-trigger{display:flex;align-items:center;gap:8px;width:100%;min-width:0;min-height:44px;border:1px solid #d9e3d8;border-radius:11px;background:#fffdfa;padding:10px;color:#354b3e;text-align:left;font-size:14px}
+.catux-select-trigger .catux-select-label{flex:1;min-width:0;overflow-wrap:anywhere}
+.catux-select-trigger:disabled{opacity:.5;cursor:not-allowed}
+select.catux-enhanced{display:none!important}
+@media print{select.catux-enhanced{display:revert!important}.catux-select-trigger,.catux-dialog,.catux-overlay{display:none!important}}
+@keyframes catux-enter{from{opacity:.4;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media(max-width:760px){
+ .catux-dialog{width:100%;max-width:100%;margin:auto 0 0;border-radius:24px 24px 0 0;max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px)}
+ .catux-dialog.catux-fallback[open]{inset:auto 0 0;margin:0}
+ .catux-dialog .catux-content{padding:18px 18px max(20px,env(safe-area-inset-bottom,0px))}
+ .catux-dialog .catux-content:before{content:"";display:block;width:38px;height:4px;margin:0 auto 16px;background:#becac0;border-radius:99px}
+ .catux-dialog .catux-actions{gap:10px}
+ .catux-dialog .catux-action{min-height:52px;font-size:16px}
+ .lab45 #v42Finish,.lab45 #v42Gallery{min-width:0;width:100%;max-width:100%;overflow-wrap:anywhere}
+ .lab45 #v42Finish input,.lab45 #v42Gallery input,.lab45 #v42Editor input:not([type=range]):not([type=checkbox]):not([type=file]),.lab45 #v42Editor textarea{font-size:16px;min-width:0;max-width:100%}
+ .lab45 #v42Finish button,.lab45 #v42Gallery button{min-height:44px}
+ .lab45 #v42Gallery .v42-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .lab45 #v42Gallery .v42-gallery-card .v42-quick button{min-width:0;flex:1 1 100%;font-size:13px}
+ .lab45 #v42Editor .v42-controls summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 2px;font-size:14px;list-style:none}
+ .lab45 #v42Editor .v42-controls summary::-webkit-details-marker{display:none}
+ .lab45 #v42Editor .v42-controls summary:after{content:"＋";flex:none;font-size:17px}
+ .lab45 #v42Editor .v42-controls details[open]>summary:after{content:"−"}
+ .lab45 #v42Editor .v42-controls :is(.segment,.stripe-options,.v4-pills,.pair-tabs) button{min-height:44px;font-size:13px;min-width:0;overflow-wrap:anywhere}
+ .lab45 #v42Editor .v42-controls .v4-color-grid{grid-template-columns:repeat(auto-fit,minmax(44px,1fr));gap:8px}
+ .lab45 #v42Editor .v42-controls .v4-color-grid button{height:44px;min-height:44px;border-radius:12px}
+ .lab45 #v42Editor .v42-controls .zone-grid{grid-template-columns:1fr;gap:8px}
+ .lab45 #v42Editor .v42-controls .zone-btns button{min-height:44px;font-size:12px}
+ .lab45 #v42Editor .v42-controls .zone-name{font-size:13px}
+ .lab45 #v42Editor .v42-controls .v4-preset{min-height:66px;font-size:12px}
+ .lab45 #v42Editor .v42-controls .color-row{grid-template-columns:minmax(66px,.7fr) minmax(0,1.3fr);gap:7px}
+ .lab45 #v42Editor .v42-controls .selector{min-width:0;padding:0;border:0;background:none}
+ .lab45 #v42Editor .v42-controls .catux-select-trigger{font-size:14px}
+ .lab45 #v42Editor .v42-controls .quiet-btn,.lab45 #v42Editor .v42-controls .text-btn,.lab45 #v42Editor .v42-controls .import-btn{min-height:44px}
+ .lab46-mobile #v42Editor .lab46-modebar .v42-mode button{min-height:44px}
+ .lab46-mobile #v42Editor .lab46-handle{min-height:44px}
+ .lab46-mobile #v42Editor #drawSize{min-height:44px;width:100%;min-width:0}
+ .lab46-mobile #v42Editor .draw-size label{white-space:nowrap}
+ .lab46-mobile #v42Editor .v42-controls{max-width:100%;overflow-x:hidden}
+ .lab46-mobile #v42Editor .lab46-fullpalette button{min-width:44px;min-height:44px}
+ .lab46-mobile #v42Editor .lab46-palettebar button{font-size:12px}
+ .lab46-mobile #v42Editor #drawColorName{font-size:12px}
+ .lab46-mobile #v42Editor .v42-canvas-note{font-size:11px}
+ .lab45 .toast{bottom:max(16px,env(safe-area-inset-bottom,0px));width:max-content;max-width:calc(100% - 24px);white-space:normal;text-align:center;border-radius:15px;font-size:13px;line-height:1.5;background:#303d36;box-shadow:0 4px 18px #243c3030}
+ .lab46-mobile .toast{bottom:calc(max(12px,env(safe-area-inset-bottom,0px)) + 52px)}
+ .lab45 #v42OrderPanel{background:#f4f8ef;border:1px solid #dbe6d8;border-radius:16px;padding:14px;margin:12px 0}
+ .lab45 #v42OrderPanel .v42-actionbar{flex-direction:column;gap:8px}
+ .lab45 #v42Gallery .v42-editor-head{flex-wrap:wrap}
+ @media(max-width:360px){.lab46-mobile #v42Editor .v42-editor-head h2{font-size:13px}.lab46-mobile #v42Editor .v42-editor-head button{padding:6px;font-size:11px}.lab46-mobile #v42Editor #drawTool button{font-size:10px;gap:2px}.lab46-mobile #v42Editor .lab46-iconbtn svg{width:15px;height:15px}.lab46-mobile #v42Editor .lab46-modebar{gap:2px}.lab46-mobile #v42Editor .v42-mode button{font-size:11px;padding:3px}}
+}
+@media(prefers-reduced-motion:reduce){.catux-dialog[open]{animation:none}}
+
 </style>
 </head>
 <body>
@@ -239,7 +317,7 @@ body.lab45{--lab-cream:#fff9f0;--lab-mint:#c1e5d7;--lab-yellow:#f9df8d;--lab-pin
   </section>
  </div>
 </main>
-<footer class="footer">MILU BANBAN · CAT LAB V4.6.1｜尚未串接購物車或訂單系統</footer>
+<footer class="footer">MILU BANBAN · CAT LAB V4.6.2｜尚未串接購物車或訂單系統</footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 (()=>{
@@ -483,8 +561,8 @@ function renderAll(){
 function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2600);}
 function setState(data){state=adaptState(data);resetDrawHistory();renderAll();}
 $('modeGroup').addEventListener('click',e=>{resetDrawHistory();const b=e.target.closest('button[data-mode]');if(!b)return;state.mode=Number(b.dataset.mode);state.name=({1:'單色貓咪',2:'雙色貓咪',3:'三花貓咪'})[state.mode];renderAll();});
-$('colorSelectors').addEventListener('click',e=>{resetDrawHistory();const b=e.target.closest('[data-color-slot]');if(!b)return;state.cols[Number(b.dataset.colorSlot)]=b.dataset.colorId;state.name='我的專屬配色';renderAll();});
-$('colorSelectors').addEventListener('change',e=>{resetDrawHistory();const s=e.target.closest('select[data-color]');if(!s)return;state.cols[Number(s.dataset.color)]=s.value;state.name='我的專屬配色';renderAll();});
+$('colorSelectors').addEventListener('click',e=>{const b=e.target.closest('[data-color-slot]');if(!b)return;pushDrawUndo();state.cols[Number(b.dataset.colorSlot)]=b.dataset.colorId;state.name='我的專屬配色';renderAll();});
+$('colorSelectors').addEventListener('change',e=>{const s=e.target.closest('select[data-color]');if(!s)return;pushDrawUndo();state.cols[Number(s.dataset.color)]=s.value;state.name='我的專屬配色';renderAll();});
 $('zones').addEventListener('click',e=>{resetDrawHistory();const b=e.target.closest('button[data-zone]');if(!b||b.disabled)return;state.zones[b.dataset.zone]=Number(b.dataset.slot);state.name='我的專屬配色';renderAll();});
 [['joinOptions','join','data-join',v=>v],['finishOptions','finish','data-finish',v=>v],['muzzleOptions','muzzle','data-muzzle',Number],['stripeOptions','stripe','data-stripe',Number]].forEach(([id,key,attr,parse])=>{
  $(id).addEventListener('click',e=>{resetDrawHistory();const b=e.target.closest(`button[${attr}]`);if(!b)return;state[key]=parse(b.getAttribute(attr));state.name='我的專屬配色';renderAll();});
@@ -492,7 +570,7 @@ $('zones').addEventListener('click',e=>{resetDrawHistory();const b=e.target.clos
 function renderPresetCards(){
  $('presets').innerHTML=presets.map((p,i)=>{const id='preset'+i;const g=gNow();const art=withState(adaptState(p),()=>paintCat(id,0));return `<button type="button" class="v4-preset ${state.name===p.name?'active':''}" data-preset="${i}" aria-pressed="${state.name===p.name}"><svg viewBox="35 75 130 125" aria-hidden="true"><defs><linearGradient id="${id}gold"><stop stop-color="#bd9149"/><stop offset="1" stop-color="#f3d58a"/></linearGradient><filter id="${id}softMark"><feGaussianBlur stdDeviation="${g.softness}"/></filter><filter id="${id}noseSoft"><feGaussianBlur stdDeviation="1.5"/></filter></defs>${art.replace(/url\(#gold\)/g,`url(#${id}gold)`).replace(/url\(#softMark\)/g,`url(#${id}softMark)`).replace(/url\(#noseSoft\)/g,`url(#${id}noseSoft)`).replace(/ filter="url\(#shadow\)"/g,'')}</svg>${esc(p.name)}</button>`;}).join('');
 }
-$('presets').addEventListener('click',e=>{const b=e.target.closest('button[data-preset]');if(!b)return;setState(presets[Number(b.dataset.preset)]);});
+$('presets').addEventListener('click',async e=>{const b=e.target.closest('button[data-preset]');if(!b)return;if(state.drawing?.length&&!await catUX.ask('換一種貓咪花色？','目前的手繪花紋會被新花色取代，可透過復原找回。','更換花色',true,'繼續畫'))return;replace42(presets[Number(b.dataset.preset)]);});
 $('resetBtn').addEventListener('click',()=>{setState(presets[0]);toast('已恢復經典三花配色');});
 function checkMobilePreview(){const card=document.querySelector('.preview-card');$('mobileMini').classList.toggle('visible',!adminMode&&window.innerWidth<=870&&card.getBoundingClientRect().bottom<0);}
 window.addEventListener('scroll',checkMobilePreview,{passive:true});window.addEventListener('resize',checkMobilePreview);
@@ -581,7 +659,7 @@ $('editorSvg').addEventListener('keydown',e=>{
 function updateTemplateList(){const list=$('templateList'),keep=list.value;list.innerHTML='<option value="">選擇已儲存的版型</option>'+templates.map((t,i)=>`<option value="${i}">${esc(t.name)}</option>`).join('');if([...list.options].some(o=>o.value===keep))list.value=keep;}
 $('saveTemplate').addEventListener('click',()=>{const name=$('templateName').value.trim();if(!name){toast('請先輸入版型名稱');$('templateName').focus();return;}const ix=templates.findIndex(x=>x.name===name);const v={name,geom:clone(draftGeom)};if(ix>=0)templates[ix]=v;else templates.push(v);saveGeom();updateTemplateList();$('templateList').value=String(ix>=0?ix:templates.length-1);toast(`已儲存版型：${name}`);});
 $('loadTemplate').addEventListener('click',()=>{const index=Number($('templateList').value);if($('templateList').value===''||!templates[index]){toast('請先選擇版型');return;}snapshot();draftGeom=clone(templates[index].geom);saveGeom();setDirty();renderGeometryControls();renderPreview();$('templateName').value=templates[index].name;toast('版型已載入草稿');});
-$('removeTemplate').addEventListener('click',()=>{const val=$('templateList').value;const idx=Number(val);if(val===''||!templates[idx]){toast('請先選擇版型');return;}if(!confirm(`確定刪除「${templates[idx].name}」？`))return;templates.splice(idx,1);saveGeom();updateTemplateList();$('templateList').value='';toast('版型已刪除');});
+$('removeTemplate').addEventListener('click',async()=>{const val=$('templateList').value;const idx=Number(val);if(val===''||!templates[idx]){toast('請先選擇版型');return;}if(!await catUX.ask('刪除版型？',`「${templates[idx].name}」將從本機版型移除。`,'刪除',true))return;templates.splice(idx,1);saveGeom();updateTemplateList();$('templateList').value='';toast('版型已刪除');});
 $('publishTemplate').addEventListener('click',()=>{publishedGeom=clone(draftGeom);designGeom=null;syncPair();saveGeom();setDirty(false);toast('已套用至客人配色模式');});
 $('resetGeometry').addEventListener('click',()=>{snapshot();draftGeom=clone(DEFAULT_G);saveGeom();setDirty();renderGeometryControls();renderPreview();toast('草稿已恢復初始色塊');});
 $('undoGeometry').addEventListener('click',()=>{if(!undoStack.length){toast('已沒有可復原的步驟');return;}draftGeom=undoStack.pop();saveGeom();setDirty();renderGeometryControls();renderPreview();toast('已復原上一個調整');});
@@ -592,7 +670,7 @@ updateTemplateList();
 // V4 design workflow — snapshots are portable and do not overwrite the admin defaults.
 const savedKey='mb-cat-v4-saved';
 let savedDesigns=[];try{const a=JSON.parse(localStorage.getItem(savedKey));if(Array.isArray(a))savedDesigns=a.filter(validDesign).slice(0,30);}catch(_){}
-function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.6.1',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
+function designPayload(){return {format:'MILUBANBAN-CAT-DESIGN-V4',version:4,revision:'4.6.2',same:pair.same,left:clone(pair.left),right:clone(pair.same?pair.left:pair.right),geometry:clone(designGeom||publishedGeom),palette:clone(shownPalette())};}
 function hashCode(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36).toUpperCase().padStart(7,'0');}
 function getDesignCode(){const p=designPayload();const clean=st=>({mode:st.mode,cols:st.cols.slice(0,st.mode),zones:Object.fromEntries(zoneKeys.map(k=>[k,Math.min(st.zones[k],st.mode-1)])),join:st.join,finish:st.finish,muzzle:st.muzzle,stripe:st.stripe,drawing:st.drawing||[]});return 'MB-CAT-'+hashCode(JSON.stringify({same:p.same,left:clean(p.left),right:clean(p.right),geometry:p.geometry,palette:p.palette.map(c=>({...c,code:[...usedColors(p.left),...usedColors(p.right)].some(x=>x.id===c.id)?c.code:''}))}));}
 function validDesign(d){return d&&d.format==='MILUBANBAN-CAT-DESIGN-V4'&&d.version===4&&typeof d.same==='boolean'&&validSave(d.left)&&validSave(d.right)&&d.geometry&&validPalette(d.palette)&&[d.left,d.right].every(st=>[...st.cols,...(st.drawing||[]).map(o=>o.color)].every(id=>d.palette.some(p=>p.id===id)));}
@@ -600,16 +678,16 @@ function renderSaved(){const el=$('savedDesigns'),prev=el.value;el.innerHTML='<o
 function storeSaved(){try{localStorage.setItem(savedKey,JSON.stringify(savedDesigns));return true;}catch(_){toast('瀏覽器無法儲存，請匯出 JSON');return false;}}
 function renderV4(){active('pairMode','data-pair',pair.same?'same':'different');active('earTabs','data-ear',pair.active);$('earTabs').querySelector('[data-ear=right]').disabled=pair.same;$('pairTools').hidden=pair.same;$('pairTools').style.display=pair.same?'none':'';$('earFocus').textContent=pair.same?'目前修改會同步套用兩隻。':'目前正在編輯'+(pair.active==='left'?'左':'右')+'耳環。';$('designCode').textContent=getDesignCode();$('designNotice').textContent=(designGeom||designPalette)?'目前使用已載入的設計快照。':'目前使用管理員發布的本機版型與色票。';$('useLatest').hidden=!(designGeom||designPalette);renderPresetCards();}
 $('useLatest').addEventListener('click',()=>{designGeom=null;designPalette=null;pair.left=adaptState(pair.left);pair.right=adaptState(pair.right);state=adaptState(state);resetDrawHistory();renderAll();toast('已改用目前本機版型與色票');});
-$('pairMode').addEventListener('click',e=>{const b=e.target.closest('[data-pair]');if(!b)return;const same=b.dataset.pair==='same';if(same===pair.same)return;resetDrawHistory();syncPair();if(same){if(!confirm('將以目前編輯的耳環同步兩隻，確定嗎？'))return;pair.left=clone(state);pair.right=clone(state);pair.active='left';}else{pair.right=clone(pair.left);}pair.same=same;state=clone(pair[pair.active]);renderAll();});
+$('pairMode').addEventListener('click',async e=>{const b=e.target.closest('[data-pair]');if(!b)return;const same=b.dataset.pair==='same';if(same===pair.same)return;if(same&&!await catUX.ask('兩隻畫成一樣？','將以目前編輯的這隻貓咪覆蓋另一隻的設計。','同步兩隻',true,'保留不同'))return;resetDrawHistory();syncPair();if(same){pair.left=clone(state);pair.right=clone(state);pair.active='left';}else{pair.right=clone(pair.left);}pair.same=same;state=clone(pair[pair.active]);renderAll();});
 $('earTabs').addEventListener('click',e=>{const b=e.target.closest('[data-ear]');if(!b||b.disabled)return;selectEar(b.dataset.ear);});
-$('copyEar').addEventListener('click',()=>{syncPair();pair[pair.active==='left'?'right':'left']=clone(state);renderAll();toast('已複製到另一隻');});
+$('copyEar').addEventListener('click',async()=>{if(!await catUX.ask('複製到另一隻？','另一隻耳環會被目前的設計取代。','複製',true,'保留原樣'))return;syncPair();pair[pair.active==='left'?'right':'left']=clone(state);renderAll();toast('已複製到另一隻');});
 $('swapEars').addEventListener('click',()=>{resetDrawHistory();syncPair();[pair.left,pair.right]=[pair.right,pair.left];state=clone(pair[pair.active]);renderAll();});
 function fullDesign(){syncPair();return {...designPayload(),title:(v42Ready?$('v42Name').value.trim().slice(0,40):''),code:getDesignCode(),exportedAt:new Date().toISOString(),specification:specification(),productionColors:{left:usedColors(pair.left),right:usedColors(pair.same?pair.left:pair.right)}};}
 $('saveDesign').addEventListener('click',()=>{const d=fullDesign();const i=savedDesigns.findIndex(x=>x.code===d.code);if(i>=0)savedDesigns[i]=d;else{if(savedDesigns.length>=30){toast('已達 30 份上限，請先匯出或刪除');return;}savedDesigns.unshift(d);}if(storeSaved()){renderSaved();$('savedDesigns').value=String(i>=0?i:0);toast('設計已儲存於此瀏覽器');}});
 $('exportDesign').addEventListener('click',()=>{const d=fullDesign();const used=new Set([...d.productionColors.left,...d.productionColors.right].map(p=>p.id));d.palette=d.palette.map(p=>({...p,code:used.has(p.id)?p.code:''}));d.unassignedStudioColors=[...new Set([...d.productionColors.left,...d.productionColors.right].filter(p=>!p.code).map(p=>p.id))];downloadBlob(new Blob([JSON.stringify(d)],{type:'application/json'}),d.code+'_製作規格.json');toast('訂製資料已下載');});
 function restoreDesign(d){resetDrawHistory();if(!validDesign(d))throw Error('設計檔格式不符');pair={same:d.same,left:clone(d.left),right:clone(d.same?d.left:d.right),active:'left'};state=clone(pair.left);designGeom=normalizedGeom(d.geometry);designPalette=normalizedPalette(d.palette);if(v42Ready)$('v42Name').value=typeof d.title==='string'?d.title.slice(0,40):'';renderAll();if(v42Ready&&screen42==='gallery')show42('editor');toast('已載入設計快照');}
 $('loadDesign').addEventListener('click',()=>{const v=$('savedDesigns').value;if(v===''||!savedDesigns[Number(v)]){toast('請先選擇設計');return;}restoreDesign(savedDesigns[Number(v)]);});
-$('deleteDesign').addEventListener('click',()=>{const v=$('savedDesigns').value;if(v===''||!savedDesigns[Number(v)])return;if(!confirm('刪除此本機設計？'))return;savedDesigns.splice(Number(v),1);storeSaved();renderSaved();});
+$('deleteDesign').addEventListener('click',async()=>{const v=$('savedDesigns').value;if(v===''||!savedDesigns[Number(v)])return;if(!await catUX.ask('刪除這份作品？','這份作品將從本機收藏中移除。','刪除',true))return;savedDesigns.splice(Number(v),1);storeSaved();renderSaved();});
 $('importDesign').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>64000000)throw Error('檔案過大');restoreDesign(JSON.parse(await f.text()));}catch(err){toast('匯入失敗：'+err.message);}e.target.value='';});
 let refUrl='';function clearReference(){if(refUrl)URL.revokeObjectURL(refUrl);refUrl='';$('refImage').removeAttribute('src');$('refImage').hidden=true;$('clearRef').hidden=true;$('refFile').value='';}
 $('refFile').addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/')||f.size>15000000){toast('請選擇 15 MB 以下的圖片');return;}if(refUrl)URL.revokeObjectURL(refUrl);refUrl=URL.createObjectURL(f);$('refImage').src=refUrl;$('refImage').hidden=false;$('clearRef').hidden=false;});$('refImage').addEventListener('error',()=>{clearReference();toast('無法讀取此圖片格式');});$('clearRef').addEventListener('click',clearReference);
@@ -620,7 +698,7 @@ $('paletteEditor').addEventListener('input',e=>{const t=e.target;for(const [key,
 $('addPalette').addEventListener('click',()=>{if(paletteDraft.length>=100){toast('色票上限 100 色');return;}paletteDraft.push({id:'studio_'+Date.now().toString(36)+'_'+paletteDraft.length,name:'新色票',hex:'#C8B6A0',code:'',enabled:true});renderPaletteRows();});
 function commitPalette(arr){try{const codes=arr.filter(p=>p.code).map(p=>p.code.trim());if(new Set(codes).size!==codes.length)throw Error('工作室顏料編號不可重複');applyPalette(arr);designPalette=null;localStorage.setItem(paletteKey,JSON.stringify(palette));pair.left=adaptState(pair.left);pair.right=adaptState(pair.right);state=adaptState(state);resetDrawHistory();renderPaletteEditor();renderAll();toast('色票已套用；停用色已換成最接近的啟用色');}catch(err){toast('色票未儲存：'+err.message);}}
 $('savePalette').addEventListener('click',()=>{commitPalette(paletteDraft.map(p=>({...p,name:p.name.trim(),hex:p.hex.trim(),code:p.code.trim()})));});
-$('resetPalette').addEventListener('click',()=>{if(confirm('恢復全部初始示意色票？'))commitPalette(defaultPalette);});
+$('resetPalette').addEventListener('click',async()=>{if(await catUX.ask('恢復初始色票？','目前工作室色票將被示意色票取代，請先備份需要的設定。','恢復',true)){commitPalette(defaultPalette);$('paletteEditor').dispatchEvent(new Event('studio-palette-updated'));}});
 // Freehand layer: vector operations stored with each ear. No external services.
 let drawTool='brush',drawColor='',drawPending=null,drawPointer=null,drawUndo=[],drawRedo=[];
 function resetDrawHistory(){drawUndo=[];drawRedo=[];drawPending=null;drawPointer=null;}
@@ -655,8 +733,8 @@ function finishDraw(e,commit){if(e.pointerId!==drawPointer)return;const op=drawP
 drawSvg.addEventListener('pointerup',e=>{if(e.pointerId!==drawPointer)return;appendDrawPoint(e,true);finishDraw(e,true);});drawSvg.addEventListener('pointercancel',e=>finishDraw(e,false));drawSvg.addEventListener('lostpointercapture',e=>finishDraw(e,false));
 $('drawUndo').addEventListener('click',()=>{if(drawUndo.length){drawRedo.push(clone(state));state=drawUndo.pop();renderAll();}});
 $('drawRedo').addEventListener('click',()=>{if(drawRedo.length){drawUndo.push(clone(state));state=drawRedo.pop();renderAll();}});
-$('drawClear').addEventListener('click',()=>{if(state.drawing?.length&&confirm('清除目前耳環的全部手繪花紋？')){pushDrawUndo();state.drawing=[];renderAll();}});
-$('drawBlank').addEventListener('click',()=>{if(state.drawing?.length&&!confirm('從純色開始會清除目前手繪，確定嗎？'))return;pushDrawUndo();state={...clone(state),name:'我的自由手繪',mode:1,cols:[state.cols[0],state.cols[0],state.cols[0]],zones:Object.fromEntries(zoneKeys.map(k=>[k,0])),join:'meet',finish:'solid',muzzle:0,stripe:0,drawing:[]};renderAll();});
+$('drawClear').addEventListener('click',async()=>{if(state.drawing?.length&&await catUX.ask('清除手繪花紋？','只會清除目前耳環的手繪層，底色及原有花色會保留。','清除',true,'繼續畫')){pushDrawUndo();state.drawing=[];renderAll();}});
+$('drawBlank').addEventListener('click',async()=>{if(state.drawing?.length&&!await catUX.ask('從純色重新開始？','目前這隻貓咪的手繪花紋將被清除。','重新開始',true,'繼續畫'))return;pushDrawUndo();state={...clone(state),name:'我的自由手繪',mode:1,cols:[state.cols[0],state.cols[0],state.cols[0]],zones:Object.fromEntries(zoneKeys.map(k=>[k,0])),join:'meet',finish:'solid',muzzle:0,stripe:0,drawing:[]};renderAll();});
 
 // V4.3.1 experience layer — original geometry and portable design schema preserved.
 let v42Ready=false,screen42='editor',last42='editor',galleryReturn42='editor';
@@ -683,10 +761,10 @@ function new42(){designPalette=null;designGeom=null;pair.same=true;pair.active='
 move42();const mobile42=matchMedia('(max-width:760px)');function placeTools42(){(mobile42.matches?$('v42MobileTools'):$('v42DesktopTools')).append($('v42ToolGroup'));}placeTools42();mobile42.addEventListener('change',placeTools42);v42Ready=true;
 btn42('v42Back',gallery42);
 btn42('v42FinishGallery',gallery42);btn42('v42GalleryBack',()=>show42(galleryReturn42));btn42('v42Import',()=>$('importDesign').click());
-$('v42GalleryGrid').addEventListener('click',e=>{const o=e.target.closest('[data-open42]'),d=e.target.closest('[data-del42]');if(o){restoreDesign(savedDesigns[+o.dataset.open42]);show42('editor');}if(d&&confirm('刪除這份收藏？')){const old=clone(savedDesigns);savedDesigns.splice(+d.dataset.del42,1);if(!storeSaved())savedDesigns=old;renderSaved();renderGallery42();}});
+$('v42GalleryGrid').addEventListener('click',async e=>{const o=e.target.closest('[data-open42]'),d=e.target.closest('[data-del42]');if(o){restoreDesign(savedDesigns[+o.dataset.open42]);show42('editor');}if(d&&await catUX.ask('刪除這份收藏？','作品將從這台裝置的收藏冊移除。','刪除',true,'保留作品')){const old=clone(savedDesigns);savedDesigns.splice(+d.dataset.del42,1);if(!storeSaved())savedDesigns=old;renderSaved();renderGallery42();}});
 $('v42Mode').addEventListener('click',e=>{const b=e.target.closest('[data-focus]');if(!b)return;const v=b.dataset.focus;if(v==='same'){if(!pair.same)$('pairMode').querySelector('[data-pair=same]').click();}else{if(pair.same)$('pairMode').querySelector('[data-pair=different]').click();selectEar(v);}});
 $('drawTool').addEventListener('click',refresh42);
-btn42('v42Base',()=>{pushDrawUndo();state.cols[0]=drawColor;if(state.mode===1)state.cols=[drawColor,drawColor,drawColor];renderAll();});btn42('v42Random',()=>random42());btn42('v42Blank',()=>{if(confirm('改成純色底，並清除這隻貓的花紋？'))blank42();});
+btn42('v42Base',()=>{pushDrawUndo();state.cols[0]=drawColor;if(state.mode===1)state.cols=[drawColor,drawColor,drawColor];renderAll();});btn42('v42Random',async()=>{if(state.drawing?.length&&!await catUX.ask('試試新的靈感？','目前的手繪會被新花色取代，可透過復原找回。','給我靈感',true,'繼續畫'))return;random42();});btn42('v42Blank',async()=>{if(await catUX.ask('重新開始畫？','會改成純色底，清除目前這隻貓咪的花紋。你可以使用復原找回上一個狀態。','重新開始',true,'繼續畫'))blank42();});
 for(const id of ['v42Done','v42DoneTop'])btn42(id,()=>show42('finish'));btn42('v42EditAgain',()=>show42('editor'));btn42('v42SaveQuick',save42);btn42('v42SaveFinal',save42);btn42('v42Order',()=>{$('v42OrderPanel').hidden=false;});btn42('v42OrderImage',()=>$('downloadBtn').click());btn42('v42OrderSpec',()=>$('exportDesign').click());btn42('v42Share',async()=>{if(!navigator.share||!navigator.canShare){$('downloadBtn').click();return;}try{const svg=$('earringSvg').cloneNode(true);svg.setAttribute('width','1040');svg.setAttribute('height','640');const src=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));const img=new Image();try{await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=src;});const canvas=document.createElement('canvas');canvas.width=1040;canvas.height=640;canvas.getContext('2d').drawImage(img,0,0);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));const file=new File([blob],getDesignCode()+'_貓咪耳環.png',{type:'image/png'});if(navigator.canShare({files:[file]}))await navigator.share({files:[file],title:$('v42Name').value||'我的貓咪耳環'});else $('downloadBtn').click();}finally{URL.revokeObjectURL(src);}}catch(e){if(e.name!=='AbortError')$('downloadBtn').click();}});
 
 // Initial migration: preserve old snapshots, adapt unavailable colors to actual enabled palette.
@@ -737,7 +815,7 @@ function studioManager44(){
  function filterPalette(){const q=search.value.trim().toLowerCase();for(const row of $('paletteEditor').querySelectorAll('.v41-palette-row:not(.palette-labels)'))row.hidden=!!q&&![...row.querySelectorAll('input')].some(el=>el.value.toLowerCase().includes(q));}
  search.addEventListener('input',filterPalette);
  new MutationObserver(filterPalette).observe($('paletteEditor'),{childList:true});
- $('savePalette').addEventListener('click',renderMeta);$('resetPalette').addEventListener('click',renderMeta);
+ $('savePalette').addEventListener('click',renderMeta);$('paletteEditor').addEventListener('studio-palette-updated',renderMeta);
  // Render from the immutable imported snapshot; never restore it into the customer editor.
  function inSnapshot(d,fn){const old=[adminMode,designPalette,designGeom];try{adminMode=false;designPalette=normalizedPalette(d.palette);designGeom=normalizedGeom(d.geometry);return fn()}finally{[adminMode,designPalette,designGeom]=old}}
  function colorsFor(d,st){return inSnapshot(d,()=>usedColors(st))}
@@ -823,7 +901,7 @@ function studioManager44(){
  }
  function redrawSheet(){const o=current();if(!o)return;const el=$('sm44Sheet');const values=['sm44Ref','sm44Note','sm44Status'].map(id=>$(id)?.value);el.innerHTML=sheet(o);['sm44Ref','sm44Note','sm44Status'].forEach((id,i)=>{if(values[i]!=null)$(id).value=values[i]})}
  function saveSheet(){const o=current();if(!o)return false;const next={...o,ref:$('sm44Ref').value.trim(),note:$('sm44Note').value,status:$('sm44Status').value};if(!replaceOrders(orders.map(x=>x.id===o.id?next:x)))return false;return true}
- panel.addEventListener('click',e=>{
+ panel.addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.dataset.smGo){go(b.dataset.smGo);return}
   if(b.dataset.status){go('orders');$('sm44StatusFilter').value=b.dataset.status;filterOrders();return}
@@ -833,7 +911,7 @@ function studioManager44(){
   if(b.id==='sm44Save'){if(saveSheet()){render();toast('製作單已儲存')}return}
   if(b.id==='sm44Print'){if(!saveSheet())return;const old=[view,side,step];view='normal';side='both';step=-1;redrawSheet();document.body.classList.add('sm44-print');try{window.print()}finally{document.body.classList.remove('sm44-print');[view,side,step]=old;redrawSheet()}return}
   if(b.id==='sm44Download'){const o=current();if(o)json(o.design,'cat-design.json');return}
-  if(b.id==='sm44Delete'&&confirm('刪除這張本機製作單？')){if(replaceOrders(orders.filter(x=>x.id!==selected))){selected='';render()}return}
+  if(b.id==='sm44Delete'&&await catUX.ask('刪除製作單？','這張本機製作單及製作備註將被移除。','刪除',true)){if(replaceOrders(orders.filter(x=>x.id!==selected))){selected='';render()}return}
   if(b.id==='sm44SaveRules'){const a=Number($('sm44Width').value),m=Number($('sm44Min').value),c=Number($('sm44Max').value);if(!(a>=0&&a<=100&&m>=0&&m<=10&&Number.isInteger(c)&&c>=0&&c<=100)){toast('請確認規範數值');return}const next={widthMm:a,minMm:m,maxColors:c,gradient:$('sm44Gradient').checked};if(store(rulesKey,next)){rules=next;toast('規範已儲存')}return}
   if(b.id==='sm44Backup')json({format:'MILUBANBAN-STUDIO-BACKUP-V44',exportedAt:new Date().toISOString(),orders,palette,meta,rules,geometry:{published:publishedGeom,draft:draftGeom,templates}},'milubanban-studio-backup.json');
  });
@@ -974,6 +1052,61 @@ function mobileCanvas46(){
  setMobile();
 }
 mobileCanvas46();
+function catUX462(){
+ const dialog=document.createElement('dialog');dialog.id='catuxDialog';dialog.className='catux-dialog';dialog.setAttribute('aria-labelledby','catuxTitle');dialog.setAttribute('aria-describedby','catuxMessage');
+ const overlay=document.createElement('div');overlay.className='catux-overlay';overlay.hidden=true;
+ const content=document.createElement('div');content.className='catux-content';dialog.append(content);document.body.append(overlay,dialog);
+ let active=null,previous=null,fallback=false,oldInert=[];
+ const node=(tag,cls,value)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(value!==undefined)x.textContent=value;return x};
+ function action(label,cls){const b=node('button',cls,label);b.type='button';return b}
+ function finish(value){
+  if(!active)return;const resolve=active;active=null;
+  if(dialog.open&&typeof dialog.close==='function'&&!fallback)dialog.close();else dialog.removeAttribute('open');
+  overlay.hidden=true;dialog.classList.remove('catux-fallback');for(const [el,old] of oldInert)el.inert=old;oldInert=[];fallback=false;
+  const target=previous;previous=null;if(target?.isConnected)try{target.focus({preventScroll:true})}catch(_){}
+  resolve(value);
+ }
+ function show(tone,title,message,build){
+  if(active)return Promise.resolve(null);
+  previous=document.activeElement;dialog.dataset.tone=tone;content.replaceChildren();
+  const head=node('div','catux-head'),left=node('div'),h=node('h2','',title);h.id='catuxTitle';
+  const mark=node('div','catux-mark',tone==='destructive'?'!':tone==='options'?'✦':'♡');mark.setAttribute('aria-hidden','true');left.append(mark,h);head.append(left);
+  const close=action('×','catux-close');close.setAttribute('aria-label','取消並關閉');close.addEventListener('click',()=>finish(null));head.append(close);content.append(head);
+  const p=node('p','',message);p.id='catuxMessage';if(!message)p.hidden=true;content.append(p);
+  const focus=build(content);
+  return new Promise(resolve=>{
+   active=resolve;
+   try{if(typeof dialog.showModal!=='function')throw Error('fallback');dialog.showModal()}
+   catch(_){fallback=true;dialog.classList.add('catux-fallback');dialog.setAttribute('open','');overlay.hidden=false;oldInert=[...document.body.children].filter(x=>x!==dialog&&x!==overlay&&x.tagName!=='SCRIPT').map(x=>[x,!!x.inert]);for(const [el] of oldInert)el.inert=true;}
+   (focus||close).focus({preventScroll:true});
+  });
+ }
+ function ask(title,message,ok='確認',danger=false,cancel='取消'){
+  return show(danger?'destructive':'confirm',title,message,body=>{const row=node('div','catux-actions'),no=action(cancel,'catux-action'),yes=action(ok,'catux-action primary');no.addEventListener('click',()=>finish(false));yes.addEventListener('click',()=>finish(true));row.append(no,yes);body.append(row);return no}).then(v=>v===true);
+ }
+ dialog.addEventListener('cancel',e=>{e.preventDefault();finish(null)});
+ dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)finish(null)}});
+ overlay.addEventListener('click',()=>finish(null));
+ document.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();finish(null)}else if(e.key==='Tab'){e.stopImmediatePropagation();const list=[...dialog.querySelectorAll('button:not(:disabled),input:not(:disabled),[tabindex="0"]')].filter(el=>el.getClientRects().length);if(!list.length)return;const first=list[0],last=list[list.length-1];if(e.shiftKey&&(document.activeElement===first||!dialog.contains(document.activeElement))){e.preventDefault();last.focus()}else if(!e.shiftKey&&(document.activeElement===last||!dialog.contains(document.activeElement))){e.preventDefault();first.focus()}}},true);
+ const buttons=new WeakMap();
+ function selectName(s){return s.getAttribute('aria-label')||({sm44StatusFilter:'篩選製作進度',sm44Target:'選擇製作顏料',sm44Status:'製作進度'})[s.id]||s.closest('label')?.childNodes[0]?.textContent?.trim()||'選擇項目'}
+ function chip(s,value){if(!s.matches('[data-color]'))return null;const p=availablePalette().find(x=>x.id===value);if(!p)return null;const c=node('i','catux-chip');c.style.background=p.hex;return c}
+ function update(s,b){const o=s.selectedOptions[0],value=o?.textContent||'請選擇',label=selectName(s),sig=[value,s.value,label,s.disabled].join('|');if(b.dataset.signature!==sig){b.dataset.signature=sig;b.disabled=s.disabled;b.setAttribute('aria-label',label+'：'+value);const sw=chip(s,s.value),txt=node('span','catux-select-label',value),arrow=node('span','','⌄');arrow.setAttribute('aria-hidden','true');b.replaceChildren(...(sw?[sw]:[]),txt,arrow)}}
+ async function choose(s){
+  if(s.disabled||!s.isConnected||drawPointer!==null)return;
+  const opts=[...s.options];const choice=await show('options',selectName(s),'',body=>{const list=node('div','catux-options');let selected=null;opts.forEach((o,i)=>{const b=action('','catux-choice');const checked=i===s.selectedIndex;b.setAttribute('aria-pressed',String(checked));b.disabled=o.disabled||!!o.closest('optgroup:disabled');const sw=chip(s,o.value),txt=node('span','',o.textContent),tick=node('span','catux-tick',checked?'✓':'');b.append(...(sw?[sw]:[]),txt,tick);b.addEventListener('click',()=>finish(i));list.append(b);if(checked&&!b.disabled)selected=b});body.append(list);return selected||list.querySelector('button:not(:disabled)')});
+  if(choice===null||!Number.isInteger(choice)||!s.isConnected||s.options[choice]!==opts[choice])return;
+  if(s.selectedIndex!==choice){s.selectedIndex=choice;s.dispatchEvent(new Event('input',{bubbles:true}));s.dispatchEvent(new Event('change',{bubbles:true}))}
+  if(s.isConnected&&buttons.has(s))update(s,buttons.get(s));
+ }
+ function enhance(root=document){for(const s of root.querySelectorAll('select:not([multiple])')){let b=buttons.get(s);if(!b||!b.isConnected){b=action('','catux-select-trigger');b.setAttribute('aria-haspopup','dialog');s.after(b);buttons.set(s,b);s.classList.add('catux-enhanced');s.setAttribute('tabindex','-1');b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();choose(s)})}update(s,b)}}
+ let queued=false;const schedule=()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;enhance()})};
+ new MutationObserver(records=>{if(records.some(r=>r.type==='attributes'?r.target.matches?.('select,option'):r.target.matches?.('select,optgroup')||[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1&&(n.matches?.('select,option,optgroup')||n.querySelector?.('select')))))schedule()}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['disabled','selected']});
+ document.addEventListener('change',e=>{if(e.target.matches?.('select'))schedule()});
+ enhance();
+ return {ask,enhance};
+}
+const catUX=catUX462();
 })();
 </script>
 </body>
