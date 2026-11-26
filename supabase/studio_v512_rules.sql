@@ -10,6 +10,8 @@ create table public.studio_production_rules (
 alter table public.studio_production_rules enable row level security;
 revoke all on public.studio_production_rules from public,anon,authenticated,service_role;
 grant select,insert on public.studio_production_rules to service_role;
+-- The publishing RPC checks membership using the server role only.
+grant select(user_id,role,active) on public.studio_members to service_role;
 insert into public.studio_production_rules(revision,rules)
 values (1,'{"widthMm":10.339,"thinMm":0.35,"smallMm":0.55,"colors":5,"strokes":20,"detailColors":7,"detailStrokes":50,"minCoverage":90,"gradientReview":true,"tabbyReview":true}'::jsonb);
 -- Service-role only. API validates the exact rules schema and verifies the caller.
