@@ -866,6 +866,20 @@ function productArtwork(){
  }
  return svg;
 }
+function shareDesignArtwork(){
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+ svg.setAttribute('viewBox','0 0 364 174');
+ svg.setAttribute('width','1456');svg.setAttribute('height','696');
+ // The same head-only design artwork as the completion page, with separate SVG IDs.
+ svg.innerHTML='<rect width="364" height="174" fill="#F5F1E8"/>'+['L','R'].map((ear,i)=>{
+  const head=designArtwork(ear,true);
+  head.setAttribute('x',i===0?'37':'199');head.setAttribute('y','18');
+  head.setAttribute('width','128');head.setAttribute('height','138');
+  return svgCopy42(head,'share55-'+ear);
+ }).join('');
+ return svg;
+}
 function finalDesignArtwork(){
  return `<div class="v55-finish-design"><div class="v55-finish-brand">MILU BANBAN</div><div class="v55-finish-pair">${['L','R'].map(ear=>`<figure>${svgCopy42(designArtwork(ear,true),'final42-'+ear)}<figcaption>${ear==='L'?'左耳環':'右耳環'}</figcaption></figure>`).join('')}</div><div class="v55-finish-caption">YOUR LITTLE CAT · YOUR COLORS</div></div>`;
 }
@@ -1209,22 +1223,19 @@ function lab45(){
  function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill()}
  function textFit(ctx,value,maxWidth,maxSize,minSize,weight='700'){let size=maxSize;do{ctx.font=weight+' '+size+'px system-ui, "Noto Sans TC", sans-serif';if(ctx.measureText(value).width<=maxWidth||size<=minSize)break;size-=2;}while(size>=minSize);let output=value;if(ctx.measureText(output).width>maxWidth){let chars=Array.from(output);while(chars.length&&ctx.measureText(chars.join('')+'…').width>maxWidth)chars.pop();output=chars.join('')+'…';}return output}
  const shareDialog=document.createElement('dialog');shareDialog.setAttribute('aria-label','作品分享卡');shareDialog.style.cssText='border:1px solid #e6e2d8;border-radius:20px;padding:18px;width:min(440px,calc(100% - 28px));max-height:90dvh;color:#303d36;background:#fffdfa;overflow:auto';
- shareDialog.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><strong>我的作品卡</strong><button type="button" id="cardClose" class="quiet-btn">關閉</button></div><label style="display:block;margin:10px 0">圖片尺寸 <select id="cardFormat"><option value="story">IG 限時動態 · 9:16</option><option value="feed">IG 貼文 · 4:5</option></select></label><label style="display:block;margin:10px 0">商品畫面 <select id="cardArtwork"><option value="flat">原有成品模擬圖</option><option value="3d">雙耳 3D 商品圖</option></select></label><p id="cardStatus" role="status" style="font-size:13px"></p><img id="cardPreview" alt="作品卡預覽" style="display:block;max-width:100%;max-height:52dvh;margin:0 auto 12px;border-radius:10px"><div class="v42-actionbar"><button type="button" class="action primary" id="cardDownload" disabled>下載 PNG</button><button type="button" class="action" id="cardShare" disabled>分享圖片</button></div>';
+ shareDialog.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><strong>我的作品卡</strong><button type="button" id="cardClose" class="quiet-btn">關閉</button></div><label style="display:block;margin:10px 0">圖片尺寸 <select id="cardFormat"><option value="story">IG 限時動態 · 9:16</option><option value="feed">IG 貼文 · 4:5</option></select></label><label style="display:block;margin:10px 0">商品畫面 <select id="cardArtwork"><option value="design">設計圖</option><option value="3d">3D</option></select></label><p id="cardStatus" role="status" style="font-size:13px"></p><img id="cardPreview" alt="作品卡預覽" style="display:block;max-width:100%;max-height:52dvh;margin:0 auto 12px;border-radius:10px"><div class="v42-actionbar"><button type="button" class="action primary" id="cardDownload" disabled>下載 PNG</button><button type="button" class="action" id="cardShare" disabled>分享圖片</button></div>';
  document.body.append(shareDialog);
  let cardBlob=null,cardURL='',cardName='',cardRevision=0;
  async function makeCard(format,artMode,revision){
-  const title=$('v42Name').value.trim()||'我的貓咪',svg=productArtwork();
-  // Reframe the original paired product artwork; remove its decorative caption only.
-  for(const n of [...svg.children])if(n.localName==='text'||n.localName==='path')n.remove();
-  svg.querySelector(':scope > rect')?.setAttribute('fill','#F5F1E8');
-  svg.setAttribute('viewBox','78 62 364 174');svg.setAttribute('width','1456');svg.setAttribute('height','696');
-  const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));
+  const title=$('v42Name').value.trim()||'我的貓咪';
+  if(!['design','3d'].includes(artMode))throw Error('Invalid artwork mode');
+  let url='';
   try{
    let img;
    if(artMode==='3d'){
     const {createPreview}=await import('./cat-preview-3d.js');if(revision!==cardRevision)throw Error('Cancelled');const surface=document.createElement('canvas');let p;
     try{p=createPreview(surface,()=>{},{fixedSize:[1456,696]});await p.setArtworks(['L','R'].map(previewArtwork55));if(revision!==cardRevision)throw Error('Cancelled');p.setPose(.18,-.06,1);img=p.capture()}finally{p?.dispose()}
-   }else{img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url})}
+   }else{const svg=shareDesignArtwork();url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url})}
    const c=document.createElement('canvas');c.width=1080;c.height=format==='feed'?1350:1920;const h=c.height,story=format!=='feed',ctx=c.getContext('2d');if(!ctx)throw Error('無法建立作品卡');
    ctx.fillStyle='#F7F3EA';ctx.fillRect(0,0,1080,h);
    ctx.textAlign='center';ctx.fillStyle='#3C5149';ctx.font='600 31px system-ui,sans-serif';ctx.fillText('MILU BANBAN  /  CAT LAB',540,story?235:128);
@@ -1237,12 +1248,12 @@ function lab45(){
    ctx.strokeStyle='#D9DCD1';ctx.beginPath();ctx.moveTo(160,story?1500:1140);ctx.lineTo(920,story?1500:1140);ctx.stroke();
    ctx.fillStyle='#3C5149';ctx.font='500 31px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('麋鹿斑斑 · 貓咪 DIY 實驗室',540,story?1570:1200);
    ctx.font='400 24px system-ui,sans-serif';ctx.fillText('@milubanban',540,story?1615:1244);
-   ctx.fillStyle='#7C8178';ctx.font='400 21px system-ui,"Noto Sans TC",sans-serif';ctx.fillText((artMode==='3d'?'3D 商品模擬圖':'設計模擬圖')+'｜手工成品略有差異',540,story?1660:1285);
+   ctx.fillStyle='#7C8178';ctx.font='400 21px system-ui,"Noto Sans TC",sans-serif';ctx.fillText((artMode==='3d'?'3D 預覽圖':'設計完成圖')+'｜手工成品可能略有差異',540,story?1660:1285);
    return await new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('作品卡輸出失敗')),'image/png'));
-  }finally{URL.revokeObjectURL(url)}
+  }finally{if(url)URL.revokeObjectURL(url)}
  }
  function clearCard(){cardRevision++;if(cardURL)URL.revokeObjectURL(cardURL);cardURL='';cardBlob=null;$('cardPreview').removeAttribute('src');$('cardDownload').disabled=$('cardShare').disabled=true;}
- async function refreshCard(){clearCard();const rev=cardRevision,format=$('cardFormat').value,artMode=$('cardArtwork').value;$('cardStatus').textContent='正在製作作品卡…';try{const name=getDesignCode()+'_CAT-LAB_'+format+'_'+artMode+'.png',blob=await makeCard(format,artMode,rev);if(rev!==cardRevision||!shareDialog.open)return;cardBlob=blob;cardName=name;cardURL=URL.createObjectURL(blob);$('cardPreview').src=cardURL;$('cardDownload').disabled=$('cardShare').disabled=false;$('cardStatus').textContent='預覽完成，可下載或分享。'}catch(_){if(rev===cardRevision)$('cardStatus').textContent=artMode==='3d'?'3D 圖片暫時無法輸出，請改選原有成品模擬圖。':'無法製作作品卡，請重新嘗試。'}}
+ async function refreshCard(){clearCard();const rev=cardRevision,format=$('cardFormat').value,artMode=$('cardArtwork').value;$('cardStatus').textContent='正在製作作品卡…';try{const name=getDesignCode()+'_CAT-LAB_'+format+'_'+artMode+'.png',blob=await makeCard(format,artMode,rev);if(rev!==cardRevision||!shareDialog.open)return;cardBlob=blob;cardName=name;cardURL=URL.createObjectURL(blob);$('cardPreview').src=cardURL;$('cardDownload').disabled=$('cardShare').disabled=false;$('cardStatus').textContent='預覽完成，可下載或分享。'}catch(_){if(rev===cardRevision)$('cardStatus').textContent=artMode==='3d'?'3D 圖片暫時無法輸出，請改選設計圖。':'無法製作作品卡，請重新嘗試。'}}
  newShare.addEventListener('click',()=>{if(!shareDialog.open){shareDialog.showModal();void refreshCard()}});
  $('cardFormat').onchange=refreshCard;$('cardArtwork').onchange=refreshCard;$('cardClose').onclick=()=>shareDialog.close();shareDialog.addEventListener('close',clearCard);
  $('cardDownload').onclick=()=>{if(cardBlob)downloadBlob(cardBlob,cardName)};
