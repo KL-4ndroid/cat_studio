@@ -406,7 +406,7 @@ select.catux-enhanced{display:none!important}
    <button type="button" data-v2-ear="R">右耳</button>
    <button type="button" id="v2ResetOrbit" hidden>回正</button>
   </div>
-  <div class="v2-options" id="v55LinkControls" hidden><button type="button" id="v55Link" aria-pressed="true">同步旋轉</button><button type="button" id="v55Separate" aria-pressed="false">獨立旋轉</button><button type="button" id="v55ActiveL" hidden>操作左耳</button><button type="button" id="v55ActiveR" hidden>操作右耳</button></div><div class="v2-art" id="v2DialogArt"></div><div class="v55-pair-labels" id="v55PairLabels" hidden><span>左耳</span><span>右耳</span></div><p class="v2-note" id="v55Size">貓頭正面寬度約 10.3 mm（模型參考，非螢幕 1:1 比例）。</p>
+  <div class="v2-options" id="v55LinkControls" hidden><button type="button" id="v55Link" aria-pressed="true">同步旋轉</button><button type="button" id="v55Separate" aria-pressed="false">獨立旋轉</button><button type="button" id="v55ActiveL" hidden>操作左耳</button><button type="button" id="v55ActiveR" hidden>操作右耳</button></div><div class="v2-art" id="v2DialogArt"></div><div class="v55-pair-labels" id="v55PairLabels" hidden><span>左耳</span><span>右耳</span></div><p class="v2-note" id="v55Size">貓頭約 10.34 × 10.13 mm（寬 × 高，CAT6 模型參考；非螢幕 1:1 比例）。</p>
   <p id="v2OrbitStatus" role="status"></p>
   <p class="v2-note">實際手工上色、材質與螢幕顏色可能略有差異。</p>
  </div>
@@ -1208,7 +1208,7 @@ function lab45(){
  shareDialog.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><strong>我的作品卡</strong><button type="button" id="cardClose" class="quiet-btn">關閉</button></div><label style="display:block;margin:10px 0">圖片尺寸 <select id="cardFormat"><option value="story">IG 限時動態 · 9:16</option><option value="feed">IG 貼文 · 4:5</option></select></label><label style="display:block;margin:10px 0">商品畫面 <select id="cardArtwork"><option value="flat">原有成品模擬圖</option><option value="3d">雙耳 3D 商品圖</option></select></label><p id="cardStatus" role="status" style="font-size:13px"></p><img id="cardPreview" alt="作品卡預覽" style="display:block;max-width:100%;max-height:52dvh;margin:0 auto 12px;border-radius:10px"><div class="v42-actionbar"><button type="button" class="action primary" id="cardDownload" disabled>下載 PNG</button><button type="button" class="action" id="cardShare" disabled>分享圖片</button></div>';
  document.body.append(shareDialog);
  let cardBlob=null,cardURL='',cardName='',cardRevision=0;
- async function makeCard(format,artMode){
+ async function makeCard(format,artMode,revision){
   const title=$('v42Name').value.trim()||'我的貓咪',svg=productArtwork();
   // Reframe the original paired product artwork; remove its decorative caption only.
   for(const n of [...svg.children])if(n.localName==='text'||n.localName==='path')n.remove();
@@ -1218,8 +1218,8 @@ function lab45(){
   try{
    let img;
    if(artMode==='3d'){
-    const {createPreview}=await import('./cat-preview-3d.js'),surface=document.createElement('canvas');let p;
-    try{p=createPreview(surface,()=>{},{fixedSize:[1456,696]});await p.setArtworks(['L','R'].map(previewArtwork55));p.setPose(.18,-.06,1);img=p.capture()}finally{p?.dispose()}
+    const {createPreview}=await import('./cat-preview-3d.js');if(revision!==cardRevision)throw Error('Cancelled');const surface=document.createElement('canvas');let p;
+    try{p=createPreview(surface,()=>{},{fixedSize:[1456,696]});await p.setArtworks(['L','R'].map(previewArtwork55));if(revision!==cardRevision)throw Error('Cancelled');p.setPose(.18,-.06,1);img=p.capture()}finally{p?.dispose()}
    }else{img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url})}
    const c=document.createElement('canvas');c.width=1080;c.height=format==='feed'?1350:1920;const h=c.height,story=format!=='feed',ctx=c.getContext('2d');if(!ctx)throw Error('無法建立作品卡');
    ctx.fillStyle='#F7F3EA';ctx.fillRect(0,0,1080,h);
@@ -1238,7 +1238,7 @@ function lab45(){
   }finally{URL.revokeObjectURL(url)}
  }
  function clearCard(){cardRevision++;if(cardURL)URL.revokeObjectURL(cardURL);cardURL='';cardBlob=null;$('cardPreview').removeAttribute('src');$('cardDownload').disabled=$('cardShare').disabled=true;}
- async function refreshCard(){clearCard();const rev=cardRevision,format=$('cardFormat').value,artMode=$('cardArtwork').value;$('cardStatus').textContent='正在製作作品卡…';try{const name=getDesignCode()+'_CAT-LAB_'+format+'_'+artMode+'.png',blob=await makeCard(format,artMode);if(rev!==cardRevision||!shareDialog.open)return;cardBlob=blob;cardName=name;cardURL=URL.createObjectURL(blob);$('cardPreview').src=cardURL;$('cardDownload').disabled=$('cardShare').disabled=false;$('cardStatus').textContent='預覽完成，可下載或分享。'}catch(_){if(rev===cardRevision)$('cardStatus').textContent=artMode==='3d'?'3D 圖片暫時無法輸出，請改選原有成品模擬圖。':'無法製作作品卡，請重新嘗試。'}}
+ async function refreshCard(){clearCard();const rev=cardRevision,format=$('cardFormat').value,artMode=$('cardArtwork').value;$('cardStatus').textContent='正在製作作品卡…';try{const name=getDesignCode()+'_CAT-LAB_'+format+'_'+artMode+'.png',blob=await makeCard(format,artMode,rev);if(rev!==cardRevision||!shareDialog.open)return;cardBlob=blob;cardName=name;cardURL=URL.createObjectURL(blob);$('cardPreview').src=cardURL;$('cardDownload').disabled=$('cardShare').disabled=false;$('cardStatus').textContent='預覽完成，可下載或分享。'}catch(_){if(rev===cardRevision)$('cardStatus').textContent=artMode==='3d'?'3D 圖片暫時無法輸出，請改選原有成品模擬圖。':'無法製作作品卡，請重新嘗試。'}}
  newShare.addEventListener('click',()=>{if(!shareDialog.open){shareDialog.showModal();void refreshCard()}});
  $('cardFormat').onchange=refreshCard;$('cardArtwork').onchange=refreshCard;$('cardClose').onclick=()=>shareDialog.close();shareDialog.addEventListener('close',clearCard);
  $('cardDownload').onclick=()=>{if(cardBlob)downloadBlob(cardBlob,cardName)};
