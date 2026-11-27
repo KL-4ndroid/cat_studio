@@ -77,20 +77,31 @@ vec3 glazedEnamel(vec3 albedo,vec3 normal,vec3 ray){
  // Clear dielectric coat over the pigmented layer. Keep the colored body opaque.
  float grazing=pow(1.-clamp(normal.z,0.,1.),5.);
  float reflection=.04+.96*grazing;
- float mainPanel=studioPanel(ray,vec3(-.71,.62,1.),vec2(.165,.40),.065);
+ float mainPanel=studioPanel(ray,vec3(-.71,.62,1.),vec2(.165,.40),.085);
  float fillPanel=studioPanel(ray,vec3(.90,.22,.76),vec2(.095,.34),.052);
  float bounce=softbox(ray,vec3(-.3,.95,1.),4.);
- float coatLight=.43*mainPanel+.19*fillPanel+.030*bounce;
+ float coatLight=.35*mainPanel+.15*fillPanel+.035*bounce;
  return albedo*diffuse*(1.-.22*reflection)
-   +vec3(coatLight*(1.+.40*grazing)+.065*grazing);
+   +vec3(coatLight*(1.+.35*grazing)+.065*grazing);
 }
 
-vec3 goldReflection(vec3 ray){
- float highlights=softbox(ray,vec3(-.65,.55,1.),18.)
-   +.6*softbox(ray,vec3(.8,.4,.7),12.6);
- float environment=.18+.62*softbox(ray,vec3(-.6,.8,1.),4.)
-   +.35*softbox(ray,vec3(.9,-.35,.5),6.)+.20*max(ray.y,0.);
- return srgb(vec3(.82,.63,.30))*environment*1.55+vec3(highlights*.45);
+// Bright 16K champagne plating. Reflect a neutral studio environment,
+// including the rear and the floor, rather than an almost black room.
+// Color is a visual target, not a measured alloy spectrum.
+vec3 plated16kReflection(vec3 ray, bool nose){
+ vec3 tint=srgb(vec3(.93,.82,.62));
+ float key=studioPanel(ray,vec3(-.71,.62,1.),vec2(.23,.48),.085);
+ float fill=studioPanel(ray,vec3(.90,.22,.76),vec2(.17,.40),.09);
+ float rear=studioPanel(ray,vec3(.15,.40,-1.),vec2(.38,.48),.14);
+ float sky=softbox(ray,vec3(-.35,.85,.5),2.);
+ float floorBounce=softbox(ray,vec3(.25,-.8,.25),2.);
+ // Bright neutral bounce prevents the tiny nose and rear clip turning brown.
+ float env=(nose?.76:.68)+.18*sky+.10*floorBounce;
+ float panel=.38*key+.26*fill+.20*rear;
+ float glint=(nose?.14:.075)*softbox(ray,vec3(-.45,.65,1.),24.);
+ vec3 reflected=tint*(env+panel);
+ // Near-white softbox accents, while the broad reflection remains gold.
+ return reflected+vec3(.12,.115,.10)*panel+vec3(glint);
 }
 
 void main(){
@@ -99,12 +110,12 @@ void main(){
  vec3 r=reflect(-v,n);
  float m=hardware?1.:noseCoverage(orig);
  if(hardware||m>=1.){
-  outColor=vec4(pow(clamp(goldReflection(r),0.,1.),vec3(1./2.2)),1.);
+  outColor=vec4(pow(clamp(plated16kReflection(r,!hardware),0.,1.),vec3(1./2.2)),1.);
   return;
  }
  vec3 paint=mix(base,texture(artwork,U).rgb,smoothstep(.62,1.18,orig.z));
  vec3 rgb=glazedEnamel(srgb(paint),n,r);
- if(m>0.)rgb=mix(rgb,goldReflection(r),m);
+ if(m>0.)rgb=mix(rgb,plated16kReflection(r,true),m);
  outColor=vec4(pow(clamp(rgb,0.,1.),vec3(1./2.2)),1.);
 }`;
 
@@ -182,28 +193,31 @@ async function decodeArtwork(svg) {
   }
 }
 
-export function createPreview(canvas, onUnavailable) {
-  const gl = canvas.getContext('webgl2', {antialias: true, alpha: false});
+// Independent non-overlapping viewports share the same GPU buffers and material.
+export function previewRects(width,height,pair){
+ if(!pair)return [[0,0,width,height]];
+ const left=Math.floor(width/2);return [[0,0,left,height],[left,0,width-left,height]];
+}
+
+export function createPreview(canvas, onUnavailable, config={}) {
+  const gl = canvas.getContext('webgl2', {antialias: true, alpha: false, preserveDrawingBuffer: !!config.fixedSize});
   if (!gl) throw Error('WebGL 2 unavailable');
 
-  const program = linkProgram(gl);
+  let program;try{program=linkProgram(gl)}catch(error){gl.getExtension('WEBGL_lose_context')?.loseContext();throw error}
   const handles = Object.fromEntries(['angle', 'aspect', 'zoom', 'base', 'hardware', 'artwork']
     .map(name => [name, gl.getUniformLocation(program, name)]));
-  const texture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  const createTexture=()=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t;};
+  const entries=[0,1].map(()=>({texture:createTexture(),base:[1,1,1],yaw:0,pitch:0,zoom:1}));
+  let pair=false,linked=true,active=0;
   gl.enable(gl.DEPTH_TEST);
 
   let meshes = [];
   const buffers = [];
   let frame = 0;
-  let yaw = 0;
-  let pitch = 0;
-  let zoom = 1;
-  let base = [1, 1, 1];
   let disposed = false;
   let artworkRevision = 0;
   const input = new AbortController();
@@ -212,10 +226,10 @@ export function createPreview(canvas, onUnavailable) {
 
   function draw() {
     frame = 0;
-    if (disposed || !meshes.length || !canvas.clientWidth || !canvas.clientHeight) return;
-    const pixelRatio = Math.min(devicePixelRatio || 1, 2);
-    const width = Math.round(canvas.clientWidth * pixelRatio);
-    const height = Math.round(canvas.clientHeight * pixelRatio);
+    if (disposed || !meshes.length || (!config.fixedSize&&(!canvas.clientWidth||!canvas.clientHeight))) return;
+    const pixelRatio = Math.min(globalThis.devicePixelRatio || 1, 2);
+    const width = config.fixedSize?config.fixedSize[0]:Math.max(pair?2:1,Math.round(canvas.clientWidth * pixelRatio));
+    const height = config.fixedSize?config.fixedSize[1]:Math.max(1,Math.round(canvas.clientHeight * pixelRatio));
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
       canvas.height = height;
@@ -224,16 +238,20 @@ export function createPreview(canvas, onUnavailable) {
     gl.clearColor(243/255, 239/255, 229/255, 1);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.useProgram(program);
-    gl.uniform2f(handles.angle, yaw, pitch);
-    gl.uniform2f(handles.aspect, Math.min(1, height/width), Math.min(1, width/height));
-    gl.uniform1f(handles.zoom, zoom);
-    gl.uniform3fv(handles.base, base);
     gl.uniform1i(handles.artwork, 0);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    for (const [index, mesh] of meshes.entries()) {
-      gl.uniform1i(handles.hardware, index === 1 ? 1 : 0);
-      gl.bindVertexArray(mesh.vao);
-      gl.drawElements(gl.TRIANGLES, mesh.count, gl.UNSIGNED_SHORT, 0);
+    for(const [index,rect] of previewRects(width,height,pair).entries()){
+      const e=entries[index], [x,y,w,h]=rect;
+      gl.viewport(x,y,w,h);
+      gl.uniform2f(handles.angle,e.yaw,e.pitch);
+      gl.uniform2f(handles.aspect,Math.min(1,h/w),Math.min(1,w/h));
+      gl.uniform1f(handles.zoom,e.zoom);
+      gl.uniform3fv(handles.base,e.base);
+      gl.bindTexture(gl.TEXTURE_2D,e.texture);
+      for(const [part,mesh] of meshes.entries()){
+        gl.uniform1i(handles.hardware,part===1?1:0);
+        gl.bindVertexArray(mesh.vao);
+        gl.drawElements(gl.TRIANGLES,mesh.count,gl.UNSIGNED_SHORT,0);
+      }
     }
   }
 
@@ -248,9 +266,10 @@ export function createPreview(canvas, onUnavailable) {
     gl.bufferData(target, array, gl.STATIC_DRAW);
   }
 
-  async function setArtwork(svg, color) {
+  async function setArtworks(artworks) {
+    if(!Array.isArray(artworks)||artworks.length<1||artworks.length>2||artworks.some(a=>!/^#[0-9a-f]{6}$/i.test(a.color)))throw Error('Invalid artwork');
     const revision = ++artworkRevision;
-    const [parts, image] = await Promise.all([loadModel(), decodeArtwork(svg)]);
+    const [parts, images] = await Promise.all([loadModel(), Promise.all(artworks.map(a=>decodeArtwork(a.svg)))]);
     if (disposed || revision !== artworkRevision) return;
     if (!meshes.length) {
       meshes = parts.map(({position, normal, uv, indices}) => {
@@ -265,29 +284,32 @@ export function createPreview(canvas, onUnavailable) {
         return {vao, count: indices.length};
       });
     }
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    if (gl.getError() !== gl.NO_ERROR) throw Error('CAT6 texture unavailable');
-    base = [1, 3, 5].map(offset => parseInt(color.slice(offset, offset + 2), 16)/255);
-    schedule();
+    gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL,gl.NONE);
+    for(const [i,image] of images.entries()){
+      const e=entries[i];gl.bindTexture(gl.TEXTURE_2D,e.texture);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,image);gl.generateMipmap(gl.TEXTURE_2D);
+      if(gl.getError()!==gl.NO_ERROR)throw Error('CAT6 texture unavailable');
+      e.base=[1,3,5].map(offset=>parseInt(artworks[i].color.slice(offset,offset+2),16)/255);
+    }
+    pair=artworks.length===2;active=0;schedule();
   }
+  function setArtwork(svg,color){return setArtworks([{svg,color}])}
+  function setLinked(yes){linked=!!yes;if(linked&&pair){const a=entries[active],b=entries[1-active];b.yaw=a.yaw;b.pitch=a.pitch;b.zoom=a.zoom;}schedule()}
+  function setActive(i){active=pair&&i===1?1:0}
+  function setPose(yaw,pitch,zoom){for(const e of entries){e.yaw=yaw;e.pitch=Math.max(-Math.PI/2,Math.min(Math.PI/2,pitch));e.zoom=Math.max(.65,Math.min(1.75,zoom))}schedule()}
+  function capture(){if(disposed||!meshes.length||gl.isContextLost())throw Error('3D unavailable');cancelAnimationFrame(frame);draw();const out=document.createElement('canvas');out.width=canvas.width;out.height=canvas.height;const ctx=out.getContext('2d');if(!ctx)throw Error('Capture unavailable');ctx.drawImage(canvas,0,0);return out;}
 
   function reset() {
-    yaw = pitch = 0;
-    zoom = 1;
-    schedule();
+    setPose(0,0,1);
   }
 
   function rotate(dx, dy) {
-    yaw += dx;
-    pitch = Math.max(-Math.PI/2, Math.min(Math.PI/2, pitch + dy));
+    for(const e of pair&&linked?entries:[entries[active]]){e.yaw+=dx;e.pitch=Math.max(-Math.PI/2,Math.min(Math.PI/2,e.pitch+dy));}
     schedule();
   }
 
   function magnify(factor) {
-    zoom = Math.max(.65, Math.min(1.75, zoom * factor));
+    if(!Number.isFinite(factor)||factor<=0)return;for(const e of pair&&linked?entries:[entries[active]])e.zoom=Math.max(.65,Math.min(1.75,e.zoom*factor));
     schedule();
   }
 
@@ -298,6 +320,7 @@ export function createPreview(canvas, onUnavailable) {
 
   canvas.addEventListener('pointerdown', event => {
     if (event.button !== 0 || pointers.size === 2) return;
+    if(!pointers.size){const rect=canvas.getBoundingClientRect();setActive(event.clientX>=rect.left+rect.width/2?1:0)}
     canvas.setPointerCapture(event.pointerId);
     pointers.set(event.pointerId, [event.clientX, event.clientY]);
   }, options);
@@ -315,6 +338,7 @@ export function createPreview(canvas, onUnavailable) {
   }
   canvas.addEventListener('wheel', event => {
     event.preventDefault();
+    if(!pointers.size){const rect=canvas.getBoundingClientRect();setActive(event.clientX>=rect.left+rect.width/2?1:0)}
     magnify(Math.exp(-event.deltaY*.001));
   }, {...options, passive: false});
   canvas.addEventListener('keydown', event => {
@@ -328,21 +352,24 @@ export function createPreview(canvas, onUnavailable) {
     commands[event.key]();
   }, options);
   canvas.addEventListener('webglcontextlost', onUnavailable, options);
-  const resize = new ResizeObserver(schedule);
-  resize.observe(canvas);
+  const resize = config.fixedSize?null:new ResizeObserver(schedule);
+  resize?.observe(canvas);
 
   return {
-    setArtwork,
+    setArtwork,setArtworks,setLinked,setActive,setPose,capture,
     reset,
     dispose() {
+      if(disposed)return;
       disposed = true;
       input.abort();
-      resize.disconnect();
+      resize?.disconnect();
       cancelAnimationFrame(frame);
       for (const {vao} of meshes) gl.deleteVertexArray(vao);
       for (const buffer of buffers) gl.deleteBuffer(buffer);
-      gl.deleteTexture(texture);
+      for(const e of entries)gl.deleteTexture(e.texture);
       gl.deleteProgram(program);
+      // A preview owns its canvas; explicitly release GPU resources on close/export.
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     },
   };
 }

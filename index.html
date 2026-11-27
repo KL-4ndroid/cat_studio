@@ -315,6 +315,10 @@ select.catux-enhanced{display:none!important}
 #v2Dialog #v2OrbitStatus{color:#496050;font-size:.82rem;margin:.6rem 0 0}
 #v2Dialog #v2OrbitStatus:empty{display:none}
 #v2Dialog .v2-note,.v2-note{font-size:12px;margin:8px 0 12px;color:#52685c}
+ .lab53-viewtools{display:none}.lab46-mobile .lab53-viewtools{display:flex;align-items:center;justify-content:center;gap:6px;margin:3px 0}.lab46-mobile .lab53-viewtools button{min-height:36px;min-width:38px;padding:5px 9px;font-size:12px}.lab53-viewtools button[aria-pressed=true]{background:#426455;color:white}.lab53-zoomtext{font-size:12px;font-variant-numeric:tabular-nums;min-width:42px;text-align:center}.lab46-mobile #drawSvg{touch-action:none}
+#creativePhotoCanvas{display:block;width:100%;max-width:420px;height:auto;max-height:320px;object-fit:contain;background:#eeeae1;border-radius:12px;cursor:crosshair;touch-action:pan-y}#creativePhotoTools[hidden],#curatedPresets[hidden]{display:none!important}.creative-match{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #e6e7e0}.creative-chip{width:23px;height:23px;border:1px solid #c9c9c1;border-radius:50%;flex:none}.creative-match button{min-height:38px}.creative-match span{font-size:12px}.creative-match strong{font-size:12px;flex:1;min-width:90px}.curated-preset svg{height:72px}.curated-swatch{display:inline-block;width:13px;height:13px;border:1px solid #ccc;border-radius:50%;margin:2px} 
+#v55ColorRefs[hidden],#v55LinkControls[hidden],#v55PairLabels[hidden],#v55ActiveL[hidden],#v55ActiveR[hidden]{display:none!important}.v55-pair-labels{display:flex;justify-content:space-around;font-size:12px;color:#52685c;margin:4px 0}.v55-design-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}.v55-design-pair svg{width:100%;height:auto;max-height:240px}.v55-pair-mode canvas{height:min(43dvh,300px)!important}.v55-pair-mode .v55-design-pair{min-height:150px}#v55LinkControls{flex-wrap:wrap}.v55-colorrefs{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:11px;color:#52685c}.v55-colorrefs span{display:inline-flex;align-items:center;gap:5px}.v55-colorrefs i{width:15px;height:15px;border-radius:50%;border:1px solid #c6c6bd}
+.v55-finish-design{background:#f8f6ef;border-radius:13px;padding:clamp(16px,4vw,32px) clamp(12px,4vw,36px);text-align:center}.v55-finish-brand,.v55-finish-caption{font-family:Georgia,serif;letter-spacing:.18em;color:#829187;font-size:clamp(9px,1.5vw,13px)}.v55-finish-brand{display:flex;align-items:center;justify-content:center;gap:12px}.v55-finish-brand::before,.v55-finish-brand::after{content:"";width:clamp(18px,12vw,82px);height:1px;background:#d9d4c8}.v55-finish-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,4vw,32px);max-width:600px;margin:clamp(16px,4vw,32px) auto 22px}.v55-finish-pair figure{margin:0;min-width:0}.v55-finish-pair svg{width:100%;max-width:220px;height:auto;margin:0 auto}.v55-finish-pair figcaption{font-size:clamp(12px,2vw,15px);color:#61776a;margin-top:8px}.v55-finish-caption{letter-spacing:.12em;line-height:1.5}.v55-finish-caption::after{content:"";display:block;margin:8px auto 0;width:64px;height:1px;background:#d9d4c8}
 </style>
 </head>
 <body>
@@ -352,7 +356,7 @@ select.catux-enhanced{display:none!important}
    <div class="template-card"><div class="template-title"><div><b>實體顏料色票管理</b><p>以實際冷琺瑯試色校正客人看到的名稱與顏色，並填入工作室顏料編號（例如 571、508）。編號不會出現在客人配色介面，只隨已使用的顏色及製作規格匯出。未填編號的色票仍是待校正示意色。</p></div></div><div id="paletteEditor"></div><div class="template-row"><button id="addPalette" class="quiet-btn" type="button">新增工作室色票</button><button id="savePalette" class="action primary" type="button">套用色票</button><button id="resetPalette" class="quiet-btn" type="button">恢復初始色票</button></div><p class="storage-warning">可停用未持有的顏料；客人只可選擇啟用的色票。色票目前僅存於此瀏覽器；正式公開版需由伺服器發布。</p></div>
   </section>
 <section id="v42Editor"><div class="v42-editor-head"><button id="v42Back" class="quiet-btn">我的收藏冊</button><h2>我的貓咪</h2><button id="v42DoneTop" class="action primary">完成作品</button></div><div class="v42-workspace"><div class="v42-canvas"><div class="v42-canvas-toolbar"><div id="v42Mode" class="v42-mode"><button type="button" data-focus="same">一起設計</button><button type="button" data-focus="left" data-ear-thumb="L"><span class="v42-ear-thumb" aria-hidden="true"></span>左耳</button><button type="button" data-focus="right" data-ear-thumb="R"><span class="v42-ear-thumb" aria-hidden="true"></span>右耳</button></div><button type="button" class="quiet-btn" id="v2PreviewDesktop" aria-haspopup="dialog">預覽</button></div><div id="v42CanvasMount"></div><div class="v42-canvas-note" id="v42Hint">選個顏色，直接在貓咪上畫。</div><div id="v42HistoryMount"></div><div id="v42MobileTools"></div></div><div class="v42-controls"><div id="v42DesktopTools"><div id="v42ToolGroup"><div id="v42ToolsMount"></div><div id="v42SizeMount"></div><label class="v42-sym"><input id="v42Sym" type="checkbox"> 對稱畫筆（同一隻貓的左右鏡像）</label><h3>選一個喜歡的顏色</h3><div id="v42PaletteMount"></div></div></div><div class="v42-quick"><button class="quiet-btn" id="v42Base">以此色換底色</button><button class="quiet-btn" id="v42Random">✧ 靈感轉盤</button><button class="quiet-btn" id="v42Blank">重新從純色開始</button></div><details id="v42Patterns"><summary>換一種貓咪花色</summary><div id="v42PresetsMount"></div></details><details><summary>更多花紋與細節</summary><div id="v42AdvancedMount"></div><div id="v42ExtraMount"></div></details><div class="v42-mobile-dock"><div class="v42-actionbar"><button class="quiet-btn" id="v42SaveQuick">收藏作品</button><button class="action primary" id="v42Done">完成我的貓咪</button></div><div class="v42-status" id="v42Status"></div></div></div></div></section>
-<section id="v42Finish" class="v42-finish" hidden><div class="v42-kicker">DESIGNED BY YOU</div><h2>你的貓咪誕生了！</h2><div id="v42FinalArt" class="v42-final-art"></div><p class="v2-note">成品預覽為模擬效果，實際手工上色、材質與螢幕顏色可能略有差異。</p><label for="v42Name">給你的作品取個名字</label><p><input id="v42Name" maxlength="40" placeholder="例如：奶茶與小藍"></p><div class="v42-actionbar"><button class="action primary" id="v42Order">我要訂製這副耳環</button></div><div class="v42-actionbar"><button class="action" id="v42SaveFinal">收藏我的作品</button><button class="action" id="v42Share">分享／下載作品圖</button></div><div id="v42OrderPanel" hidden><p>請將下方兩份檔案傳給麋鹿斑斑，確認實際製作與訂購方式。</p><div class="v42-actionbar"><button class="action" id="v42OrderImage">下載作品圖</button><button class="action primary" id="v42OrderSpec">下載訂製資料</button></div><p>目前是本機試玩版，尚未送出訂單或付款。</p></div><div class="v42-linkrow"><button class="quiet-btn" id="v42EditAgain">繼續修改</button><button class="quiet-btn" id="v42FinishGallery">我的收藏冊</button></div><p class="small-hint">每副耳環皆為手工上色，花紋、邊緣與色彩可能與模擬圖略有不同。細小圖案及漸層須由工作室確認。</p></section>
+<section id="v42Finish" class="v42-finish" hidden><div class="v42-kicker">DESIGNED BY YOU</div><h2>你的貓咪誕生了！</h2><div id="v42FinalArt" class="v42-final-art"></div><div class="v42-linkrow"><button type="button" class="quiet-btn" id="v55Finish3D">查看雙耳 3D 預覽</button></div><p class="v2-note">這是你的設計完成圖，想看看耳環的立體質感，可以開啟 3D 預覽。</p><label for="v42Name">給你的作品取個名字</label><p><input id="v42Name" maxlength="40" placeholder="例如：奶茶與小藍"></p><div class="v42-actionbar"><button class="action primary" id="v42Order">我要訂製這副耳環</button></div><div class="v42-actionbar"><button class="action" id="v42SaveFinal">收藏我的作品</button><button class="action" id="v42Share">分享／下載作品圖</button></div><div id="v42OrderPanel" hidden><p>請將下方兩份檔案傳給麋鹿斑斑，確認實際製作與訂購方式。</p><div class="v42-actionbar"><button class="action" id="v42OrderImage">下載作品圖</button><button class="action primary" id="v42OrderSpec">下載訂製資料</button></div><p>目前是本機試玩版，尚未送出訂單或付款。</p></div><div class="v42-linkrow"><button class="quiet-btn" id="v42EditAgain">繼續修改</button><button class="quiet-btn" id="v42FinishGallery">我的收藏冊</button></div><p class="small-hint">每副耳環皆為手工上色，花紋、邊緣與色彩可能與模擬圖略有不同。細小圖案及漸層須由工作室確認。</p></section>
 <section id="v42Gallery" class="v42-gallery" hidden><div class="v42-editor-head"><button class="quiet-btn" id="v42GalleryBack">‹ 返回</button><button class="quiet-btn" id="v42Import">載入作品檔</button></div><h2>我的貓咪收藏冊</h2><p>把喜歡的貓咪留在這裡，下次再繼續畫。作品儲存在這台裝置的瀏覽器。</p><div class="v42-linkrow" id="v43DraftRow" hidden><button class="quiet-btn" id="v43RestoreDraft">繼續上次未收藏的創作</button></div><div class="v42-gallery-grid" id="v42GalleryGrid"></div></section>
 <div class="layout v42-legacy" id="customerLayout">
   <section class="preview-col">
@@ -367,8 +371,8 @@ select.catux-enhanced{display:none!important}
   </section>
    <section class="control-card">
     <div class="v4-box"><div class="v4-kicker">01 / 兩隻貓咪</div><div class="v4-pills" id="pairMode"><button type="button" data-pair="same">兩隻一樣</button><button type="button" data-pair="different">左右不同</button></div><div class="pair-tabs" id="earTabs"><button type="button" data-ear="left">左耳環</button><button type="button" data-ear="right">右耳環</button></div><div class="v4-pills" id="pairTools" hidden><button id="copyEar" type="button">複製到另一隻</button><button id="swapEars" type="button">交換左右</button></div><div class="v4-focus" id="earFocus"></div></div>
-    <div class="section"><div class="section-title"><h2>02　從貓咪花色開始</h2><small>點一下就能套用</small></div><p class="v4-note">預設花色會依目前啟用的色票配出最接近的顏色。</p><div class="v4-presets" id="presets"></div></div>
-    <div class="section"><div class="section-title"><h2>參考自己的貓咪</h2><small>選用</small></div><div class="v4-ref"><img id="refImage" alt="你的貓咪參考照片" hidden/><label class="quiet-btn v4-upload">選擇照片<input id="refFile" type="file" accept="image/*"/></label><button id="clearRef" class="quiet-btn" type="button" hidden>移除</button></div><p class="v4-note">照片只在此頁顯示，不會上傳；請手動選擇接近的花色。</p></div>
+    <div class="section"><div class="section-title"><h2>02　從貓咪花色開始</h2><small>點一下就能套用</small></div><p class="v4-note">預設花色會依目前啟用的色票配出最接近的顏色。</p><div class="v4-presets" id="presets"></div><div id="curatedPresets" hidden><h3>麋鹿斑斑精選花色</h3><div class="v4-presets" id="curatedGrid"></div><p class="v4-note" id="curatedNote"></p></div></div>
+    <div class="section"><div class="section-title"><h2>參考自己的貓咪</h2><small>選用</small></div><div class="v4-ref"><img id="refImage" alt="你的貓咪參考照片" hidden/><label class="quiet-btn v4-upload">選擇照片<input id="refFile" type="file" accept="image/*"/></label><button id="clearRef" class="quiet-btn" type="button" hidden>移除</button></div><p class="v4-note">照片只在此裝置暫時處理，不會上傳或加入訂單。點選照片中的毛色，找出接近的可用色票。</p><div id="creativePhotoTools" hidden><p id="creativePhotoStatus" role="status"></p><canvas id="creativePhotoCanvas" aria-label="照片取色區，點選毛色"></canvas><div id="creativeMatches"></div><p class="v4-note">主要色可能包含背景；光線與螢幕會影響色彩，請以實際手工成品為準。</p></div></div>
    <div class="section"><div class="section-title"><h2>03　選擇色彩數量</h2><small>決定可使用的色彩數量</small></div><div class="segment" id="modeGroup"><button type="button" data-mode="3">三花 · 3 色</button><button type="button" data-mode="2">雙色 · 2 色</button><button type="button" data-mode="1">單色 · 1 色</button></div></div>
    <div class="section"><div class="section-title"><h2>04　挑選你喜歡的顏色</h2><small>底色與花色</small></div><div id="colorSelectors"></div></div>
     <section class="draw-box" id="drawingBox"><div class="section-title"><h2>自由畫花紋</h2><small id="drawEarLabel"></small></div><p>像在小貓臉上著色一樣，用手指或滑鼠畫出喜歡的花紋。可以從目前花色開始，也可以從乾淨底色開始。</p><div class="draw-tools"><button id="drawBlank" type="button">從純色開始</button><button id="drawClear" type="button">清除手繪花紋</button></div><div class="draw-stage"><svg id="drawSvg" xmlns="http://www.w3.org/2000/svg" viewBox="15 62 165 170" aria-label="貓咪耳環自由繪製區"></svg></div><div class="draw-tools" id="drawTool"><button data-tool="brush" type="button">畫筆</button><button data-tool="shape" type="button">封閉色塊</button><button data-tool="erase" type="button">橡皮擦</button></div><div class="draw-size"><label for="drawSize">筆刷大小</label><input id="drawSize" type="range" min="2" max="24" value="9"/><span id="drawSizeText">9</span></div><div class="draw-palette" id="drawPalette"></div><div class="draw-color-name" id="drawColorName"></div><div class="draw-tools"><button id="drawUndo" type="button">↶ 復原</button><button id="drawRedo" type="button">↷ 重做</button></div><div class="draw-status" id="drawStatus" aria-live="polite"></div><p>色塊：畫一圈，放開後自動填滿。橡皮擦只擦除手繪層，保留底下花色。金色零件及耳環外框不能上色。</p></section><details class="v4-advanced" id="advanced"><summary>進階自訂花紋</summary><div class="section"><div class="section-title"><h2>決定每個區塊的顏色</h2><small>可個別調整</small></div><p class="section-desc">左、右耳與上額可各自指定顏色；「中央連接色」在選擇中央色橋時啟用，「鼻口重點色」在開啟漸層時啟用。</p><div class="zone-grid" id="zones"></div></div>
@@ -399,16 +403,19 @@ select.catux-enhanced{display:none!important}
    <button type="button" data-v2-view="3d">3D 預覽</button>
   </div>
   <div class="v2-options" role="group" aria-label="預覽哪一耳">
-   <button type="button" data-v2-ear="L">左耳</button>
+   <button type="button" data-v2-ear="both">雙耳</button><button type="button" data-v2-ear="L">左耳</button>
    <button type="button" data-v2-ear="R">右耳</button>
    <button type="button" id="v2ResetOrbit" hidden>回正</button>
   </div>
-  <div class="v2-art" id="v2DialogArt"></div>
+  <div class="v2-options" id="v55LinkControls" hidden><button type="button" id="v55Link" aria-pressed="true">同步旋轉</button><button type="button" id="v55Separate" aria-pressed="false">獨立旋轉</button><button type="button" id="v55ActiveL" hidden>操作左耳</button><button type="button" id="v55ActiveR" hidden>操作右耳</button></div><div class="v2-art" id="v2DialogArt"></div><div class="v55-pair-labels" id="v55PairLabels" hidden><span>左耳</span><span>右耳</span></div><div id="v55ColorRefs" class="v55-colorrefs" hidden></div><p class="v2-note" id="v55Size">貓頭約 10.34 × 10.13 mm（寬 × 高，CAT6 模型參考；非螢幕 1:1 比例）。</p>
   <p id="v2OrbitStatus" role="status"></p>
   <p class="v2-note">實際手工上色、材質與螢幕顏色可能略有差異。</p>
  </div>
 </dialog>
 <script src="./render-v2-material.js"></script>
+<script src="./cat-production-check.js"></script>
+<script src="./cat-viewport.js"></script>
+<script src="./cat-creative.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -859,7 +866,23 @@ function productArtwork(){
  }
  return svg;
 }
-function pairArt42(prefix){return svgCopy42(productArtwork(),prefix);}
+function shareDesignArtwork(){
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+ svg.setAttribute('viewBox','0 0 364 174');
+ svg.setAttribute('width','1456');svg.setAttribute('height','696');
+ // The same head-only design artwork as the completion page, with separate SVG IDs.
+ svg.innerHTML='<rect width="364" height="174" fill="#F5F1E8"/>'+['L','R'].map((ear,i)=>{
+  const head=designArtwork(ear,true);
+  head.setAttribute('x',i===0?'37':'199');head.setAttribute('y','18');
+  head.setAttribute('width','128');head.setAttribute('height','138');
+  return svgCopy42(head,'share55-'+ear);
+ }).join('');
+ return svg;
+}
+function finalDesignArtwork(){
+ return `<div class="v55-finish-design"><div class="v55-finish-brand">MILU BANBAN</div><div class="v55-finish-pair">${['L','R'].map(ear=>`<figure>${svgCopy42(designArtwork(ear,true),'final42-'+ear)}<figcaption>${ear==='L'?'左耳環':'右耳環'}</figcaption></figure>`).join('')}</div><div class="v55-finish-caption">YOUR LITTLE CAT · YOUR COLORS</div></div>`;
+}
 function previewEarState(ear){
  const side=ear==='R'&&!pair.same?'right':'left';
  return pair.active===side?state:pair[side];
@@ -872,89 +895,54 @@ function designArtwork(ear,compact=false){
  svg.innerHTML=drawDefs()+withState(previewEarState(ear),()=>paintCat('designCat',0,{headOnly:true}));
  return svg;
 }
-function openProductPreview(){
+function previewArtwork55(ear){return withState(previewEarState(ear),()=>({svg:paintCat('face',0,{texture:true}),color:colAt(0)}))}
+function openProductPreview(initial){
  const dialog=$('v2Dialog');
  if(drawPointer!==null||dialog.open)return;
- const artwork=$('v2DialogArt'),status=$('v2OrbitStatus'),reset=$('v2ResetOrbit');
- let ear=pair.active==='right'?'R':'L',mode='design';
+ const artwork=$('v2DialogArt'),status=$('v2OrbitStatus'),reset=$('v2ResetOrbit'),link=$('v55Link'),separate=$('v55Separate'),controls=$('v55LinkControls'),labels=$('v55PairLabels');
+ const fromFinish=initial==='finish';let ear=fromFinish?'both':pair.active==='right'?'R':'L',mode=fromFinish?'3d':'design',linked=true;
  let preview=null,canvas=null,request=0;
-
- function clear3D(){
-  request++;
-  preview?.dispose();
-  preview=canvas=null;
-  reset.hidden=true;
- }
-
+ function clear3D(){request++;preview?.dispose();preview=canvas=null;reset.hidden=true}
  function show2D(){
   clear3D();
-  artwork.innerHTML=svgCopy42(designArtwork(ear),'editorDesign');
+  if(ear==='both'){const wrap=document.createElement('div');wrap.className='v55-design-pair';for(const side of ['L','R']){const div=document.createElement('div');div.innerHTML=svgCopy42(designArtwork(side),'editorDesign'+side);wrap.append(div)}artwork.replaceChildren(wrap)}
+  else artwork.innerHTML=svgCopy42(designArtwork(ear),'editorDesign');
  }
-
- function showUnavailable(){
-  if(mode!=='3d'||!dialog.open)return;
-  mode='design';
-  show2D();
-  updateSelection();
-  status.textContent='目前無法開啟 3D，已切回設計圖。';
- }
-
+ function showUnavailable(){if(mode!=='3d'||!dialog.open)return;mode='design';show2D();updateSelection();status.textContent='目前無法開啟 3D，已切回設計圖。'}
  function updateSelection(){
   for(const button of dialog.querySelectorAll('[data-v2-view]'))button.setAttribute('aria-pressed',String(button.dataset.v2View===mode));
   for(const button of dialog.querySelectorAll('[data-v2-ear]'))button.setAttribute('aria-pressed',String(button.dataset.v2Ear===ear));
+  dialog.classList.toggle('v55-pair-mode',ear==='both');
+  controls.hidden=mode!=='3d'||ear!=='both';labels.hidden=ear!=='both';
+  const refs=$('v55ColorRefs');refs.hidden=mode!=='3d';refs.replaceChildren();if(mode==='3d'){const label=document.createElement('span');label.textContent='2D 底色色票參考';refs.append(label);for(const side of ear==='both'?['L','R']:[ear]){const p=withState(previewEarState(side),()=>colorData(state.cols[0])),row=document.createElement('span'),chip=document.createElement('i');chip.style.background=p.hex;row.append(chip,document.createTextNode((side==='L'?'左耳':'右耳')+' · '+p.name));refs.append(row)}}
+  link.setAttribute('aria-pressed',String(linked));separate.setAttribute('aria-pressed',String(!linked));
+  $('v55ActiveL').hidden=$('v55ActiveR').hidden=linked;
  }
-
  async function show3D(){
   const id=++request;
-  if(!canvas){
-   canvas=document.createElement('canvas');
-   canvas.tabIndex=0;
-   canvas.setAttribute('aria-label','3D 耳環。方向鍵旋轉，加號或減號縮放，Home 回正。');
-   artwork.replaceChildren(canvas);
-  }
-  canvas.hidden=true;
-  reset.hidden=true;
-  status.textContent='載入 3D 預覽…';
+  if(!canvas){canvas=document.createElement('canvas');canvas.tabIndex=0;canvas.setAttribute('aria-label','3D 耳環。方向鍵旋轉，加號或減號縮放，Home 回正。');artwork.replaceChildren(canvas)}
+  canvas.hidden=true;reset.hidden=true;status.textContent='載入 3D 預覽…';
   try{
-   const {createPreview}=await import('./cat-preview-3d.js');
-   if(id!==request||!dialog.open)return;
+   const {createPreview}=await import('./cat-preview-3d.js');if(id!==request||!dialog.open)return;
    preview??=createPreview(canvas,showUnavailable);
-   const {svg,color}=withState(previewEarState(ear),()=>({svg:paintCat('face',0,{texture:true}),color:colAt(0)}));
-   await preview.setArtwork(svg,color);
+   await preview.setArtworks((ear==='both'?['L','R']:[ear]).map(previewArtwork55));
    if(id!==request||!dialog.open)return;
-   canvas.hidden=false;
-   reset.hidden=false;
-   status.textContent='拖曳旋轉 · 雙指或滾輪縮放';
-  }catch(error){
-   if(id===request)showUnavailable();
-  }
+   preview.setLinked(linked);canvas.hidden=false;reset.hidden=false;
+   status.textContent=ear==='both'?(linked?'同步旋轉兩耳 · 雙指或滾輪縮放':'拖曳左／右側獨立旋轉；鍵盤可先選操作耳'):'拖曳旋轉 · 雙指或滾輪縮放';
+  }catch(_){if(id===request)showUnavailable()}
  }
-
- function setArt(){
-  updateSelection();
-  status.textContent='';
-  if(mode==='3d')void show3D();
-  else show2D();
- }
-
- reset.onclick=()=>preview?.reset();
- dialog.onclick=event=>{
-  const button=event.target.closest('button');
-  const view=button?.dataset.v2View,side=button?.dataset.v2Ear;
-  if(view&&view!==mode){mode=view;setArt();}
-  if(side&&side!==ear){ear=side;setArt();}
- };
- dialog.addEventListener('close',()=>{
-  clear3D();
-  artwork.replaceChildren();
-  status.textContent='';
- },{once:true});
- setArt();
- dialog.showModal();
+ function setArt(){updateSelection();status.textContent='';if(mode==='3d')void show3D();else show2D()}
+ function setLinked(yes){linked=yes;preview?.setLinked(yes);updateSelection();status.textContent=yes?'同步旋轉兩耳 · 雙指或滾輪縮放':'拖曳左／右側獨立旋轉；鍵盤可先選操作耳'}
+ reset.onclick=()=>preview?.reset();link.onclick=()=>setLinked(true);separate.onclick=()=>setLinked(false);
+ $('v55ActiveL').onclick=()=>{preview?.setActive(0);canvas?.focus()};$('v55ActiveR').onclick=()=>{preview?.setActive(1);canvas?.focus()};
+ dialog.onclick=event=>{const button=event.target.closest('button'),view=button?.dataset.v2View,side=button?.dataset.v2Ear;if(view&&view!==mode){mode=view;if(mode==='3d'&&ear!=='both')ear='both';setArt()}if(side&&side!==ear){ear=side;setArt()}};
+ dialog.addEventListener('close',()=>{clear3D();artwork.replaceChildren();status.textContent='';controls.hidden=labels.hidden=$('v55ColorRefs').hidden=true},{once:true});
+ dialog.showModal();setArt();
 }
+
 function previewDesign42(d,prefix){const oldP=designPalette,oldG=designGeom;try{designPalette=d.palette;designGeom=d.geometry;const defs=$('earringSvg').querySelector('defs').outerHTML.replace(/stdDeviation="[\d.]+"(?=\/><\/filter>\s*<filter id="noseSoft")/,'stdDeviation="'+d.geometry.softness+'"');const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 45 520 190');svg.innerHTML=defs+`<rect x="0" y="45" width="520" height="190" fill="#f2efe6"/>`+withState(d.left,()=>paintCat('galleryL',65))+withState(d.same?d.left:d.right,()=>paintCat('galleryR',265));return svgCopy42(svg,prefix);}finally{designPalette=oldP;designGeom=oldG;}}
-function refresh42(){if(adminMode)return;active('v42Mode','data-focus',pair.same?'same':pair.active);$('v42Hint').textContent=drawTool==='shape'?'畫一圈，放開就會填滿顏色。':drawTool==='erase'?'擦掉剛剛畫的花紋，不會擦掉底色。':'選個顏色，直接在貓咪上畫。';$('v42Status').textContent=(state.drawing||[]).length>=MAX_OPS?'花紋已達上限，可復原或清除後再畫。':'';for(const button of $('v42Mode').querySelectorAll('[data-ear-thumb]')){const ear=button.dataset.earThumb;button.firstElementChild.innerHTML=svgCopy42(designArtwork(ear,true),'earThumb'+ear);}if(screen42==='finish')$('v42FinalArt').innerHTML=pairArt42('final42');}
-function show42(which){screen42=which;for(const [key,id] of Object.entries({editor:'v42Editor',finish:'v42Finish',gallery:'v42Gallery'}))$(id).hidden=which!==key;if(which==='finish'){$('v42FinalArt').innerHTML=pairArt42('final42');$('v42OrderPanel').hidden=true;}if(which==='gallery')renderGallery42();if(which==='editor')refresh42();window.scrollTo(0,0);}
+function refresh42(){if(adminMode)return;active('v42Mode','data-focus',pair.same?'same':pair.active);$('v42Hint').textContent=drawTool==='shape'?'畫一圈，放開就會填滿顏色。':drawTool==='erase'?'擦掉剛剛畫的花紋，不會擦掉底色。':'選個顏色，直接在貓咪上畫。';$('v42Status').textContent=(state.drawing||[]).length>=MAX_OPS?'花紋已達上限，可復原或清除後再畫。':'';for(const button of $('v42Mode').querySelectorAll('[data-ear-thumb]')){const ear=button.dataset.earThumb;button.firstElementChild.innerHTML=svgCopy42(designArtwork(ear,true),'earThumb'+ear);}if(screen42==='finish')$('v42FinalArt').innerHTML=finalDesignArtwork();}
+function show42(which){screen42=which;for(const [key,id] of Object.entries({editor:'v42Editor',finish:'v42Finish',gallery:'v42Gallery'}))$(id).hidden=which!==key;if(which==='finish'){$('v42FinalArt').innerHTML=finalDesignArtwork();$('v42OrderPanel').hidden=true;}if(which==='gallery')renderGallery42();if(which==='editor')refresh42();window.scrollTo(0,0);}
 function replace42(st,all=false){if(all)resetDrawHistory();else pushDrawUndo();state=adaptState(st);if(all){pair.same=true;pair.active='left';pair.left=clone(state);pair.right=clone(state);}renderAll();}
 function blank42(all=false){const c=mapAvailable(drawColor||state.cols[0]);replace42({...clone(presets[0]),name:'我的自由手繪',mode:1,cols:[c,c,c],zones:Object.fromEntries(zoneKeys.map(k=>[k,0])),muzzle:0,stripe:0,drawing:[]},all);}
 function random42(all=false){const choices=availablePalette();const shuffled=choices.slice().sort(()=>Math.random()-.5);const preset=clone(presets[Math.floor(Math.random()*8)]);preset.cols=[0,1,2].map(i=>shuffled[i%shuffled.length].id);preset.name='靈感小貓';preset.drawing=[];replace42(preset,all);}
@@ -966,6 +954,7 @@ function new42(){designPalette=null;designGeom=null;pair.same=true;pair.active='
 move42();const mobile42=matchMedia('(max-width:760px)');function placeTools42(){(mobile42.matches?$('v42MobileTools'):$('v42DesktopTools')).append($('v42ToolGroup'));}placeTools42();mobile42.addEventListener('change',placeTools42);v42Ready=true;
 btn42('v42Back',gallery42);
 btn42('v2PreviewDesktop',openProductPreview);
+btn42('v55Finish3D',()=>openProductPreview('finish'));
 btn42('v42FinishGallery',gallery42);btn42('v42GalleryBack',()=>show42(galleryReturn42));btn42('v42Import',()=>$('importDesign').click());
 $('v42GalleryGrid').addEventListener('click',async e=>{const o=e.target.closest('[data-open42]'),d=e.target.closest('[data-del42]');if(o){restoreDesign(savedDesigns[+o.dataset.open42]);show42('editor');}if(d&&await catUX.ask('刪除這份收藏？','作品將從這台裝置的收藏冊移除。','刪除',true,'保留作品')){const old=clone(savedDesigns);savedDesigns.splice(+d.dataset.del42,1);if(!storeSaved())savedDesigns=old;renderSaved();renderGallery42();}});
 $('v42Mode').addEventListener('click',e=>{const b=e.target.closest('[data-focus]');if(!b)return;const v=b.dataset.focus;if(v==='same'){if(!pair.same)$('pairMode').querySelector('[data-pair=same]').click();}else{if(pair.same)$('pairMode').querySelector('[data-pair=different]').click();selectEar(v);}});
@@ -1195,7 +1184,33 @@ function lab45(){
  const tag=document.createElement('span');tag.className='lab45-tag';tag.textContent='MAKE IT YOURS';document.querySelector('.header-right').prepend(tag);
  function theme(){body.classList.toggle('lab45',!adminMode);brand.innerHTML=adminMode?originalBrand:newBrand;tag.hidden=adminMode;}
  const oldEnter=enterAdmin;enterAdmin=function(yes){oldEnter(yes);theme()};
- const oldShow=show42;show42=function(which){oldShow(which);const finish=$('v42Finish');finish.classList.remove('lab45-reveal');if(which==='finish')requestAnimationFrame(()=>{if(screen42==='finish')finish.classList.add('lab45-reveal')})};
+ const oldShow=show42;show42=function(which){oldShow(which);const finish=$('v42Finish');finish.classList.remove('lab45-reveal');if(which==='finish'){refreshProductionCheck();requestAnimationFrame(()=>{if(screen42==='finish')finish.classList.add('lab45-reveal')})}};
+ const checkBox=document.createElement('details');checkBox.style.cssText='margin:18px 0;padding:12px 15px;background:#f3f5ef;border-radius:14px;text-align:left;color:#303d36';const checkTitle=document.createElement('summary'),checkBody=document.createElement('div');checkBox.append(checkTitle,checkBody);$('v42Order').parentElement.before(checkBox);
+ let productionReviewRevision=0;
+ async function refreshProductionCheck(){
+  const revision=++productionReviewRevision,active=()=>revision===productionReviewRevision&&screen42==='finish';
+  checkTitle.textContent='手工製作提醒｜讀取規則';checkBody.replaceChildren();
+  const status=document.createElement('p');status.setAttribute('role','status');status.textContent='正在讀取工作室規則…';checkBody.append(status);
+  try{
+   const design=fullDesign(),artworks=['left','right'].map(ear=>withState(ear==='right'&&!design.same?design.right:design.left,()=>paintCat('face',0,{texture:true})));
+   let config;try{config=await CatProductionCheck.fetchRules()}catch(_){config={revision:0,configured:false,rules:CatProductionCheck.DEFAULT_RULES,offline:true}}
+   if(!active())return;
+   const rules=config.rules,r=CatProductionCheck.analyze(design,rules);
+   status.textContent=config.configured?'工作室規則 v'+config.revision:config.offline?'暫時離線，使用預設提醒門檻':'使用初始提醒門檻（尚未發布）';
+   checkTitle.textContent='手工製作提醒｜初步檢查';
+   const result=document.createElement('div');result.setAttribute('role','status');result.textContent='正在分析最後呈現的圖案…';checkBody.append(result);
+   const history=document.createElement('details'),historyTitle=document.createElement('summary');historyTitle.textContent='原始筆畫提醒（可能已覆蓋）';history.append(historyTitle);
+   for(const e of r.ears){const p=document.createElement('p');p.textContent=(e.ear==='left'?'左耳：':'右耳：')+(e.flags.join('、')||'未發現明顯提醒');history.append(p)}
+   checkBody.append(history);const notice=document.createElement('p');notice.className='small-hint';notice.textContent='此為平面圖案取樣，並非製作保證。你可以保留原本創作並送出，由工作室確認。';checkBody.append(notice);checkBox.open=r.review;
+   try{
+    const values=await Promise.all(artworks.map((svg,i)=>CatProductionCheck.analyzeArtwork(svg,r.ears[i].colors,rules)));
+    if(!active())return;
+    result.replaceChildren();let tiny=false,uncertain=false;
+    values.forEach((v,i)=>{const p=document.createElement('p'),mixed=v.coverage*100<rules.minCoverage;uncertain||=mixed;tiny||=v.tinyRegions>0;p.textContent=(i?'右耳：':'左耳：')+'約 '+v.colors.length+' 個可辨識顏色'+(v.tinyRegions?'，有 '+v.tinyRegions+' 處細小色區':'')+(mixed?'；部分混色或柔邊需人工確認':'');result.append(p)});
+    checkTitle.textContent='手工製作提醒｜'+(tiny?'細節需覆核':uncertain||r.review?'由工作室確認':'未發現明顯提醒');checkBox.open=tiny||uncertain||r.review;
+   }catch(_){if(active()){result.textContent='最後圖案暫時無法分析，仍可查看原始筆畫提醒。';checkTitle.textContent='手工製作提醒｜由工作室確認'}}
+  }catch(_){if(active()){checkTitle.textContent='手工製作提醒｜由工作室確認';checkBody.textContent='作品仍可正常送出。'}}
+ }
  $('v42Editor').querySelector('.v42-editor-head h2').textContent='我的貓咪';
  $('v42Back').textContent='♡ 收藏冊';$('v42DoneTop').textContent='完成作品';
  $('v42Mode').querySelector('[data-focus=same]').textContent='一起畫';
@@ -1207,27 +1222,43 @@ function lab45(){
  const caption=document.createElement('p');caption.className='lab45-caption';caption.textContent='專屬作品卡｜適合分享到限時動態';newShare.parentElement.after(caption);
  function round(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();ctx.fill()}
  function textFit(ctx,value,maxWidth,maxSize,minSize,weight='700'){let size=maxSize;do{ctx.font=weight+' '+size+'px system-ui, "Noto Sans TC", sans-serif';if(ctx.measureText(value).width<=maxWidth||size<=minSize)break;size-=2;}while(size>=minSize);let output=value;if(ctx.measureText(output).width>maxWidth){let chars=Array.from(output);while(chars.length&&ctx.measureText(chars.join('')+'…').width>maxWidth)chars.pop();output=chars.join('')+'…';}return output}
- async function makeCard(){
-  const svg=productArtwork();svg.setAttribute('width','1040');svg.setAttribute('height','640');
-  const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));
+ const shareDialog=document.createElement('dialog');shareDialog.setAttribute('aria-label','作品分享卡');shareDialog.style.cssText='border:1px solid #e6e2d8;border-radius:20px;padding:18px;width:min(440px,calc(100% - 28px));max-height:90dvh;color:#303d36;background:#fffdfa;overflow:auto';
+ shareDialog.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><strong>我的作品卡</strong><button type="button" id="cardClose" class="quiet-btn">關閉</button></div><label style="display:block;margin:10px 0">圖片尺寸 <select id="cardFormat"><option value="story">IG 限時動態 · 9:16</option><option value="feed">IG 貼文 · 4:5</option></select></label><label style="display:block;margin:10px 0">商品畫面 <select id="cardArtwork"><option value="design">設計圖</option><option value="3d">3D</option></select></label><p id="cardStatus" role="status" style="font-size:13px"></p><img id="cardPreview" alt="作品卡預覽" style="display:block;max-width:100%;max-height:52dvh;margin:0 auto 12px;border-radius:10px"><div class="v42-actionbar"><button type="button" class="action primary" id="cardDownload" disabled>下載 PNG</button><button type="button" class="action" id="cardShare" disabled>分享圖片</button></div>';
+ document.body.append(shareDialog);
+ let cardBlob=null,cardURL='',cardName='',cardRevision=0;
+ async function makeCard(format,artMode,revision){
+  const title=$('v42Name').value.trim()||'我的貓咪';
+  if(!['design','3d'].includes(artMode))throw Error('Invalid artwork mode');
+  let url='';
   try{
-   const img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url});
-   const c=document.createElement('canvas');c.width=1080;c.height=1920;const ctx=c.getContext('2d');if(!ctx)throw Error('無法建立作品卡');
-   ctx.fillStyle='#F9DF8D';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#303D36';ctx.textAlign='left';ctx.font='700 32px system-ui,sans-serif';ctx.fillText('MILU BANBAN  /  CAT LAB',80,150);
-   ctx.font='850 103px system-ui,sans-serif';ctx.fillText('LOOK WHAT',75,315);ctx.fillText('I MADE!',75,425);
-   ctx.font='500 37px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('我自己設計的貓咪耳環。',80,520);
-   ctx.fillStyle='#C1E5D7';round(ctx,56,623,968,980,54);
-   ctx.fillStyle='#FFFDF5';round(ctx,80,647,920,932,42);
-   ctx.save();ctx.beginPath();ctx.rect(104,746,872,537);ctx.clip();ctx.drawImage(img,104,746,872,537);ctx.restore();
-   ctx.fillStyle='#303D36';ctx.textAlign='center';const title=$('v42Name').value.trim()||'我的貓咪';const line=textFit(ctx,title,830,63,26);ctx.fillText(line,540,1400);
-   ctx.font='600 24px system-ui,sans-serif';ctx.fillStyle='#607368';ctx.fillText('DESIGNED BY ME',540,1462);
-   ctx.textAlign='left';ctx.fillStyle='#303D36';ctx.font='700 42px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('你也來畫一隻吧！',80,1735);
-   ctx.font='500 30px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('麋鹿斑斑 · 貓咪 DIY 實驗室',80,1795);
-   ctx.fillStyle='#F3C5CA';round(ctx,884,1680,112,112,28);ctx.strokeStyle='#79565E';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(940,1755);ctx.bezierCurveTo(902,1727,919,1704,940,1725);ctx.bezierCurveTo(961,1704,978,1727,940,1755);ctx.stroke();
+   let img;
+   if(artMode==='3d'){
+    const {createPreview}=await import('./cat-preview-3d.js');if(revision!==cardRevision)throw Error('Cancelled');const surface=document.createElement('canvas');let p;
+    try{p=createPreview(surface,()=>{},{fixedSize:[1456,696]});await p.setArtworks(['L','R'].map(previewArtwork55));if(revision!==cardRevision)throw Error('Cancelled');p.setPose(.18,-.06,1);img=p.capture()}finally{p?.dispose()}
+   }else{const svg=shareDesignArtwork();url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml;charset=utf-8'}));img=new Image();await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url})}
+   const c=document.createElement('canvas');c.width=1080;c.height=format==='feed'?1350:1920;const h=c.height,story=format!=='feed',ctx=c.getContext('2d');if(!ctx)throw Error('無法建立作品卡');
+   ctx.fillStyle='#F7F3EA';ctx.fillRect(0,0,1080,h);
+   ctx.textAlign='center';ctx.fillStyle='#3C5149';ctx.font='600 31px system-ui,sans-serif';ctx.fillText('MILU BANBAN  /  CAT LAB',540,story?235:128);
+   ctx.strokeStyle='#A9B9AD';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(430,story?275:168);ctx.lineTo(650,story?275:168);ctx.stroke();
+   ctx.fillStyle='#303D36';ctx.font='600 50px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('今天，畫了一隻貓。',540,story?428:280);
+   ctx.fillStyle='#758479';ctx.font='400 28px system-ui,sans-serif';ctx.fillText('A LITTLE CAT, DESIGNED BY ME',540,story?484:333);
+   const artY=story?640:410;ctx.fillStyle='#F5F1E8';round(ctx,64,artY-20,952,480,36);ctx.drawImage(img,84,artY,912,436);
+   ctx.fillStyle='#303D36';ctx.fillText(textFit(ctx,title,870,64,30,'650'),540,story?1300:1020);
+   ctx.fillStyle='#758479';ctx.font='400 28px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('我的專屬貓咪耳環',540,story?1360:1072);
+   ctx.strokeStyle='#D9DCD1';ctx.beginPath();ctx.moveTo(160,story?1500:1140);ctx.lineTo(920,story?1500:1140);ctx.stroke();
+   ctx.fillStyle='#3C5149';ctx.font='500 31px system-ui,"Noto Sans TC",sans-serif';ctx.fillText('麋鹿斑斑 · 貓咪 DIY 實驗室',540,story?1570:1200);
+   ctx.font='400 24px system-ui,sans-serif';ctx.fillText('@milubanban',540,story?1615:1244);
+   ctx.fillStyle='#7C8178';ctx.font='400 21px system-ui,"Noto Sans TC",sans-serif';ctx.fillText((artMode==='3d'?'3D 預覽圖':'設計完成圖')+'｜手工成品可能略有差異',540,story?1660:1285);
    return await new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('作品卡輸出失敗')),'image/png'));
-  }finally{URL.revokeObjectURL(url)}
+  }finally{if(url)URL.revokeObjectURL(url)}
  }
- newShare.addEventListener('click',async()=>{if(newShare.disabled)return;newShare.disabled=true;newShare.textContent='製作作品卡…';try{const blob=await makeCard();const name=getDesignCode()+'_CAT-LAB_作品卡.png';const file=new File([blob],name,{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:$('v42Name').value.trim()||'我的貓咪耳環'});return}catch(e){if(e.name==='AbortError')return;}}downloadBlob(blob,name)}catch(e){toast('無法製作分享卡，請重新嘗試');}finally{newShare.disabled=false;newShare.textContent='分享／下載作品卡'}});
+ function clearCard(){cardRevision++;if(cardURL)URL.revokeObjectURL(cardURL);cardURL='';cardBlob=null;$('cardPreview').removeAttribute('src');$('cardDownload').disabled=$('cardShare').disabled=true;}
+ async function refreshCard(){clearCard();const rev=cardRevision,format=$('cardFormat').value,artMode=$('cardArtwork').value;$('cardStatus').textContent='正在製作作品卡…';try{const name=getDesignCode()+'_CAT-LAB_'+format+'_'+artMode+'.png',blob=await makeCard(format,artMode,rev);if(rev!==cardRevision||!shareDialog.open)return;cardBlob=blob;cardName=name;cardURL=URL.createObjectURL(blob);$('cardPreview').src=cardURL;$('cardDownload').disabled=$('cardShare').disabled=false;$('cardStatus').textContent='預覽完成，可下載或分享。'}catch(_){if(rev===cardRevision)$('cardStatus').textContent=artMode==='3d'?'3D 圖片暫時無法輸出，請改選設計圖。':'無法製作作品卡，請重新嘗試。'}}
+ newShare.addEventListener('click',()=>{if(!shareDialog.open){shareDialog.showModal();void refreshCard()}});
+ $('cardFormat').onchange=refreshCard;$('cardArtwork').onchange=refreshCard;$('cardClose').onclick=()=>shareDialog.close();shareDialog.addEventListener('close',clearCard);
+ $('cardDownload').onclick=()=>{if(cardBlob)downloadBlob(cardBlob,cardName)};
+ $('cardShare').onclick=async()=>{if(!cardBlob)return;const file=new File([cardBlob],cardName,{type:'image/png'});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'我的貓咪耳環'});return}catch(e){if(e.name==='AbortError')return;}}downloadBlob(cardBlob,cardName)};
+
  theme();
 }
 lab45();
@@ -1257,7 +1288,35 @@ function mobileCanvas46(){
  controls.prepend(handle,sheetbar,tabs,palettehint,fullpalette,previewmount);
  function expandSheet(yes){controls.dataset.lab46Expanded=String(yes);handle.setAttribute('aria-expanded',String(yes));handle.textContent=yes?'縮小面板 ↓':'展開面板 ↑'}
  const closeSize=()=>{sizeOpen=false;$('v42SizeMount').classList.remove('lab46-size-open');sizeBtn.setAttribute('aria-expanded','false')};
- function applyView(){svg.setAttribute('viewBox',mobile?(focused?'33 70 131 133':'28 65 142 144'):originalView)}
+ let viewBase=CatViewport.parseView(originalView),viewNow=viewBase.slice(),panMode=false,gesture=null,blocked=false;
+ const touches=new Map();
+ const viewTools=el('div','lab53ViewTools','lab46-only lab53-viewtools');
+ const panBtn=button('lab53Pan','移動畫布','移動'),resetViewBtn=button('lab53Reset','畫布回正','回正'),zoomBtn=button('lab53Zoom','放大畫布','＋'),zoomOutBtn=button('lab53ZoomOut','縮小畫布','－');
+ const zoomText=el('span','lab53ZoomText','lab53-zoomtext','100%');
+ viewTools.append(panBtn,zoomOutBtn,zoomText,zoomBtn,resetViewBtn);$('v42CanvasMount').before(viewTools);panBtn.setAttribute('aria-pressed','false');
+ function paintView(v){viewNow=CatViewport.constrain(v,viewBase);svg.setAttribute('viewBox',viewNow.join(' '));const zoom=viewBase[2]/viewNow[2];zoomText.textContent=Math.round(zoom*100)+'%';zoomOutBtn.disabled=zoom<=1.001;zoomBtn.disabled=zoom>=2.999;resetViewBtn.disabled=zoom<=1.001}
+ function resetGesture(){touches.clear();gesture=null;blocked=false;panMode=false;panBtn.setAttribute('aria-pressed','false');panBtn.textContent='移動';panBtn.setAttribute('aria-label','移動畫布')}
+ function applyView(){resetGesture();viewBase=CatViewport.parseView(mobile?(focused?'33 70 131 133':'28 65 142 144'):originalView);paintView(viewBase)}
+ function viewChange(ratio){if(!mobile||drawPointer!==null||touches.size)return;paintView(CatViewport.transform(viewNow,viewBase,[.5,.5],[.5,.5],ratio))}
+ zoomBtn.onclick=()=>viewChange(1.25);zoomOutBtn.onclick=()=>viewChange(.8);resetViewBtn.onclick=()=>{if(drawPointer===null&&!touches.size)paintView(viewBase)};
+ panBtn.onclick=()=>{if(drawPointer!==null||touches.size)return;panMode=!panMode;panBtn.setAttribute('aria-pressed',String(panMode));panBtn.textContent=panMode?'繪畫':'移動';panBtn.setAttribute('aria-label',panMode?'返回繪畫':'移動畫布')};
+ function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:points.reduce((t,p)=>t+p.x,0)/points.length,y:points.reduce((t,p)=>t+p.y,0)/points.length,d:points.length===2?Math.max(1,Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)):1}}
+ function stopEvent(e){e.preventDefault();e.stopImmediatePropagation()}
+ function setGesture(){const g=touchGeometry();gesture={g,view:viewNow.slice()}}
+ svg.addEventListener('pointerdown',e=>{
+  if(!mobile||e.pointerType!=='touch')return;
+  touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(touches.size>=2||panMode||blocked){stopEvent(e);if(drawPointer!==null)finishDraw({pointerId:drawPointer},false);blocked=true;try{svg.setPointerCapture(e.pointerId)}catch(_){};setGesture()}
+ },true);
+ svg.addEventListener('pointermove',e=>{
+  if(!mobile||!touches.has(e.pointerId))return;
+  touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(!blocked)return;stopEvent(e);if(!gesture||!(touches.size>=2||panMode))return;
+  const next=touchGeometry(),rect=svg.getBoundingClientRect(),from=CatViewport.relativePoint(gesture.g.x,gesture.g.y,rect,gesture.view),to=CatViewport.relativePoint(next.x,next.y,rect,gesture.view);
+  paintView(CatViewport.transform(gesture.view,viewBase,from,to,next.d/gesture.g.d))
+ },true);
+ function endTouch(e){if(!touches.has(e.pointerId))return;touches.delete(e.pointerId);if(blocked){stopEvent(e);if(touches.size)setGesture();else{blocked=false;gesture=null}}}
+ for(const event of ['pointerup','pointercancel','lostpointercapture'])svg.addEventListener(event,endTouch,true);
  function refreshPalette(){
   const buttons=[...$('drawPalette').querySelectorAll('[data-draw-color]')];
   const sig=JSON.stringify(buttons.map(b=>[b.dataset.drawColor,b.style.background,b.getAttribute('aria-label'),b.getAttribute('aria-pressed')]));
@@ -1269,7 +1328,7 @@ function mobileCanvas46(){
   if(restore&&previousFocus?.isConnected)previousFocus.focus({preventScroll:true});previousFocus=null;
  }
  function openSheet(tab){
-  if(!mobile||drawPointer!==null)return;closeSize();if(!sheet)previousFocus=document.activeElement;
+  if(!mobile||drawPointer!==null||touches.size)return;closeSize();if(!sheet)previousFocus=document.activeElement;
   sheet=tab;editor.classList.add('lab46-sheet-open');controls.dataset.lab46Tab=tab;expandSheet(tab==='more');controls.setAttribute('role','dialog');controls.setAttribute('aria-modal','true');controls.setAttribute('aria-labelledby','lab46SheetTitle');
   for(const b of tabs.children)b.setAttribute('aria-selected',String(b.dataset.lab46Tab===tab));
   $('lab46SheetTitle').textContent=({colors:'挑個喜歡的顏色',more:'更多創作工具',preview:'我的雙耳環'})[tab];
@@ -1282,7 +1341,7 @@ function mobileCanvas46(){
   }
   refreshPalette();controls.scrollTop=0;canvas.inert=true;editor.querySelector('.v42-editor-head').inert=true;$('lab46Close').focus({preventScroll:true});
  }
- function setFocus(yes){if(!mobile||drawPointer!==null)return;closeSize();closeSheet(false);focused=yes;document.body.classList.toggle('lab46-focus',yes);focusBtn.innerHTML=icon(yes?iconPaths.shrink:iconPaths.expand);focusBtn.setAttribute('aria-label',yes?'離開專注創作':'專注創作');focusBtn.title=focusBtn.getAttribute('aria-label');focusBtn.setAttribute('aria-pressed',String(yes));applyView();window.scrollTo(0,0)}
+ function setFocus(yes){if(!mobile||drawPointer!==null||touches.size)return;closeSize();closeSheet(false);focused=yes;document.body.classList.toggle('lab46-focus',yes);focusBtn.innerHTML=icon(yes?iconPaths.shrink:iconPaths.expand);focusBtn.setAttribute('aria-label',yes?'離開專注創作':'專注創作');focusBtn.title=focusBtn.getAttribute('aria-label');focusBtn.setAttribute('aria-pressed',String(yes));applyView();window.scrollTo(0,0)}
  function setMobile(){
   const next=media.matches&&!adminMode&&screen42==='editor';
   if(next===mobile)return;
@@ -1296,7 +1355,7 @@ function mobileCanvas46(){
  const oldShow=show42;show42=function(which){if(which!=='editor'){closeSize();closeSheet(false)}oldShow(which);setMobile()};
  const oldEnter=enterAdmin;enterAdmin=function(yes){oldEnter(yes);setMobile()};
  // Guard layout and tool changes from a second touch while a stroke is active.
- editor.addEventListener('click',e=>{if(mobile&&drawPointer!==null&&!svg.contains(e.target)){e.preventDefault();e.stopImmediatePropagation()}},true);
+ editor.addEventListener('click',e=>{if(mobile&&(drawPointer!==null||touches.size>0)&&!svg.contains(e.target)){e.preventDefault();e.stopImmediatePropagation()}},true);
  focusBtn.addEventListener('click',()=>setFocus(!focused));previewBtn.addEventListener('click',()=>{closeSize();openProductPreview()});
  symBtn.addEventListener('click',()=>{if(drawPointer!==null)return;const checkbox=$('v42Sym');checkbox.checked=!checkbox.checked;checkbox.dispatchEvent(new Event('change',{bubbles:true}));refreshPalette()});
  sizeBtn.addEventListener('click',()=>{if(drawPointer!==null)return;sizeOpen=!sizeOpen;$('v42SizeMount').classList.toggle('lab46-size-open',sizeOpen);sizeBtn.setAttribute('aria-expanded',String(sizeOpen))});
@@ -1398,6 +1457,27 @@ function cloudCustomer50(){
  });
  boot();
 }
+function creative54(){
+ const canvas=$('creativePhotoCanvas'),tools=$('creativePhotoTools'),status=$('creativePhotoStatus'),matches=$('creativeMatches'),img=$('refImage');
+ let pixels=null,samples=[],curated=[],photoRevision=0;
+ function clearPhoto(){photoRevision++;pixels=null;samples=[];matches.replaceChildren();canvas.width=canvas.height=1;tools.hidden=true;status.textContent='';}
+ const oldClear=clearReference;clearReference=function(){oldClear();clearPhoto()};
+ $('clearRef').addEventListener('click',clearPhoto);img.addEventListener('error',clearPhoto);
+ $('refFile').addEventListener('change',()=>{const f=$('refFile').files?.[0];if(f&&f.type.startsWith('image/')&&f.size<=15000000)clearPhoto()});
+ function addSample(h){if(!h)return;samples=[h,...samples.filter(x=>x!==h)].slice(0,6);renderMatches()}
+ function renderMatches(){matches.replaceChildren();for(const h of samples){const p=CatCreative.nearest(h,availablePalette());if(!p)continue;const row=document.createElement('div');row.className='creative-match';for(const color of [h,p.hex]){const sw=document.createElement('i');sw.className='creative-chip';sw.style.background=color;sw.title=color;row.append(sw)}const label=document.createElement('strong');label.textContent='近似 '+p.name+'（'+p.hex+'）';row.append(label);for(const [name,base] of [['選為畫筆',false],['換底色',true]]){const b=document.createElement('button');b.type='button';b.className='quiet-btn';b.textContent=name;b.onclick=()=>{if(drawPointer!==null)return;const next=CatCreative.nearest(h,availablePalette());if(!next)return;drawColor=next.id;if(base){pushDrawUndo();state.cols[0]=next.id;if(state.mode===1)state.cols=[next.id,next.id,next.id];renderAll()}else renderDraw();toast('已選擇 '+next.name)};row.append(b)}matches.append(row)}}
+ img.addEventListener('load',()=>{if(!refUrl||img.src!==refUrl)return;const revision=++photoRevision;try{const scale=Math.min(1,420/Math.max(img.naturalWidth,img.naturalHeight));canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,canvas.width,canvas.height);pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;if(revision!==photoRevision)return;samples=CatCreative.dominant(pixels,canvas.width,canvas.height).map(x=>x.hex);tools.hidden=false;status.textContent='已擷取主要色；可點選照片加入其他毛色。';renderMatches()}catch(_){clearPhoto();toast('無法分析此照片，仍可手動對照')}});
+ canvas.addEventListener('click',e=>{if(!pixels)return;const rect=canvas.getBoundingClientRect(),scale=Math.min(rect.width/canvas.width,rect.height/canvas.height),x=(e.clientX-rect.left-(rect.width-canvas.width*scale)/2)/scale,y=(e.clientY-rect.top-(rect.height-canvas.height*scale)/2)/scale;addSample(CatCreative.sampleAt(pixels,canvas.width,canvas.height,x,y))});
+ const oldDraw=renderDraw;renderDraw=function(){oldDraw();if(pixels&&!adminMode)renderMatches()};
+ function renderCurated(){const host=$('curatedGrid');host.replaceChildren();$('curatedPresets').hidden=!curated.length;for(const p of curated){try{const resolved=CatCreative.resolvePreset(p,availablePalette()),layout=presets[resolved.layout.index],ids=resolved.matches.map(x=>x.id);while(ids.length<3)ids.push(ids[ids.length-1]);const next={...clone(layout),name:p.name,cols:ids,drawing:[]};const btn=document.createElement('button');btn.type='button';btn.className='v4-preset curated-preset';const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','33 73 131 128');const prefix='curated-'+p.id;svg.innerHTML=drawDefs()+withState(next,()=>paintCat(prefix,0,{headOnly:true}));btn.innerHTML=svgCopy42(svg,prefix);const name=document.createElement('span');name.textContent=p.name+(resolved.changed?'（近似色）':'');btn.append(name);for(const c of resolved.matches){const chip=document.createElement('i');chip.className='curated-swatch';chip.style.background=c.hex;btn.append(chip)}btn.onclick=async()=>{if(drawPointer!==null)return;if(!await catUX.ask('套用這組花色？','會替換目前正在編輯的花色與手繪，可透過復原找回。'+(resolved.changed?' 此範本部分顏色已匹配為目前可用近似色。':''),'套用花色',false,'取消'))return;const latest=CatCreative.resolvePreset(p,availablePalette()),cols=latest.matches.map(x=>x.id);while(cols.length<3)cols.push(cols[cols.length-1]);replace42({...clone(presets[latest.layout.index]),name:p.name,cols,drawing:[]})};host.append(btn)}catch(_){}}
+ $('curatedNote').textContent='範本可再自行上色；色票更新時會顯示近似色。';
+ }
+ const oldPresets=renderPresetCards;renderPresetCards=function(){oldPresets();if(curated.length&&!adminMode)renderCurated()};
+ async function loadCurated(){try{const r=await fetch('/api/studio?action=presets',{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!r.ok)return;const d=await r.json();curated=CatCreative.validatePresets(d.presets).filter(p=>p.enabled);renderCurated()}catch(_){}}
+ void loadCurated();
+}
+creative54();
+
 cloudCustomer50();
 })();
 </script>
