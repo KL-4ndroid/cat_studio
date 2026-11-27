@@ -203,7 +203,7 @@ export function createPreview(canvas, onUnavailable, config={}) {
   const gl = canvas.getContext('webgl2', {antialias: true, alpha: false, preserveDrawingBuffer: !!config.fixedSize});
   if (!gl) throw Error('WebGL 2 unavailable');
 
-  const program = linkProgram(gl);
+  let program;try{program=linkProgram(gl)}catch(error){gl.getExtension('WEBGL_lose_context')?.loseContext();throw error}
   const handles = Object.fromEntries(['angle', 'aspect', 'zoom', 'base', 'hardware', 'artwork']
     .map(name => [name, gl.getUniformLocation(program, name)]));
   const createTexture=()=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
@@ -228,7 +228,7 @@ export function createPreview(canvas, onUnavailable, config={}) {
     frame = 0;
     if (disposed || !meshes.length || (!config.fixedSize&&(!canvas.clientWidth||!canvas.clientHeight))) return;
     const pixelRatio = Math.min(globalThis.devicePixelRatio || 1, 2);
-    const width = config.fixedSize?config.fixedSize[0]:Math.max(1,Math.round(canvas.clientWidth * pixelRatio));
+    const width = config.fixedSize?config.fixedSize[0]:Math.max(pair?2:1,Math.round(canvas.clientWidth * pixelRatio));
     const height = config.fixedSize?config.fixedSize[1]:Math.max(1,Math.round(canvas.clientHeight * pixelRatio));
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
@@ -359,6 +359,7 @@ export function createPreview(canvas, onUnavailable, config={}) {
     setArtwork,setArtworks,setLinked,setActive,setPose,capture,
     reset,
     dispose() {
+      if(disposed)return;
       disposed = true;
       input.abort();
       resize?.disconnect();
@@ -367,6 +368,8 @@ export function createPreview(canvas, onUnavailable, config={}) {
       for (const buffer of buffers) gl.deleteBuffer(buffer);
       for(const e of entries)gl.deleteTexture(e.texture);
       gl.deleteProgram(program);
+      // A preview owns its canvas; explicitly release GPU resources on close/export.
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     },
   };
 }
