@@ -317,7 +317,7 @@ select.catux-enhanced{display:none!important}
 #v2Dialog .v2-note,.v2-note{font-size:12px;margin:8px 0 12px;color:#52685c}
  .lab53-viewtools{display:none}.lab46-mobile .lab53-viewtools{display:flex;align-items:center;justify-content:center;gap:6px;margin:3px 0}.lab46-mobile .lab53-viewtools button{min-height:36px;min-width:38px;padding:5px 9px;font-size:12px}.lab53-viewtools button[aria-pressed=true]{background:#426455;color:white}.lab53-zoomtext{font-size:12px;font-variant-numeric:tabular-nums;min-width:42px;text-align:center}.lab46-mobile #drawSvg{touch-action:none}
 #creativePhotoCanvas{display:block;width:100%;max-width:420px;height:auto;max-height:320px;object-fit:contain;background:#eeeae1;border-radius:12px;cursor:crosshair;touch-action:pan-y}#creativePhotoTools[hidden],#curatedPresets[hidden]{display:none!important}.creative-match{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #e6e7e0}.creative-chip{width:23px;height:23px;border:1px solid #c9c9c1;border-radius:50%;flex:none}.creative-match button{min-height:38px}.creative-match span{font-size:12px}.creative-match strong{font-size:12px;flex:1;min-width:90px}.curated-preset svg{height:72px}.curated-swatch{display:inline-block;width:13px;height:13px;border:1px solid #ccc;border-radius:50%;margin:2px} 
-#v55LinkControls[hidden],#v55PairLabels[hidden],#v55ActiveL[hidden],#v55ActiveR[hidden]{display:none!important}.v55-pair-labels{display:flex;justify-content:space-around;font-size:12px;color:#52685c;margin:4px 0}.v55-design-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}.v55-design-pair svg{width:100%;height:auto;max-height:240px}.v55-pair-mode canvas{height:min(43dvh,300px)!important}.v55-pair-mode .v55-design-pair{min-height:150px}#v55LinkControls{flex-wrap:wrap}
+#v55ColorRefs[hidden],#v55LinkControls[hidden],#v55PairLabels[hidden],#v55ActiveL[hidden],#v55ActiveR[hidden]{display:none!important}.v55-pair-labels{display:flex;justify-content:space-around;font-size:12px;color:#52685c;margin:4px 0}.v55-design-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}.v55-design-pair svg{width:100%;height:auto;max-height:240px}.v55-pair-mode canvas{height:min(43dvh,300px)!important}.v55-pair-mode .v55-design-pair{min-height:150px}#v55LinkControls{flex-wrap:wrap}.v55-colorrefs{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:11px;color:#52685c}.v55-colorrefs span{display:inline-flex;align-items:center;gap:5px}.v55-colorrefs i{width:15px;height:15px;border-radius:50%;border:1px solid #c6c6bd}
 </style>
 </head>
 <body>
@@ -406,7 +406,7 @@ select.catux-enhanced{display:none!important}
    <button type="button" data-v2-ear="R">右耳</button>
    <button type="button" id="v2ResetOrbit" hidden>回正</button>
   </div>
-  <div class="v2-options" id="v55LinkControls" hidden><button type="button" id="v55Link" aria-pressed="true">同步旋轉</button><button type="button" id="v55Separate" aria-pressed="false">獨立旋轉</button><button type="button" id="v55ActiveL" hidden>操作左耳</button><button type="button" id="v55ActiveR" hidden>操作右耳</button></div><div class="v2-art" id="v2DialogArt"></div><div class="v55-pair-labels" id="v55PairLabels" hidden><span>左耳</span><span>右耳</span></div><p class="v2-note" id="v55Size">貓頭約 10.34 × 10.13 mm（寬 × 高，CAT6 模型參考；非螢幕 1:1 比例）。</p>
+  <div class="v2-options" id="v55LinkControls" hidden><button type="button" id="v55Link" aria-pressed="true">同步旋轉</button><button type="button" id="v55Separate" aria-pressed="false">獨立旋轉</button><button type="button" id="v55ActiveL" hidden>操作左耳</button><button type="button" id="v55ActiveR" hidden>操作右耳</button></div><div class="v2-art" id="v2DialogArt"></div><div class="v55-pair-labels" id="v55PairLabels" hidden><span>左耳</span><span>右耳</span></div><div id="v55ColorRefs" class="v55-colorrefs" hidden></div><p class="v2-note" id="v55Size">貓頭約 10.34 × 10.13 mm（寬 × 高，CAT6 模型參考；非螢幕 1:1 比例）。</p>
   <p id="v2OrbitStatus" role="status"></p>
   <p class="v2-note">實際手工上色、材質與螢幕顏色可能略有差異。</p>
  </div>
@@ -897,6 +897,7 @@ function openProductPreview(initial){
   for(const button of dialog.querySelectorAll('[data-v2-ear]'))button.setAttribute('aria-pressed',String(button.dataset.v2Ear===ear));
   dialog.classList.toggle('v55-pair-mode',ear==='both');
   controls.hidden=mode!=='3d'||ear!=='both';labels.hidden=ear!=='both';
+  const refs=$('v55ColorRefs');refs.hidden=mode!=='3d';refs.replaceChildren();if(mode==='3d'){const label=document.createElement('span');label.textContent='2D 底色色票參考';refs.append(label);for(const side of ear==='both'?['L','R']:[ear]){const p=withState(previewEarState(side),()=>colorData(state.cols[0])),row=document.createElement('span'),chip=document.createElement('i');chip.style.background=p.hex;row.append(chip,document.createTextNode((side==='L'?'左耳':'右耳')+' · '+p.name));refs.append(row)}}
   link.setAttribute('aria-pressed',String(linked));separate.setAttribute('aria-pressed',String(!linked));
   $('v55ActiveL').hidden=$('v55ActiveR').hidden=linked;
  }
@@ -918,7 +919,7 @@ function openProductPreview(initial){
  reset.onclick=()=>preview?.reset();link.onclick=()=>setLinked(true);separate.onclick=()=>setLinked(false);
  $('v55ActiveL').onclick=()=>{preview?.setActive(0);canvas?.focus()};$('v55ActiveR').onclick=()=>{preview?.setActive(1);canvas?.focus()};
  dialog.onclick=event=>{const button=event.target.closest('button'),view=button?.dataset.v2View,side=button?.dataset.v2Ear;if(view&&view!==mode){mode=view;if(mode==='3d'&&ear!=='both')ear='both';setArt()}if(side&&side!==ear){ear=side;setArt()}};
- dialog.addEventListener('close',()=>{clear3D();artwork.replaceChildren();status.textContent='';controls.hidden=labels.hidden=true},{once:true});
+ dialog.addEventListener('close',()=>{clear3D();artwork.replaceChildren();status.textContent='';controls.hidden=labels.hidden=$('v55ColorRefs').hidden=true},{once:true});
  dialog.showModal();setArt();
 }
 
